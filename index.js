@@ -10,7 +10,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
 app.use(express.urlencoded({extended : true}));
 
-// Connect to database
+// Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
 const knex = require('knex')({
 	client: 'pg',
 	connection: {
