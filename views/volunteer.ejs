@@ -5,65 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volunteer Opportunity Form</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-    <h1>Volunteer Opportunity Form</h1>
-    <form action="/volunteer" method="POST">
-        <label for="first-name">First Name:</label><br>
-        <input type="text" id="first-name" name="first-name" required><br><br>
+    <div class="container mt-5">
+        <h1 class="mb-4">Volunteer Opportunity Form</h1>
+        <form action="/volunteer" method="POST">
+            <div class="mb-3">
+                <label for="first-name" class="form-label">First Name:</label>
+                <input type="text" class="form-control" id="first-name" name="first-name" required>
+            </div>
 
-        <label for="last-name">Last Name:</label><br>
-        <input type="text" id="last-name" name="last-name" required><br><br>
+            <div class="mb-3">
+                <label for="last-name" class="form-label">Last Name:</label>
+                <input type="text" class="form-control" id="last-name" name="last-name" required>
+            </div>
 
-        <label for="phone">Phone Number:</label><br>
-        <input type="tel" id="phone" name="phone" required><br><br>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number:</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required>
+            </div>
 
-        <label for="email">Email Address:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
 
-        <label for="street-address">Street Address:</label><br>
-        <input type="text" id="street-address" name="street-address" required><br><br>
+            <div class="mb-3">
+                <label for="street-address" class="form-label">Street Address:</label>
+                <input type="text" class="form-control" id="street-address" name="street-address" required>
+            </div>
 
-        <label for="city">City:</label><br>
-        <input type="text" id="city" name="city" required><br><br>
+            <div class="mb-3">
+                <label for="city" class="form-label">City:</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+            </div>
 
-        <label for="state">State:</label><br>
-        <input type="text" id="state" name="state" required><br><br>
+            <div class="mb-3">
+                <label for="state" class="form-label">State:</label>
+                <input type="text" class="form-control" id="state" name="state" required>
+            </div>
 
-        <label for="zip">Zip Code:</label><br>
-        <input type="text" id="zip" name="zip" required><br><br>
+            <div class="mb-3">
+                <label for="zip" class="form-label">Zip Code:</label>
+                <input type="text" class="form-control" id="zip" name="zip" required>
+            </div>
 
-        <label>How did you hear about this opportunity?</label><br>
-            <input type="radio" id="how-heard-social-media" name="how-heard" value="social-media" onclick="toggleOtherInput()" required>
-            <label for="how-heard-social-media">Social Media</label><br>
-            
-            <input type="radio" id="how-heard-friend" name="how-heard" value="friend" onclick="toggleOtherInput()">
-            <label for="how-heard-friend">Friend</label><br>
-            
-            <input type="radio" id="how-heard-event" name="how-heard" value="event" onclick="toggleOtherInput()">
-            <label for="how-heard-event">Event</label><br>
-            
-            <input type="radio" id="how-heard-other" name="how-heard" value="other" onclick="toggleOtherInput()">
-            <label for="how-heard-other">Other</label><br>
-            
-            <input type="text" id="how-heard-other-input" name="how-heard-other-text" placeholder="Please specify" disabled><br><br>
+            <div class="mb-3">
+                <label class="form-label">How did you hear about this opportunity?</label><br>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="how-heard-social-media" name="how-heard" value="social-media" onclick="toggleOtherInput()" required>
+                    <label for="how-heard-social-media" class="form-check-label">Social Media</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="how-heard-friend" name="how-heard" value="friend" onclick="toggleOtherInput()">
+                    <label for="how-heard-friend" class="form-check-label">Friend</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="how-heard-event" name="how-heard" value="event" onclick="toggleOtherInput()">
+                    <label for="how-heard-event" class="form-check-label">Event</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="how-heard-other" name="how-heard" value="other" onclick="toggleOtherInput()">
+                    <label for="how-heard-other" class="form-check-label">Other</label>
+                </div>
+                <input type="text" class="form-control mt-2" id="how-heard-other-input" name="how-heard-other-text" placeholder="Please specify" disabled>
+            </div>
 
-        <label for="sewing-level">What is your sewing experience?</label><br>
-        <select id="sewing-level" name="sewing-level" required>
-            <option value="no-sewing">No sewing</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="experienced">Experienced</option>
-        </select><br><br>
+            <div class="mb-3">
+                <label for="sewing-level" class="form-label">What is your sewing experience?</label>
+                <select id="sewing-level" name="sewing-level" class="form-select" required>
+                    <option value="no-sewing">No sewing</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="experienced">Experienced</option>
+                </select>
+            </div>
 
-        <label for="volunteer-hours">How many hours would you be willing to volunteer per month?</label><br>
-        <input type="number" id="volunteer-hours" name="volunteer-hours" min="1" required><br><br>
+            <div class="mb-3">
+                <label for="volunteer-hours" class="form-label">How many hours would you be willing to volunteer per month?</label>
+                <input type="number" class="form-control" id="volunteer-hours" name="volunteer-hours" min="1" required>
+            </div>
 
-        <label for="newsletter">Would you like to subscribe to our monthly newsletter?</label><br>
-        <input type="checkbox" id="newsletter" name="newsletter"><br><br>
+            <div class="mb-3">
+                <label for="newsletter" class="form-check-label">Would you like to subscribe to our monthly newsletter?</label><br>
+                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter">
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -76,3 +107,4 @@
     </script>
 </body>
 </html>
+
