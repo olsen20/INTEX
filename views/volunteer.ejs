@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volunteer Opportunity Form</title>
+    <script>
+        function toggleOtherInput() {
+            const otherOption = document.getElementById('how-heard-other');
+            const otherInput = document.getElementById('how-heard-other-input');
+            otherInput.disabled = !otherOption.checked;
+            otherInput.required = otherOption.checked;
+        }
+    </script>
 </head>
 <body>
     <h1>Volunteer Opportunity Form</h1>
-    <form action="/submit" method="post">
+    <form action="/volunteer" method="POST">
         <label for="first-name">First Name:</label><br>
         <input type="text" id="first-name" name="first-name" required><br><br>
 
@@ -20,13 +28,34 @@
         <label for="email">Email Address:</label><br>
         <input type="email" id="email" name="email" required><br><br>
 
-        <label for="address">Address:</label><br>
-        <textarea id="address" name="address" rows="3" required></textarea><br><br>
+        <label for="street-address">Street Address:</label><br>
+        <input type="text" id="street-address" name="street-address" required><br><br>
 
-        <label for="how-heard">How did you hear about this opportunity?</label><br>
-        <input type="text" id="how-heard" name="how-heard"><br><br>
+        <label for="city">City:</label><br>
+        <input type="text" id="city" name="city" required><br><br>
 
-        <label for="sewing-level">Sewing Level:</label><br>
+        <label for="state">State:</label><br>
+        <input type="text" id="state" name="state" required><br><br>
+
+        <label for="zip">Zip Code:</label><br>
+        <input type="text" id="zip" name="zip" required><br><br>
+
+        <label>How did you hear about this opportunity?</label><br>
+            <input type="radio" id="how-heard-social-media" name="how-heard" value="social-media" onclick="toggleOtherInput()" required>
+            <label for="how-heard-social-media">Social Media</label><br>
+            
+            <input type="radio" id="how-heard-friend" name="how-heard" value="friend" onclick="toggleOtherInput()">
+            <label for="how-heard-friend">Friend</label><br>
+            
+            <input type="radio" id="how-heard-event" name="how-heard" value="event" onclick="toggleOtherInput()">
+            <label for="how-heard-event">Event</label><br>
+            
+            <input type="radio" id="how-heard-other" name="how-heard" value="other" onclick="toggleOtherInput()">
+            <label for="how-heard-other">Other</label><br>
+            
+            <input type="text" id="how-heard-other-input" name="how-heard-other-text" placeholder="Please specify" disabled><br><br>
+
+        <label for="sewing-level">What is your sewing experience?</label><br>
         <select id="sewing-level" name="sewing-level" required>
             <option value="no-sewing">No sewing</option>
             <option value="beginner">Beginner</option>
@@ -34,13 +63,10 @@
             <option value="experienced">Experienced</option>
         </select><br><br>
 
-        <label for="availability">Day of Week Availability:</label><br>
-        <input type="text" id="availability" name="availability" placeholder="e.g., Monday, Wednesday"><br><br>
-
-        <label for="volunteer-hours">Number of Hours Willing to Volunteer per Month:</label><br>
+        <label for="volunteer-hours">How many hours would you be willing to volunteer per month?</label><br>
         <input type="number" id="volunteer-hours" name="volunteer-hours" min="1" required><br><br>
 
-        <label for="newsletter">Subscribe to Newsletter:</label><br>
+        <label for="newsletter">Would you like to subscribe to our monthly newsletter?</label><br>
         <input type="checkbox" id="newsletter" name="newsletter"><br><br>
 
         <button type="submit">Submit</button>
