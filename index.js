@@ -23,9 +23,76 @@ const knex = require('knex')({
 	}
 });
 
-// Route to display home/index page
+// External website -----------------------------------------------------------------------------------------------------------------------------
+// Route to display home/index/landing page
 app.get('/', (req, res) => {
     res.render('index');
+});
+
+// Route to display how you can help page
+app.get('/how-to-help', (req, res) => {
+    res.render('how-to-help');
+});
+
+// Route to display about us page
+app.get('/about-us', (req, res) => {
+    res.render('about-us');
+});
+
+// Route to display Jen's story page
+app.get('/jens-story', (req, res) => {
+    res.render('jens-story');
+});
+
+// Route to display Thank You to Sponsors page
+app.get('/sponsors', (req, res) => {
+    res.render('sponsors');
+});
+
+// Route to display homelessness dashboard page
+app.get('/homelessness-data', (req, res) => {
+    res.render('homelessness-data');
+});
+
+// Route to display event request form page
+app.get('/event', (req, res) => {
+    res.render('event');
+});
+
+// Route to display volunteer form page
+app.get('/volunteer', (req, res) => {
+    res.render('volunteer');
+});
+
+// Route to display login page
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// Internal website ----------------------------------------------------------------------------------------------------------------------------
+// Route to display internal landing page
+app.get('/admin-welcome', (req, res) => {
+    res.render('admin-welcome');
+});
+
+// Route to display volunteer management page
+app.get('/volunteer-manage', (req, res) => {
+    res.render('volunteer-manage');
+});
+
+// Route to display event management page
+app.get('/event-manage', (req, res) => {
+    res.render('event-manage');
+});
+
+// Route to display user management page
+app.get('/user-manage', (req, res) => {
+    res.render('user-manage');
+});
+
+// Route to display internal dashboard and past events page
+app.get('/past-events', (req, res) => {
+    res.render('past-events');
 });
 
 // Configure the server to start listening
