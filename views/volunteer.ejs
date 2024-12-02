@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Opportunity Form</title>
+</head>
+<body>
+    <h1>Volunteer Opportunity Form</h1>
+    <form action="/submit" method="post">
+        <label for="first-name">First Name:</label><br>
+        <input type="text" id="first-name" name="first-name" required><br><br>
+
+        <label for="last-name">Last Name:</label><br>
+        <input type="text" id="last-name" name="last-name" required><br><br>
+
+        <label for="phone">Phone Number:</label><br>
+        <input type="tel" id="phone" name="phone" required><br><br>
+
+        <label for="email">Email Address:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="3" required></textarea><br><br>
+
+        <label for="how-heard">How did you hear about this opportunity?</label><br>
+        <input type="text" id="how-heard" name="how-heard"><br><br>
+
+        <label for="sewing-level">Sewing Level:</label><br>
+        <select id="sewing-level" name="sewing-level" required>
+            <option value="no-sewing">No sewing</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="experienced">Experienced</option>
+        </select><br><br>
+
+        <label for="availability">Day of Week Availability:</label><br>
+        <input type="text" id="availability" name="availability" placeholder="e.g., Monday, Wednesday"><br><br>
+
+        <label for="volunteer-hours">Number of Hours Willing to Volunteer per Month:</label><br>
+        <input type="number" id="volunteer-hours" name="volunteer-hours" min="1" required><br><br>
+
+        <label for="newsletter">Subscribe to Newsletter:</label><br>
+        <input type="checkbox" id="newsletter" name="newsletter"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
