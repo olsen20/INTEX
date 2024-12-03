@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Occurred Event - Turtle Shelter Project</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <style>
+        #original-fields {
+            display: none; /* Hide the original fields by default */
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Event form results -->
+    <div class="container mt-5">
+        <h1>Event Details</h1>
+        <p class="lead text-muted" style="text-align: center;">Add additional details about the event</p>
+        <!-- Button to show/hide original fields -->
+        <button onclick="toggleOriginalFields()" class="expand-form-btn">See Additional Form Details</button>
+        
+        <!-- Form container -->
+        <form action="/event" method="POST">
+            <!-- Fields that are always visible -->
+            <div class="mb-3">
+                <label for="number-of-people">Number of Participants:</label>
+                <input type="number" id="number-of-people" name="number-of-people" min="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="event-length">Event Duration (in hours):</label>
+                <input type="number" id="event-length" name="event-length" min="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="pockets-produced">Pockets Produced:</label>
+                <input type="number" id="pockets-produced" name="pockets-produced" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="collars-produced">Collars Produced:</label>
+                <input type="number" id="collars-produced" name="collars-produced" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="envelopes-produced">Envelopes Produced:</label>
+                <input type="number" id="envelopes-produced" name="envelopes-produced" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="vests-produced">Vests Produced:</label>
+                <input type="number" id="vests-produced" name="vests-produced" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="completed-products">Number of Completed Products:</label>
+                <input type="number" id="completed-products" name="completed-products" min="0" required>
+            </div>
+
+            <!-- Original fields hidden by default -->
+            <div id="original-fields">
+                <div class="mb-3">
+                    <label for="backup-date">Backup Date:</label>
+                    <input type="date" id="backup-date" name="backup-date">
+                </div>
+
+                <div class="mb-3">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city">
+                </div>
+
+                <div class="mb-3">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state">
+                </div>
+
+                <div class="mb-3">
+                    <label for="zip">Zip Code:</label>
+                    <input type="text" id="zip" name="zip">
+                </div>
+
+                <!-- Add any additional fields you want to be hidden initially -->
+            </div>
+
+            <!-- Update and delete buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="submit" class="update-profile-btn">Update Event</button>
+                <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
+            </div>
+            <!-- Back to Volunteers button -->
+            <a href="/volunteer-manage" class="back-to-users-btn">Back to Volunteers Page</a>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+
+    <script>
+        function toggleOriginalFields() {
+            const originalFields = document.getElementById('original-fields');
+            if (originalFields.style.display === 'none' || originalFields.style.display === '') {
+                originalFields.style.display = 'block'; // Show the original fields
+            } else {
+                originalFields.style.display = 'none'; // Hide the original fields
+            }
+        }
+    </script>
+</body>
+</html>

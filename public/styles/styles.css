@@ -62,6 +62,22 @@ header nav ul li a:hover {
     text-decoration: underline; /* Underline on hover for better visibility */
 }
 
+.logo {
+    height: 50px; 
+    margin-right: 10px;
+    box-shadow: none; /* Remove the shadow */
+    border-radius: 0; /* Remove rounded corners */
+    transition: none; /* Remove hover animation */
+    filter: none; /* Remove brightness and contrast adjustments */
+    transform: none; /* Remove transform effects */
+}
+
+/* Ensure the hover effects don't apply to the logo */
+.logo:hover {
+    transform: none; /* No hover transform */
+    filter: none; /* No hover brightness or contrast change */
+}
+
 /* Footer Styling */
 footer {
     background-color: #3b7a57; /* Green background */
@@ -137,6 +153,25 @@ form button {
 
 form button:hover {
     background-color: #2c5e45; /* Darker green on hover */
+}
+
+.expand-form-btn {
+    background: none;
+    display: block; /* Make it a block-level element to center */
+    margin: 20px auto; /* Center the button horizontally */
+    width: 40%; /* Set a wider width */
+    padding: 10px 15px; /* Add some padding */
+    background-color: #b5b3b3; /* Grey background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1.1rem; /* Slightly larger text */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center the text inside the button */
+}
+
+.expand-form-btn:hover {
+    background-color: #a09f9f; /* Darker grey for hover */
 }
 
 /* Custom Inputs (for a cohesive look) */
@@ -454,6 +489,7 @@ a.modify-profile-btn {
     cursor: pointer;
     font-weight: bold;
     margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 a.modify-profile-btn:hover {

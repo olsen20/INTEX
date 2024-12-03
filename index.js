@@ -113,6 +113,11 @@ app.get('/event-details', (req, res) => {
     res.render('event-details');
 });
 
+// Route to display an occurred event page
+app.get('/event-occurred', (req, res) => {
+    res.render('event-occurred');
+});
+
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
     res.render('user-manage');
