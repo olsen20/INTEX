@@ -128,5 +128,16 @@
      <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>&copy; 2024 Turtle Shelter Project</p>
     </footer>
+
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // script to ensure that they are able to input what their "other" is
+        function toggleOtherInput() {
+            const otherOption = document.getElementById('how-heard-other');
+            const otherInput = document.getElementById('how-heard-other-input');
+            otherInput.disabled = !otherOption.checked;
+            otherInput.required = otherOption.checked;
+        }
+    </script>
 </body>
 </html>
