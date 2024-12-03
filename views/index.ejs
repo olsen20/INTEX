@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/styles/styles.css">
     <style>
               .hero-image {
-            max-width: 50%; /* Adjust image size */
+            max-width: 100%; /* Adjust image size */
             height: auto;
             border-radius: 8px;
             margin-right: 20px; /* Space between image and text */
@@ -43,62 +43,56 @@
         </div>
     </header>
 
-    <h1 class="text-center mb-4">Turtle Shelter Project</h1>
-
+    <h1 class="text-center display-4 mb-4">Turtle Shelter Project</h1><br><br>
+    <!-- Scrolspy from bootstrap to help navigate the page -->
     <div class="row">
         <div class="col-4 scrollspy-nav">
           <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end position-sticky top-0">
             <nav class="nav nav-pills flex-column">
               <a class="nav-link" href="#item-1">Who we are</a>
               <a class="nav-link" href="#item-2">How we help</a>
-              <a class="nav-link" href="#item-3">How you can help too</a>
+              <a class="nav-link" href="#item-3">Why we do it</a>
             </nav>
           </nav>
         </div>
-      
+        <!-- Page information with images and text -->
         <div class="col-8">
           <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
             <div id="item-1">
-              <img src="/images/jen2.png" alt="Jen" class="hero-image float-start ms-3" style="max-width: 40%;">
-              <h4 style="font-weight: bold; color: #3b7a57">Who We Are</h4>
-              <p>Our founder, Jen used to be homeless. One especially cold winter in Utah, 7 of her friends froze to death. Jen, 
+              <img src="/images/jen2.png" alt="Jen" class="hero-image float-end ms-3" style="max-width: 40%;">
+              <h4 style="font-weight: bold; color: #3b7a57; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Who We Are</h4>
+              <p>Our founder, Jen, used to be homeless. One especially cold winter in Utah, 7 of her friends froze to death. Jen, 
                 no longer homeless, decided that she wanted to help those suffering from homelessness. She started the 
-                Turtle Shelter Project with that intent - to <span style="font-weight: bold;">help those that suffer from homelessness. </span>
+                Turtle Shelter Project with that intent - to <a href="/how-to-help" style="color: black; text-decoration: none; font-weight: bold;">help those that suffer from homelessness. </a>
                 We strive to use our time and resources to make the lives of our homeless friends easier, and we could use your help!
               </p>
             </div><br><br>
             <div id="item-2">
-              <img src="/images/whatwedo.png" alt="Two women wearing vests" class="hero-image float-end ms-3" style="max-width: 35%;">
-              <h4 style="font-weight: bold; color: #3b7a57">How We Help</h4>
-              <p>We manufacture and distribute Turtle Shelter Vests.<br><p style="margin: 0 10px;"><a href="/about-us" style="color: black; text-decoration: none; font-weight: bold;">What are Turtle Shelter Vests?</a></p>
-                 <br> They are a high tech but simple solution to help save countless lives - a portable shelter that you can carry with you, 
+              <img src="/images/whatwedo.png" alt="Two women wearing vests" class="hero-image float-start ms-3" style="max-width: 35%;">
+              <h4 style="font-weight: bold; color: #3b7a57; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">How We Help</h4>
+              <p>We manufacture and distribute Turtle Shelter Vests.<br><p><a href="/about-us" style="color: black; text-decoration: none; font-weight: bold;">What are Turtle Shelter Vests?</a></p>
+                 They are a high tech but simple solution to help save countless lives - a portable shelter that you can carry with you, 
                  just as a turtle carries its shell.<br>
-              These high tech foam vests are inexpensive while keeping a person warm in down to 10 degrees below zero and helping to save lives 
-            and alleviate suffering!</p>
-            </div><br><br><br><br><br><br>
+              These high tech foam vests are inexpensive while keeping a person warm in down to 10 degrees below zero. They help save lives 
+            and alleviate suffering! <br> We have the expertise and the resources to manufacture and hand out these life saving, 
+            miracle vests! Want to help? Click <a href="/how-to-help" style="color: black; text-decoration: none; font-weight: bold;">here!</a></p>
+            </div><br><br>
             <div id="item-3">
-              <h4 style="font-weight: bold; color: #3b7a57">How You Can Help Too</h4>
-              <p>You can help too! We have created this organization not only to help alleviate the suffering of the homeless, but also
-                 to generate the ability to serve for the community! There are many ways that you can help us! <br>
-                 <p style="margin: 0 10px;"><a href="/volunteer" style="color: black; text-decoration: none; font-weight: bold;">Sign up to be a volunteer</a></p> <br>
-                 You can volunteer your time to help the homeless! By signing up to be a volunteer, you can tell us the times that you are 
-                 available to help from the comfort of your own home. We will get the materials and the knowledge to you so that you can
-                 make Turtle Shelter Vests yourself! <br><br>
-                 <img src="/images/event.png" alt="Image of Event" class="hero-image float-start ms-3">
-                 <p style="margin: 0 10px;"><a href="/event" style="color: black; text-decoration: none; font-weight: bold;">Request to host an event</a></p> <br>
-                 You can also help by hosting an event! You can invite you friends, family, members of your church, club, and so 
-                 much more! By requesting an event, you can specify the time and date that works for you, and we will verify with you 
-                 and then come to you with the expertise and the supplies! Get together with others that have the desire to help and
-                 lift your community! <br><br>
-                 <p style="margin: 0 10px;"><a href="https://turtleshelterproject.org/checkout/donate?donatePageId=5b6a44c588251b72932df5a0" style="color: black; text-decoration: none; font-weight: bold;">Donate!</a></p> <br>
-                 Have the desire to help out, but not the time to help with a vest? You can also send a donation to the organization to help us 
-                 as we work to make the vests. We can't do any work here on the ground without funding, so a donation helps more than you know! 
-                 Everything that you can do is appreciated!
-              </p>
+              <h4 style="font-weight: bold; color: #3b7a57; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Why We Do It</h4>
+                
             </div>
-          </div>
+          </p>
         </div>
       </div>
+     </div>
+    </div>
+    <!-- Tableau Dashboard Section -->
+    <div class="dashboard-container">
+      <h2>Homelessness Data</h2>
+      <p class="lead" style="text-align: center;">description of dashboard</p>
+      <iframe src="https://public.tableau.com/views/SampleDashboard/Sheet1" 
+          title="Tableau Dashboard"></iframe>
+    </div>
       <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>Turtle Shelter Project - PO Box 382, Kaysville, UT 84037</p>
