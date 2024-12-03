@@ -444,19 +444,21 @@ h2 {
 }
 
 /* Green Button for Modify My Profile */
-button.modify-profile-btn {
+a.modify-profile-btn {
     background-color: #3b7a57; /* Green background */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
     cursor: pointer;
     font-weight: bold;
     margin-top: 15px;
 }
 
-button.modify-profile-btn:hover {
+a.modify-profile-btn:hover {
     background-color: #2c5e45; /* Darker green on hover */
+    color: white;
 }
 
 button.add-user-btn {
@@ -530,22 +532,22 @@ button.add-user-btn:hover {
     color: #555;
 }
 
-button.add-user-btn {
+.add-user-btn {
+    display: inline-block; /* Ensures it behaves like a button */
+    padding: 10px 15px;
     background-color: #3b7a57; /* Green background */
     color: white;
+    text-decoration: none; /* Remove link underline */
     border: none;
-    padding: 10px 15px;
     border-radius: 5px;
-    cursor: pointer;
     font-weight: bold;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    float: right; /* Align the button to the right */
-    clear: both; /* Prevent overlapping with other content */
+    text-align: center;
+    cursor: pointer;
 }
 
-button.add-user-btn:hover {
-    background-color: #2c5e45; /* Darker green on hover */
+.add-user-btn:hover {
+    background-color: #2c5e45; /* Darker green for hover */
+    color: white;
 }
 
 /* Profile page styles */
@@ -599,28 +601,35 @@ button.add-user-btn:hover {
 
 /* Back to Users Button */
 .back-to-users-btn {
+    background: none; /* Reset background */
     background-color: #3b7a57; /* Green background */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
     cursor: pointer;
     font-weight: bold;
     margin: 20px 0; /* Space above and below the button */
     display: inline-block; /* Ensures proper button alignment */
+    width: 100%;
+    text-align: center;
 }
 
 .back-to-users-btn:hover {
     background-color: #2c5e45; /* Darker green on hover */
+    color: white;
 }
 
 /* Update Profile Button */
 .update-profile-btn {
+    background: none; /* Reset background */
     background-color: #3b7a57; /* Green background */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
     cursor: pointer;
     font-weight: bold;
     margin-right: 10px; /* Space between buttons */
@@ -630,15 +639,18 @@ button.add-user-btn:hover {
 
 .update-profile-btn:hover {
     background-color: #2c5e45; /* Darker green on hover */
+    color: white;
 }
 
 /* Delete Profile Button */
 .delete-profile-btn {
+    background: none; /* Reset background */
     background-color: #d9534f; /* Bright red background */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
     cursor: pointer;
     font-weight: bold;
     margin-left: 10px; /* Space between buttons */
@@ -648,6 +660,27 @@ button.add-user-btn:hover {
 
 .delete-profile-btn:hover {
     background-color: #c9302c; /* Darker red on hover */
+    color: white;
+}
+
+.profile-form .delete-profile-btn {
+    background: none; /* Reset background */
+    background-color: #d9534f; /* Bright red background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space above the button */
+    flex: 1; /* Ensures consistent width with the update button */
+}
+
+.profile-form .delete-profile-btn:hover {
+    background-color: #c9302c; /* Darker red on hover */
+    color: white;
 }
 
 button, a, .fab {
