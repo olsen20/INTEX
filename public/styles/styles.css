@@ -134,3 +134,55 @@ section h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
+/* Make active scrollspy links green */
+.nav-link.active {
+    color: #3b7a57 !important;
+    background-color: transparent !important;
+}
+
+/* Change the color of non-active scrollspy links */
+.nav-link {
+    color: #555 !important; /* Default color for non-active links */
+}
+
+/* Optional: Change the color when hovering over links */
+.nav-link:hover {
+    color: #3b7a57 !important;
+}
+
+/* Make the scrollspy column smaller */
+.scrollspy-nav {
+    width: 20%; /* Adjust to the desired size */
+}
+
+/* Optionally add some space between the scrollspy and content */
+.scrollspy-example-2 {
+    margin-left: 20px; /* Add space between scrollspy and content */
+}
+
+/* Base button styles */
+.btn {
+    background-color: #3b7a57 !important; /* Button background color */
+    border-color: #3b7a57 !important;     /* Button border color */
+    color: white !important;              /* Button text color */
+}
+
+/* Hover state */
+.btn:hover {
+    background-color: #2e6044 !important; /* Darker green for hover */
+    border-color: #2e6044 !important;
+}
+
+/* Focus state */
+.btn:focus, .btn:active, .btn-primary.active, .btn-primary:active {
+    background-color: #2e6044 !important; /* Darker green for focus */
+    border-color: #2e6044 !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 122, 87, 0.5) !important; /* Green focus outline */
+}
+
+/* Disabled state */
+.btn.disabled, .btn:disabled {
+    background-color: #8fb099 !important; /* Lighter green for disabled */
+    border-color: #8fb099 !important;
+    color: white !important;
