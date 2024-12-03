@@ -34,61 +34,80 @@
     </header>
 
     <!-- Event Forms Page Content -->
-    <div class="container">
-        <!-- New Event Forms -->
-        <div class="forms-container">
-            <h2>New Event Forms</h2>
-            <div class="form-card new">
-                <div class="details">
-                    <p><b>Name:</b> John Doe</p>
-                    <p><b>Group:</b> BYU Service Club</p>
-                    <p><b>Date:</b> 1/20/2025</p>
+    <div class="container mt-5">
+        <div class="event-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- New Event Forms -->
+                <div class="forms-container">
+                    <h2>New Event Forms</h2>
+                    <div class="form-card new" onclick="showFormDetails('John Doe', 'john.doe@example.com', '(123) 456-7890', 'Mondays, Wednesdays')">
+                        <div class="details">
+                            <p><b>Name:</b> John Doe</p>
+                            <p><b>Group:</b> BYU Service Club</p>
+                            <p><b>Date:</b> 1/20/2025</p>
+                        </div>
+                    </div>
+                    <div class="form-card new" onclick="showFormDetails('Jane Smith', 'jane.smith@example.com', '(987) 654-3210', 'Fridays')">
+                        <div class="details">
+                            <p><b>Name:</b> Jane Smith</p>
+                            <p><b>Group:</b> 5th Ward Young Womens</p>
+                            <p><b>Date:</b> 12/17/2024</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="actions">
-                    <button onclick="showFormDetails('John Doe', 'john.doe@example.com', '(123) 456-7890', 'Mondays, Wednesdays')">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="form-card new">
-                <div class="details">
-                    <p><b>Name:</b> Jane Smith</p>
-                    <p><b>Group:</b> 5th Ward Young Womens</p>
-                    <p><b>Date:</b> 12/17/2024</p>
-                </div>
-                <div class="actions">
-                    <button onclick="showFormDetails('Jane Smith', 'jane.smith@example.com', '(987) 654-3210', 'Fridays')">
-                        View Details
-                    </button>
-                </div>
-            </div>
-        </div>
-    
-        <!-- Previously Reviewed Forms -->
-        <div class="forms-container">
-            <h2>Past Event Forms</h2>
-            <div class="form-card">
-                <div class="details">
-                    <p><b>Name:</b> Alice Brown</p>
-                    <p><b>Group:</b> 1st Ward Youth Night</p>
-                    <p><b>Date:</b> 12/30/2024</p>
-                </div>
-                <div class="actions">
-                    <button onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
-                        View Details
-                    </button>
+
+                <!-- Occurred Event Forms -->
+                <div class="forms-container">
+                    <h2>Recently Occurred Events</h2>
+                    <div class="form-card new" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                        <div class="details">
+                            <p><b>Name:</b> Mary Lamb</p>
+                            <p><b>Group:</b> BYU Noteworthy</p>
+                            <p><b>Date:</b> 12/3/2025</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-card">
-                <div class="details">
-                    <p><b>Name:</b> Bob White</p>
-                    <p><b>Group:</b> The White Family</p>
-                    <p><b>Date:</b> 1/29/2025</p>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Upcoming Event Forms -->
+                <div class="forms-container">
+                    <h2>Upcoming Events</h2>
+                    <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                        <div class="details">
+                            <p><b>Name:</b> Mary Lamb</p>
+                            <p><b>Group:</b> BYU Noteworthy</p>
+                            <p><b>Date:</b> 12/3/2025</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="actions">
-                    <button onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
-                        View Details
-                    </button>
+
+                <!-- Past Event Forms -->
+                <div class="forms-container">
+                    <h2>Past Events</h2>
+                    <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                        <div class="details">
+                            <p><b>Name:</b> Alice Brown</p>
+                            <p><b>Group:</b> 1st Ward Youth Night</p>
+                            <p><b>Date:</b> 12/30/2024</p>
+                        </div>
+                    </div>
+                    <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
+                        <div class="details">
+                            <p><b>Name:</b> Bob White</p>
+                            <p><b>Group:</b> The White Family</p>
+                            <p><b>Date:</b> 1/29/2025</p>
+                        </div>
+                    </div>
+                    <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
+                        <div class="details">
+                            <p><b>Name:</b> Bob White</p>
+                            <p><b>Group:</b> The White Family</p>
+                            <p><b>Date:</b> 1/29/2025</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

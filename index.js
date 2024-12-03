@@ -90,14 +90,39 @@ app.get('/volunteer-manage', (req, res) => {
     res.render('volunteer-manage');
 });
 
+// Route to display volunteer details page
+app.get('/volunteer-details', (req, res) => {
+    res.render('volunteer-details');
+});
+
 // Route to display event management page
 app.get('/event-manage', (req, res) => {
     res.render('event-manage');
 });
 
+// Route to display event details page
+app.get('/event-details', (req, res) => {
+    res.render('event-details');
+});
+
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
     res.render('user-manage');
+});
+
+// Route to display profile page
+app.get('/profile', (req, res) => {
+    res.render('profile');
+});
+
+// Route to add user page
+app.get('/add-user', (req, res) => {
+    res.render('add-user');
+});
+
+// Route to user details page
+app.get('/user-details', (req, res) => {
+    res.render('user-details');
 });
 
 // Configure the server to start listening
