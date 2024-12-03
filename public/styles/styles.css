@@ -216,6 +216,12 @@ section h2 {
 /* Make the scrollspy column smaller */
 .scrollspy-nav {
     width: 20%; /* Adjust to the desired size */
+        height: 100vh; /* Allow full-height scrolling */
+        overflow-y: auto; /* Enable scrolling in the menu */
+        position: sticky; /* Sticky positioning */
+        top: 70px; /* Adjust to keep the header visible */
+        z-index: 1020; /* Stay above other elements */
+    
 }
 
 /* Optionally add some space between the scrollspy and content */

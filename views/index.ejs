@@ -7,6 +7,15 @@
     <link rel="icon" href="/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
+    <style>
+              .hero-image {
+            max-width: 50%; /* Adjust image size */
+            height: auto;
+            border-radius: 8px;
+            margin-right: 20px; /* Space between image and text */
+            margin-bottom: 20px; /* Space at the bottom of the image */
+        }
+    </style>
 </head>
 <body>
       <!-- HEADER -->
@@ -38,7 +47,7 @@
 
     <div class="row">
         <div class="col-4 scrollspy-nav">
-          <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+          <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end position-sticky top-0">
             <nav class="nav nav-pills flex-column">
               <a class="nav-link" href="#item-1">Who we are</a>
               <a class="nav-link" href="#item-2">How we help</a>
@@ -50,21 +59,23 @@
         <div class="col-8">
           <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
             <div id="item-1">
+              <img src="/images/vests.png" alt="Vests" class="hero-image float-start ms-3" style="max-width: 40%;">
               <h4 style="font-weight: bold; color: #3b7a57">Who We Are</h4>
               <p>Our founder, Jen used to be homeless. One especially cold winter in Utah, 7 of her friends froze to death. Jen, 
                 no longer homeless, decided that she wanted to help those suffering from homelessness. She started the 
                 Turtle Shelter Project with that intent - to <span style="font-weight: bold;">help those that suffer from homelessness. </span>
                 We strive to use our time and resources to make the lives of our homeless friends easier, and we could use your help!
               </p>
-            </div>
+            </div><br><br><br><br>
             <div id="item-2">
+              <img src="/images/whatwedo.png" alt="Two women wearing vests" class="hero-image float-end ms-3" style="max-width: 35%;">
               <h4 style="font-weight: bold; color: #3b7a57">How We Help</h4>
               <p>We manufacture and distribute Turtle Shelter Vests.<br><br><span style="font-weight: bold;">What are Turtle Shelter Vests? </span>
-                 <br> They are a high tech but simple solution to help save countless lives - a portable shelter that you can carry with you, 
+                 <br><br> They are a high tech but simple solution to help save countless lives - a portable shelter that you can carry with you, 
                  just as a turtle carries its shell.<br>
               These high tech foam vests are inexpensive while keeping a person warm in down to 10 degrees below zero and helping to save lives 
             and alleviate suffering!</p>
-            </div>
+            </div><br><br><br><br><br><br>
             <div id="item-3">
               <h4 style="font-weight: bold; color: #3b7a57">How You Can Help Too</h4>
               <p>You can help too! We have created this organization not only to help alleviate the suffering of the homeless, but also
@@ -73,8 +84,12 @@
                  You can volunteer your time to help the homeless! By signing up to be a volunteer, you can tell us the times that you are 
                  available to help from the comfort of your own home. We will get the materials and the knowledge to you so that you can
                  make Turtle Shelter Vests yourself! <br><br>
+                 <img src="/images/event.png" alt="Image of Event" class="hero-image float-start ms-3">
                  <p style="margin: 0 10px;"><a href="/event" style="color: black; text-decoration: none; font-weight: bold;">Request to host an event</a></p> <br>
-                 You can
+                 You can also help by hosting an event! You can invite you friends, family, members of your church, club, and so 
+                 much more! By requesting an event, you can specify the time and date that works for you, and we will verify with you 
+                 and then come to you with the expertise and the supplies! Get together with others that have the desire to help and
+                 lift your community!
               </p>
             </div>
           </div>
