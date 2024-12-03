@@ -326,37 +326,300 @@ section h2 {
     margin-bottom: 20px;
 }
 
+/* Form Cards */
 .form-card {
-    border: 1px solid #ddd; /* Light border for separation */
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
+    padding: 15px 15px 5px;
     margin-bottom: 10px;
-    background-color: #f9f9f9; /* Light background for cards */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #f9f9f9; /* Light background */
+    cursor: pointer; /* Makes it look clickable */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth hover effect */
+}
+
+.form-card:hover {
+    background-color: #d4edda; /* Light green for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
 }
 
 .form-card.new {
     background-color: #f8f2db; /* Light yellow for new submissions */
-    border-color: #c3e6cb;
+    border-color: #f6e8b1;
+}
+
+.form-card.new:hover {
+    background-color: #f9eaae; /* Light yellow for new submissions */
+    border-color: #fee995;
 }
 
 .form-card .details {
     max-width: 80%; /* Prevent overflow */
 }
 
-.form-card .actions button {
-    background-color: #3b7a57;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 12px;
-}
-
 .form-card .actions button:hover {
     background-color: #2c5e45;
 }
 
+/* Form Status Selector */
+.form-status-container {
+    border: 1px solid #3b7a57; /* Green border to match the theme */
+    background-color: #f9f9f9; /* Light background to make it stand out */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px; /* Space below the section */
+}
+
+.form-status-container label {
+    font-weight: bold;
+    font-size: 1.2rem; /* Larger font size for label */
+    color: #333; /* Darker text color for contrast */
+}
+
+.form-status-container select {
+    font-size: 1.1rem; /* Larger font size for dropdown */
+    padding: 10px; /* Spacing for better usability */
+    border-radius: 4px;
+    border: 1px solid #ccc; /* Subtle border */
+    width: 100%; /* Full width for responsiveness */
+    box-sizing: border-box;
+}
+
+/* Event Grid */
+.event-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px; /* Space between columns */
+}
+
+.forms-container {
+    background-color: #f9f9f9; /* Light background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.details p {
+    margin: 5px 0;
+    color: #333; /* Text color */
+}
+
+h2 {
+    color: #3b7a57; /* Match the header green */
+}
+
+/* Team Management Page */
+.profile-container {
+    background-color: #ffffff; /* White background */
+    border: 2px solid #3b7a57; /* Green border to match the theme */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+/* Green Button for Modify My Profile */
+button.modify-profile-btn {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+button.modify-profile-btn:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+button.add-user-btn {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+    float: right; /* Align the button to the right */
+    clear: both; /* Ensure it clears previous floating elements */
+}
+
+button.add-user-btn:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+.profile-container h2 {
+    color: #3b7a57; /* Green color */
+    margin-bottom: 15px;
+}
+
+.user-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between elements */
+    position: relative;
+}
+
+.user-list-header {
+    display: flex;
+    justify-content: space-between; /* Push the button to the right */
+    align-items: center;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+.user-list-container h2 {
+    color: #3b7a57; /* Green color */
+    margin-bottom: 20px;
+}
+
+.user-card {
+    border: 1px solid #ddd; /* Light border for separation */
+    border-radius: 8px;
+    padding: 15px 15px 10px; /* Reduced bottom padding */
+    background-color: #f9f9f9; /* Light background */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-card:hover {
+    background-color: #d4edda; /* Light green hover effect */
+    border-color: #c3e6cb;
+}
+
+.user-card .name {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-card .username {
+    font-size: 1rem;
+    color: #555;
+}
+
+button.add-user-btn {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    float: right; /* Align the button to the right */
+    clear: both; /* Prevent overlapping with other content */
+}
+
+button.add-user-btn:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+/* Profile page styles */
+.profile-form-container {
+    background-color: #ffffff; /* White background */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto; /* Proper spacing without overlapping */
+    max-width: 600px; /* Limit form width */
+}
+
+.profile-form-container h2 {
+    color: #3b7a57; /* Green color for headings */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-form input,
+.profile-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.profile-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.profile-form button {
+    background-color: #3b7a57; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    width: 100%; /* Full-width button */
+}
+
+.profile-form button:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+/* Back to Users Button */
+.back-to-users-btn {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 20px 0; /* Space above and below the button */
+    display: inline-block; /* Ensures proper button alignment */
+}
+
+.back-to-users-btn:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+/* Update Profile Button */
+.update-profile-btn {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space above the button */
+    flex: 1; /* Ensures consistent width with the delete button */
+}
+
+.update-profile-btn:hover {
+    background-color: #2c5e45; /* Darker green on hover */
+}
+
+/* Delete Profile Button */
+.delete-profile-btn {
+    background-color: #d9534f; /* Bright red background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space above the button */
+    flex: 1; /* Ensures consistent width with the update button */
+}
+
+.delete-profile-btn:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}

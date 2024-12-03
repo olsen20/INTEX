@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Form Details - Turtle Shelter Project</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" style="height: 50px; margin-right: 10px;">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Event form results -->
+    <div class="container mt-5">
+        <!-- Form Status Selector -->
+        <div class="form-status-container">
+            <label for="form-status" class="form-label">Form Status:</label>
+            <select id="form-status" name="form-status" class="form-select">
+                <option value="new">New</option>
+                <option value="contacting">Currently Contacting</option>
+                <option value="finalized">Finalized</option>
+            </select>
+        </div>
+
+        <!-- Event form details -->
+        <h1>Event Request Form</h1>
+        <form action="/event" method="POST">
+            <div class="mb-3">
+                <label for="number-of-people">How many people:</label>
+                <input type="number" id="number-of-people" name="number-of-people" min="1" required>
+            </div>
+                
+            <div class="mb-3">
+                <label>Event Type:</label>
+                <div class="form-check">
+                    <input type="radio" id="event-sewing" name="event-type" value="sewing" required>
+                    <label for="event-sewing">Sewing</label>
+                </div>
+    
+                <div class="form-check">
+                    <input type="radio" id="event-non-sewing" name="event-type" value="non-sewing">
+                    <label for="event-non-sewing">Non-sewing</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="radio" id="event-both" name="event-type" value="both">
+                    <label for="event-both">Both</label>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label for="event-date">Date:</label>
+                <input type="date" id="event-date" name="event-date" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="backup-date">Backup Date:</label>
+                <input type="date" id="backup-date" name="backup-date" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="street-address">Event Street Address:</label>
+                <input type="text" id="street-address" name="street-address" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="zip">Zip Code:</label>
+                <input type="text" id="zip" name="zip" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="group">Group (e.g., youth group, school club, etc.):</label>
+                <input type="text" id="group" name="group" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="start-time">Desired Start Time:</label>
+                <input type="time" id="start-time" name="start-time" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="event-length">Event Length (in hours):</label>
+                <input type="number" id="event-length" name="event-length" min="1" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="contact-name">Contact Name:</label>
+                <input type="text" id="contact-name" name="contact-name" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="phone-number">Phone Number:</label>
+                <input type="tel" id="phone-number" name="phone-number" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+    
+            <div class="mb-3">
+                <label>Would you like Jen to share her story?</label>
+                <div class="form-check">
+                    <input type="radio" id="jen-share-yes" name="jen-share" value="yes" required>
+                    <label for="jen-share-yes">Yes</label>
+                </div>
+    
+                <div class="form-check">
+                    <input type="radio" id="jen-share-no" name="jen-share" value="no">
+                    <label for="jen-share-no">No</label>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label for="advanced-sewing">How many people in your group have advanced sewing skills?</label>
+                <input type="number" id="advanced-sewing" name="advanced-sewing" min="0" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="basic-sewing">How many people in your group have basic sewing skills?</label>
+                <input type="number" id="basic-sewing" name="basic-sewing" min="0" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="sewing-machines">How many sewing machines can you provide?</label>
+                <input type="number" id="sewing-machines" name="sewing-machines" min="0" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="sergers">How many sergers can your group bring?</label>
+                <input type="number" id="sergers" name="sergers" min="0" required>
+            </div>
+    
+            <!-- Update and delete buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="submit" class="update-profile-btn">Update Event</button>
+                <button type="button" class="delete-profile-btn" style="background-color: #d9534f;" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
+            </div>
+            <!-- Back to Volunteers button -->
+            <a href="/volunteer-manage"><button type="button" class="back-to-users-btn">Back to Volunteers Page</button></a>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+</body>
+</html>
