@@ -23,6 +23,64 @@ h1, h2, h3 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Styling */
+header {
+    background-color: #3b7a57; /* Deep green */
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Styles */
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    color: white; /* White text for links */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline; /* Underline on hover for better visibility */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow above footer */
+    width: 100%; /* Spans the full width of the page */
+    position: relative; /* Ensures normal placement at the bottom of the page */
+}
+ 
+/* Footer Links */
+footer a {
+    color: #f9f9f9; /* Red for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Text */
+footer p {
+    margin: 5px 0;
+}
+
 /* Links */
 a {
     color: #d32f2f; /* Red color for links, inspired by the logo */
