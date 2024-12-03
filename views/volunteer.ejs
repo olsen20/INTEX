@@ -36,6 +36,7 @@
 
     <div class="container mt-5">
         <h1 class="mb-4">Volunteer Opportunity Form</h1>
+        <!-- HTML form formatted by bootstrap to add a sleek look -->
         <form action="/volunteer" method="POST">
             <div class="mb-3">
                 <label for="first-name" class="form-label">First Name:</label>
@@ -80,6 +81,7 @@
             <div class="mb-3">
                 <label class="form-label">How did you hear about this opportunity?</label><br>
                 <div class="form-check form-check-inline">
+                    <!-- Radio Button for how they heard about it -->
                     <input type="radio" class="form-check-input" id="how-heard-social-media" name="how-heard" value="social-media" onclick="toggleOtherInput()" required>
                     <label for="how-heard-social-media" class="form-check-label">Social Media</label>
                 </div>
@@ -114,6 +116,7 @@
             </div>
 
             <div class="mb-3">
+                <!-- Checkbox for newsletter prompt -->
                 <label for="newsletter" class="form-check-label">Would you like to subscribe to our monthly newsletter?</label><br>
                 <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter">
             </div>
@@ -134,6 +137,7 @@
 
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
+        // script to ensure that they are able to input what their "other" is
         function toggleOtherInput() {
             const otherOption = document.getElementById('how-heard-other');
             const otherInput = document.getElementById('how-heard-other-input');
