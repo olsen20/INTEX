@@ -69,7 +69,9 @@ header nav ul li a:hover {
     border-radius: 0; /* Remove rounded corners */
     transition: none; /* Remove hover animation */
     filter: none; /* Remove brightness and contrast adjustments */
-    transform: none; /* Remove transform effects */
+    transform: none;
+    background-color: white; 
+    border-radius: 50%; /* Remove transform effects */
 }
 
 /* Ensure the hover effects don't apply to the logo */
