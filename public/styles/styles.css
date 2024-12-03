@@ -73,7 +73,7 @@ footer {
  
 /* Footer Links */
 footer a {
-    color: #f9f9f9; /* Red for links */
+    color: #f9f9f9; /* White for links */
     text-decoration: none;
     font-weight: bold;
 }
@@ -260,6 +260,7 @@ section h2 {
 .btn:hover {
     background-color: #2e6044 !important; /* Darker green for hover */
     border-color: #2e6044 !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Focus state */
