@@ -6,6 +6,12 @@
     <title>How Can I Help - Turtle Shelter Project</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
+    <style>
+        .card-img-top {
+            height: 200px; /* Set a uniform height */
+            object-fit: cover; /* Ensures images are resized and cropped proportionally */
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -32,6 +38,45 @@
             </nav>
         </div>
     </header>
+
+    <h1 class="text-center mb-4">Help Warm the Homeless!<br>Any Contribution Makes a Difference!</h1>
+
+    <div class="container my-4">
+        <div class="row d-flex align-items-stretch">
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              <img src="/images/working-on-vest.png" class="card-img-top" alt="Lady Working on Vest">
+              <div class="card-body">
+                <h5 class="card-title">You can volunteer!</h5>
+                <p class="card-text">Volunteer to help us work to make vests to help alleviate the suffering of the homeless!</p>
+                <a href="/volunteer" class="btn btn-primary">Volunteer</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              <img src="/images/event-work.png" class="card-img-top" alt="Workers at Event">
+              <div class="card-body">
+                <h5 class="card-title">Host an event!</h5>
+                <p class="card-text">You can request to host an event! We will come to you and we can work together!</p>
+                <a href="/event" class="btn btn-primary">Request Event</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              <img src="/images/old-lady-vest.png" class="card-img-top" alt="Old Lady in Vest">
+              <div class="card-body">
+                <h5 class="card-title">Send a Donation!</h5>
+                <p class="card-text">Want to help but don't have the time to build a vest? Send an easy donation to help out the organization</p>
+                <a href="https://turtleshelterproject.org/checkout/donate?donatePageId=5b6a44c588251b72932df5a0" class="btn btn-primary">Donate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
     <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>Turtle Shelter Project - PO Box 382, Kaysville, UT 84037</p>
