@@ -37,78 +37,83 @@
         <div class="form-status-container">
             <label for="form-status" class="form-label">Form Status:</label>
             <select id="form-status" name="form-status" class="form-select">
-                <option value="new">New</option>
-                <option value="reviewed">Reviewed</option>
-                <option value="past">No longer a volunteer</option>
+                <option value="N" <%= volunteer.volunteer_status === 'N' ? 'selected' : '' %>>New</option>
+                <option value="A" <%= volunteer.volunteer_status === 'A' ? 'selected' : '' %>>Active</option>
+                <option value="X" <%= volunteer.volunteer_status === 'X' ? 'selected' : '' %>>No longer a volunteer</option>
             </select>
         </div>
 
         <h1 class="mb-4">Volunteer Opportunity Form</h1>
-        <form action="/update-volunteer" method="POST">
+        <form action="/update-volunteer/<%= volunteer.volunteer_id %>" method="POST" onsubmit="return validateForm()">
             <div class="mb-3">
-                <label for="first-name" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="first-name" name="first-name" value="John" required>
+                <label for="first_name" class="form-label">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="<%= volunteer.volunteer_first_name %>" required>
             </div>
 
             <div class="mb-3">
-                <label for="last-name" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="last-name" name="last-name" value="Doe" required>
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="<%= volunteer.volunteer_last_name %>" required>
             </div>
 
             <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number:</label>
-                <input type="tel" class="form-control" id="phone" name="phone" value="(123) 456-7890" required>
+                <label for="phone" class="form-label">Phone Number (no dashes):</label>
+                <input type="tel" class="form-control" id="phone" name="phone" value="<%= volunteer.volunteer_phone_number %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address:</label>
-                <input type="email" class="form-control" id="email" name="email" value="john.doe@example.com" required>
+                <input type="email" class="form-control" id="email" name="email" value="<%= volunteer.volunteer_email_address %>" required>
             </div>
 
             <div class="mb-3">
-                <label for="street-address" class="form-label">Street Address:</label>
-                <input type="text" class="form-control" id="street-address" name="street-address" value="123 Main St" required>
+                <label for="street_address" class="form-label">Street Address:</label>
+                <input type="text" class="form-control" id="street_address" name="street_address" value="<%= volunteer.volunteer_street %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="city" class="form-label">City:</label>
-                <input type="text" class="form-control" id="city" name="city" value="Springfield" required>
+                <input type="text" class="form-control" id="city" name="city" value="<%= volunteer.volunteer_city %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="state" class="form-label">State:</label>
-                <input type="text" class="form-control" id="state" name="state" value="UT" required>
+                <input type="text" class="form-control" id="state" name="state" value="<%= volunteer.volunteer_state %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="zip" class="form-label">Zip Code:</label>
-                <input type="text" class="form-control" id="zip" name="zip" value="84037" required>
+                <input type="text" class="form-control" id="zip" name="zip" value="<%= volunteer.volunteer_zip %>" required>
             </div>
 
             <div class="mb-3">
-                <label for="sewing-level" class="form-label">Sewing Experience:</label>
-                <select id="sewing-level" name="sewing-level" class="form-select" required>
-                    <option value="no-sewing">No sewing</option>
-                    <option value="beginner" selected>Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="experienced">Experienced</option>
+                <label for="referral_source" class="form-label">Referral Source:</label>
+                <input type="text" class="form-control" id="referral_source" name="referral_source" value="<%= volunteer.volunteer_referral_source %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="sewing_level" class="form-label">Sewing Experience:</label>
+                <select id="sewing_level" name="sewing_level" class="form-select" required>
+                    <option value="N" <%= volunteer.volunteer_sewing_level === 'N' ? 'selected' : '' %>>No sewing</option>
+                    <option value="B" <%= volunteer.volunteer_sewing_level === 'B' ? 'selected' : '' %>>Beginner</option>
+                    <option value="I" <%= volunteer.volunteer_sewing_level === 'I' ? 'selected' : '' %>>Intermediate</option>
+                    <option value="E" <%= volunteer.volunteer_sewing_level === 'E' ? 'selected' : '' %>>Experienced</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="volunteer-hours" class="form-label">Hours Willing to Volunteer:</label>
-                <input type="number" class="form-control" id="volunteer-hours" name="volunteer-hours" value="10" min="1" required>
+                <label for="volunteer_hours" class="form-label">Hours Willing to Volunteer:</label>
+                <input type="number" class="form-control" id="volunteer_hours" name="volunteer_hours" value="<%= volunteer.volunteer_monthly_hours %>" min="1" required>
             </div>
 
             <div class="mb-3">
                 <label for="newsletter" class="form-label">Subscribed to Newsletter:</label><br>
-                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" checked>
+                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" <%= volunteer.volunteer_newsletter_optin ? 'checked' : '' %>>
             </div>
 
             <!-- Update and delete buttons -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
                 <button type="submit" class="update-profile-btn">Update Volunteer</button>
-                <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this volunteer?');">Delete Volunteer</button>
+                <form action="/delete-volunteer/<%= volunteer.volunteer_id %>" method="POST"><button type="submit" class="delete-profile-btn">Delete Volunteer</button></form>
             </div>
             <!-- Back to Volunteers button -->
             <a href="/volunteer-manage" type="button" class="back-to-users-btn">Back to Volunteers Page</a>
@@ -119,5 +124,39 @@
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>&copy; 2024 Turtle Shelter Project</p>
     </footer>
+
+    <script>
+        function validateForm() {
+            const phone = document.getElementById('phone').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const hours = document.getElementById('volunteer_hours').value.trim();
+        
+            // Validation messages
+            let messages = [];
+        
+            // Check phone number (numeric values only)
+            if (!/^\d+$/.test(phone)) {
+                messages.push('Phone number must contain only numeric values.');
+            }
+        
+            // Check state (2 letters)
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+        
+            // Check hours (greater than 0)
+            if (isNaN(hours) || hours <= 0) {
+                messages.push('Monthly hours must be greater than 0.');
+            }
+        
+            // If there are validation errors, prevent form submission and show alerts
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+        
+            return true; // Allow form submission
+        }
+    </script>
 </body>
 </html>
