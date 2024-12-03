@@ -152,17 +152,17 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, in
 
 /* Button Style */
 button {
-    background-color: #d32f2f; /* Red button background */
+    background-color: #3b7a57; /* Red button background */
     color: white;
     padding: 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    background: linear-gradient(135deg, #3b7a57, #2c5e45);
 }
 
 button:hover {
-    background-color: #b71c1c; /* Darker red for hover effect */
+    background-color: #2e6044; /* Darker red for hover effect */
 }
 
 /* Header Styles */
