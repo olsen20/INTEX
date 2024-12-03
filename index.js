@@ -90,6 +90,10 @@ app.get('/volunteer-manage', (req, res) => {
     res.render('volunteer-manage');
 });
 
+app.get('/admin-add-volunteer', (req, res) => {
+    res.render('admin-add-volunteer');
+})
+
 // Route to display volunteer details page
 app.get('/volunteer-details', (req, res) => {
     res.render('volunteer-details');
@@ -99,6 +103,10 @@ app.get('/volunteer-details', (req, res) => {
 app.get('/event-manage', (req, res) => {
     res.render('event-manage');
 });
+
+app.get('/admin-add-event', (req, res) => {
+    res.render('admin-add-event');
+})
 
 // Route to display event details page
 app.get('/event-details', (req, res) => {
