@@ -100,10 +100,5 @@ app.get('/user-manage', (req, res) => {
     res.render('user-manage');
 });
 
-// Route to display internal dashboard and past events page
-app.get('/past-events', (req, res) => {
-    res.render('past-events');
-});
-
 // Configure the server to start listening
 app.listen(port, () => console.log(`Website is listening on port ${port}`));

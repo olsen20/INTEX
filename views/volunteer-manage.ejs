@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteers Management - Turtle Shelter Project</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" style="height: 50px; margin-right: 10px;">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Volunteer Forms Page Content -->
+    <div class="container">
+        <!-- New Volunteer Forms -->
+        <div class="forms-container">
+            <h2>New Volunteer Forms</h2>
+            <div class="form-card new">
+                <div class="details">
+                    <p><b>Name:</b> John Doe</p>
+                    <p><b>Email:</b> john.doe@example.com</p>
+                    <p><b>Phone:</b> (123) 456-7890</p>
+                </div>
+                <div class="actions">
+                    <button onclick="showFormDetails('John Doe', 'john.doe@example.com', '(123) 456-7890', 'Mondays, Wednesdays')">
+                        View Details
+                    </button>
+                </div>
+            </div>
+            <div class="form-card new">
+                <div class="details">
+                    <p><b>Name:</b> Jane Smith</p>
+                    <p><b>Email:</b> jane.smith@example.com</p>
+                    <p><b>Phone:</b> (987) 654-3210</p>
+                </div>
+                <div class="actions">
+                    <button onclick="showFormDetails('Jane Smith', 'jane.smith@example.com', '(987) 654-3210', 'Fridays')">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Previously Reviewed Forms -->
+        <div class="forms-container">
+            <h2>Past Volunteer Forms</h2>
+            <div class="form-card">
+                <div class="details">
+                    <p><b>Name:</b> Alice Brown</p>
+                    <p><b>Email:</b> alice.brown@example.com</p>
+                    <p><b>Phone:</b> (555) 123-4567</p>
+                </div>
+                <div class="actions">
+                    <button onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                        View Details
+                    </button>
+                </div>
+            </div>
+            <div class="form-card">
+                <div class="details">
+                    <p><b>Name:</b> Bob White</p>
+                    <p><b>Email:</b> bob.white@example.com</p>
+                    <p><b>Phone:</b> (444) 567-1234</p>
+                </div>
+                <div class="actions">
+                    <button onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+</body>
+</html>
