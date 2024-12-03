@@ -188,7 +188,7 @@ footer {
 
 /* Section Styles */
 section {
-    margin: 30px 0;
+    margin: 0;
 }
 
 section h2 {
@@ -237,12 +237,13 @@ section h2 {
 
 /* Make the scrollspy column smaller */
 .scrollspy-nav {
-    width: 20%; /* Adjust to the desired size */
+    width: 100%; /* Adjust to the desired size */
         height: 100vh; /* Allow full-height scrolling */
         overflow-y: auto; /* Enable scrolling in the menu */
         position: sticky; /* Sticky positioning */
         top: 70px; /* Adjust to keep the header visible */
         z-index: 1020; /* Stay above other elements */
+        max-width: 200px;
     
 }
 
@@ -398,4 +399,13 @@ img {
 img:hover {
     transform: translateY(-5px) scale(1.02);
     filter: brightness(1) contrast(1);
+}
+
+body, html {
+    overflow-x: hidden;
+}
+
+html {
+    margin: 0;
+    padding: 0;
 }
