@@ -37,65 +37,74 @@
         <!-- New Volunteer Forms -->
         <div class="forms-container">
             <h2>New Volunteer Forms</h2>
-            <div class="form-card new" onclick="showFormDetails('John Doe', 'john.doe@example.com', '(123) 456-7890', 'Mondays, Wednesdays')">
+            <% if (new_forms.length > 0) { %>
+                <% new_forms.forEach(row => { %>
+                    <a href="/volunteer-details/<%= row.volunteer_id %>">
+                        <div class="form-card new">
+                            <div class="details">
+                                <p><b>Name:</b> <%= row.volunteer_first_name %> <%= row.volunteer_last_name %></p>
+                                <p><b>Email:</b> <%= row.volunteer_email_address %></p>
+                                <p><b>Location:</b> <%= row.volunteer_city %>, <%= row.volunteer_state %></p>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
                 <div class="details">
-                    <p><b>Name:</b> John Doe</p>
-                    <p><b>Email:</b> john.doe@example.com</p>
-                    <p><b>Phone:</b> (123) 456-7890</p>
+                    <p>No new volunteer forms</p>
                 </div>
-            </div>
-            <div class="form-card new" onclick="showFormDetails('Jane Smith', 'jane.smith@example.com', '(987) 654-3210', 'Fridays')">
-                <div class="details">
-                    <p><b>Name:</b> Jane Smith</p>
-                    <p><b>Email:</b> jane.smith@example.com</p>
-                    <p><b>Phone:</b> (987) 654-3210</p>
-                </div>
-            </div>
+            <% } %>
         </div>
 
         <!-- Previously Reviewed Forms -->
         <div class="forms-container">
             <h2>Current Volunteers</h2>
-            <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+            <% if (current.length > 0) { %>
+                <% current.forEach(row => { %>
+                    <a href="/volunteer-details/<%= row.volunteer_id %>">
+                        <div class="form-card">
+                            <div class="details">
+                                <p><b>Name:</b> <%= row.volunteer_first_name %> <%= row.volunteer_last_name %></p>
+                                <p><b>Email:</b> <%= row.volunteer_email_address %></p>
+                                <p><b>Location:</b> <%= row.volunteer_city %>, <%= row.volunteer_state %></p>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
                 <div class="details">
-                    <p><b>Name:</b> Alice Brown</p>
-                    <p><b>Email:</b> alice.brown@example.com</p>
-                    <p><b>Phone:</b> (555) 123-4567</p>
+                    <p>No current volunteers</p>
                 </div>
-            </div>
-            <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
-                <div class="details">
-                    <p><b>Name:</b> Bob White</p>
-                    <p><b>Email:</b> bob.white@example.com</p>
-                    <p><b>Phone:</b> (444) 567-1234</p>
-                </div>
-            </div>
+            <% } %>
         </div>
 
         <!-- Past Volunteers -->
         <div class="forms-container">
-            <h2>Past Volunteers (No longer volunteering)</h2>
-            <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+            <h2>No Longer Volunteering</h2>
+            <% if (past.length > 0) { %>
+                <% past.forEach(row => { %>
+                    <a href="/volunteer-details/<%= row.volunteer_id %>">
+                        <div class="form-card">
+                            <div class="details">
+                                <p><b>Name:</b> <%= row.volunteer_first_name %> <%= row.volunteer_last_name %></p>
+                                <p><b>Email:</b> <%= row.volunteer_email_address %></p>
+                                <p><b>Location:</b> <%= row.volunteer_city %>, <%= row.volunteer_state %></p>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
                 <div class="details">
-                    <p><b>Name:</b> Alice Brown</p>
-                    <p><b>Email:</b> alice.brown@example.com</p>
-                    <p><b>Phone:</b> (555) 123-4567</p>
+                    <p>No past volunteers</p>
                 </div>
-            </div>
-            <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
-                <div class="details">
-                    <p><b>Name:</b> Bob White</p>
-                    <p><b>Email:</b> bob.white@example.com</p>
-                    <p><b>Phone:</b> (444) 567-1234</p>
-                </div>
-            </div>
+            <% } %>
         </div>
+
+        <!-- Add volunteer button -->
         <div style="text-align: center;">
          <a class="btn" href="/admin-add-volunteer" style="text-align: center; padding: 10px">Add a Volunteer</a>
         </div>
     </div>
-
- 
 
     <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">

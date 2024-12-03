@@ -50,6 +50,15 @@
                                 <label for="password" class="form-label">Password:</label>
                                 <input type="password" id="password" name="password" class="form-control" required>
                             </div>
+
+                            <!-- Space for error messages -->
+                            <div id="error-container">
+                                <!-- Login error -->
+                                <% if (typeof errorMessage !== 'undefined') { %>
+                                    <p id="server-error-message" style="color: red; text-align: center;"><%= errorMessage %></p>
+                                <% } %>
+                            </div>
+                
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
                         <p class="mt-3 text-center">NOTE: This login is for Turtle Shelter Project team members only. If you want to volunteer or schedule an event, you can access those forms from the home page.</p>

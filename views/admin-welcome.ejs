@@ -35,27 +35,39 @@
 
     <div class="container">
         <div class="text-center mt-5">
-            <h1 class="display-4">Welcome, [User Name]!</h1>
+            <h1 class="display-4">Welcome, <%= first_name %>!</h1>
         </div>
     
         <!-- Notifications Section -->
         <div class="notifications-container">
             <h2>Notifications</h2>
             <p class="lead" style="text-align: center;">Here are the forms that need attention:</p>
-            <!-- Volunteer form notifications -->
-            <a href="/volunteer-manage">
-                <div class="notification">
-                    <span>New Volunteer Forms</span>
-                    <span class="count">3</span> <!-- Replace "3" with dynamic data -->
-                </div>
-            </a>
+            
+            <!-- Don't display notifications if there are no new forms -->
+            <% if (volunteer_count != 0 || event_count != 0) { %>
+                <% if (volunteer_count != 0) { %>
+                    <!-- Volunteer form notifications -->
+                    <a href="/volunteer-manage">
+                        <div class="notification">
+                            <span>New Volunteer Forms</span>
+                            <span class="count"><%= volunteer_count %></span>
+                        </div>
+                    </a>
+                <% } %>
+                <% if (event_count != 0) { %>
             <!-- Event form notifications -->
-            <a href="/event-manage">
-                <div class="notification">
-                    <span>New Event Forms</span>
-                    <span class="count">5</span> <!-- Replace "5" with dynamic data -->
+                    <a href="/event-manage">
+                        <div class="notification">
+                            <span>New Event Forms</span>
+                            <span class="count"><%= event_count %></span>
+                        </div>
+                    </a>
+                <% } %>
+            <% } else { %>
+                <div class="notification" style="display: flex; justify-content: center; align-items: center;">
+                    <span>No New Forms</span>
                 </div>
-            </a>
+            <% } %>
         </div>
     
         <!-- Tableau Dashboard Section -->
