@@ -6,8 +6,23 @@
     <title>Our Sponsors - Turtle Shelter Project</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
+    <style>
+        .sponsor-logo {
+            max-height: 150px;
+            object-fit: contain;
+        }
+        .sponsor-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .sponsor-card img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
+
     <!-- HEADER -->
     <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -32,14 +47,69 @@
             </nav>
         </div>
     </header>
-    <img src="/images/sponsors/cheney-brothers.png" alt="Cheney Brothers Construction">
-    <a href="https://designsourceslc.com/" target="_blank"><img src="/images/sponsors/design-source.svg" alt="Design Source"></a>
-    <a href="https://www.goodshepherdogden.org/" target="_blank"><img src="/images/sponsors/episcopal-church.png" alt="The Episcopal Church of the Good Shepherd"></a>
-    <a href="https://www.futurefoam.com/" target="_blank"><img src="/images/sponsors/future-foam.svg" alt="Future Foam"></a>
-    <a href="http://www.givemeachanceutah.org/" target="_blank"><img src="/images/sponsors/give-me-a-chance.gif" alt="Give Me A Chance - A Daughters of Charity Ministry"></a>
-    <a href="https://www.softminkyblankets.com/" target="_blank"><img src="/images/sponsors/minky-couture.svg" alt="Minky Couture"></a>
-    <a href="https://www.owfinc.com/" target="_blank"><img src="/images/sponsors/outdoor-wilderness.jpg" alt="Outdoor Wilderness Fabrics"></a>
-    
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Our Sponsors</h1>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <!-- Cheney Brothers Construction -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/cheney-brothers.png" alt="Cheney Brothers Construction" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- Design Source -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/design-source.svg" alt="Design Source" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- The Episcopal Church of the Good Shepherd -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/episcopal-church.png" alt="The Episcopal Church of the Good Shepherd" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- Future Foam -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/future-foam.svg" alt="Future Foam" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- Give Me A Chance -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="http://www.givemeachanceutah.org/" target="_blank">
+                    <img src="/images/sponsors/give-me-a-chance.gif" alt="Give Me A Chance - A Daughters of Charity Ministry" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- Minky Couture -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/minky-couture.svg" alt="Minky Couture" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+        <!-- Outdoor Wilderness Fabrics -->
+        <div class="col">
+            <div class="sponsor-card">
+                <a href="https://www.goodshepherdogden.org/" target="_blank">
+                    <img src="/images/sponsors/outdoor-wilderness.jpg" alt="Outdoor Wilderness Fabrics" class="sponsor-logo">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>Turtle Shelter Project - PO Box 382, Kaysville, UT 84037</p>
@@ -49,5 +119,7 @@
             <a href="https://www.facebook.com/turtleshelterproject/" target="_blank">Visit our Facebook Page</a>
         </p>
     </footer>
+
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

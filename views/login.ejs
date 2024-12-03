@@ -36,14 +36,31 @@
     <form action="/login" method="POST">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" required><br><br>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Login to your Admin Account</h1>
+                        <form action="/login" method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username:</label>
+                                <input type="text" id="username" name="username" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Login</button>
-    </form>
-    <p>NOTE: This login is for Turtle Shelter Project team members only. If you want to volunteer or schedule an event, you can access those forms from the home page.</p>
-
+                        <p class="mt-3 text-center">NOTE: This login is for Turtle Shelter Project team members only. If you want to volunteer or schedule an event, you can access those forms from the home page.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>Turtle Shelter Project - PO Box 382, Kaysville, UT 84037</p>
@@ -53,5 +70,7 @@
             <a href="https://www.facebook.com/turtleshelterproject/" target="_blank">Visit our Facebook Page</a>
         </p>
     </footer>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
