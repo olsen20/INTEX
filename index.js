@@ -379,9 +379,9 @@ app.get('/event-details/:id', async (req, res) => {
     try {
         // Retrieve event information with selected ID
         let event = await knex('event_details')
-        .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
-        .where('event_id', id)
-        .first()
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .where('event_id', id)
+            .first();
 
         // Convert dates to 'YYYY-MM-DD' format
         event.event_date = new Date(event.event_date).toISOString().split('T')[0];
@@ -391,10 +391,15 @@ app.get('/event-details/:id', async (req, res) => {
         let volunteers = await knex('volunteers')
             .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name')
             .where('volunteer_status', 'A') // Where volunteer status is active
-            .orderBy('volunteer_first_name', 'asc')
+            .orderBy('volunteer_first_name', 'asc');
+
+        // Retrieve IDs of volunteers associated with the event
+        let associatedVolunteerIds = await knex('event_volunteers')
+            .where('event_id', id)
+            .pluck('volunteer_id'); // Returns an array of volunteer IDs
 
         // Render the event form with retrieved data
-        res.render('event-details', { event, volunteers });
+        res.render('event-details', { event, volunteers, associatedVolunteerIds });
     } catch (error) {
         console.error('Error fetching event', error);
         res.status(500).send('Internal Server Error');
@@ -402,8 +407,9 @@ app.get('/event-details/:id', async (req, res) => {
 });
 
 // Update an event form
-app.post('/update-event/:id', async (req, res) => {
+app.post('/update-event/:id/:contact_id', async (req, res) => {
     const event_id = req.params.id;
+    const event_contact_id = req.params.contact_id;
 
     try {
         const {
@@ -435,25 +441,20 @@ app.post('/update-event/:id', async (req, res) => {
         const event_attendees = parseInt(attendees, 10) || 0;
         const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];
 
-        // Insert contact information
-        const contactIds = await knex('event_contact_info')
-            .insert({
+        // Step 1: Update contact information
+        await knex('event_contact_info')
+            .where('event_contact_id', event_contact_id)
+            .update({
                 event_contact_first_name,
                 event_contact_last_name,
                 event_contact_phone_number,
                 event_contact_email_address,
-            })
-            .returning('event_contact_id');
+            });
 
-        const event_contact_id = Array.isArray(contactIds) && typeof contactIds[0] === 'object'
-            ? contactIds[0].event_contact_id
-            : contactIds[0];
-
-        // Update event details
+        // Step 2: Update event details
         await knex('event_details')
             .where('event_id', event_id)
             .update({
-                event_contact_id,
                 event_date,
                 event_start_time,
                 event_backup_date,
@@ -474,7 +475,12 @@ app.post('/update-event/:id', async (req, res) => {
                 room_type,
             });
 
-        // Insert volunteer assignments in bulk
+        // Step 3: Remove all existing volunteer associations for this event
+        await knex('event_volunteers')
+            .where('event_id', event_id)
+            .del();
+
+        // Step 4: Re-insert only the submitted volunteer associations
         if (volunteer_ids.length > 0) {
             const volunteerRows = volunteer_ids.map(volunteer_id => ({
                 event_id,
@@ -488,6 +494,29 @@ app.post('/update-event/:id', async (req, res) => {
     } catch (error) {
         console.error('Error updating event:', error);
         res.status(500).send({ error: 'Failed to update event.' });
+    }
+});
+
+// Delete an event
+app.post('/delete-event/:id/:contact_id', async (req, res) => {
+    const id = req.params.id;
+    const contact_id = req.params.contact_id;
+
+    try {
+        // Delete related records in the event_volunteers table (must do this before deleting related events)
+        await knex('event_volunteers').where('event_id', id).del();
+
+        // Delete the event record
+        await knex('event_details').where('event_id', id).del();
+
+        // Delete related records in the event_contact_info table
+        await knex('event_contact_info').where('event_contact_id', contact_id).del();
+
+        // Redirect to the volunteer management page after deletion
+        res.redirect('/event-manage'); 
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).send('Unable to delete event due to associated records.');
     }
 });
 
