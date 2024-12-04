@@ -26,7 +26,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || '0121',
+		password: process.env.RDS_PASSWORD || 'Cookiepw1!',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
@@ -288,6 +288,48 @@ app.get('/admin-add-volunteer', (req, res) => {
     res.render('admin-add-volunteer');
 })
 
+//route that submits volunteer form
+app.post('/admin-add-volunteer', (req, res) => {
+    const volunteer_first_name = req.body.first_name ? req.body.first_name.toUpperCase() : '';  // Convert first name to uppercase
+    const volunteer_last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';    // Convert last name to uppercase
+    const volunteer_phone_number = req.body.phone || '';
+    const volunteer_email_address = req.body.email || '';
+    const volunteer_street = req.body.street_address || '';
+    const volunteer_city = req.body.city || '';
+    const volunteer_state = req.body.state ? req.body.state.toUpperCase() : '';
+    const volunteer_zip = req.body.zip || '';
+    const volunteer_referral_source = req.body.referral_source || '';
+    const volunteer_sewing_level = req.body.sewing_level || '';
+    const volunteer_monthly_hours = parseInt(req.body.volunteer_hours, 10) || 0;
+    const volunteer_newsletter_optin = !!req.body.newsletter; // Explicit boolean conversion
+    const volunteer_status = 'N'; // Set as New
+
+    // Insert the volunteer into the database
+    knex('volunteers')
+        .insert({
+            volunteer_first_name: volunteer_first_name,
+            volunteer_last_name: volunteer_last_name,
+            volunteer_phone_number: volunteer_phone_number,
+            volunteer_email_address: volunteer_email_address,
+            volunteer_street: volunteer_street,
+            volunteer_city: volunteer_city,
+            volunteer_state: volunteer_state,
+            volunteer_zip: volunteer_zip,
+            volunteer_referral_source: volunteer_referral_source,
+            volunteer_sewing_level: volunteer_sewing_level,
+            volunteer_monthly_hours: volunteer_monthly_hours,
+            volunteer_newsletter_optin: volunteer_newsletter_optin,
+            volunteer_status: volunteer_status,
+        })
+        .then(() => {
+            res.redirect('/volunteer-manage'); // Redirect to a thank-you page
+        })
+        .catch(error => {
+            console.error('Error submitting volunteer form:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
 // Route to display volunteer details page
 app.get('/volunteer-details/:id', (req, res) => {
     let id = req.params.id;
@@ -416,7 +458,74 @@ app.get('/admin-add-event', (req, res) => {
     res.render('admin-add-event');
 })
 
-app.post()
+app.post('/admin-add-event', (req, res) => {
+ 
+    const event_attendees = req.body['number-of-people'];
+    const event_zip = req.body['zip'];
+    const basic_sewing_count = req.body['basic-sewing'];
+    const advanced_sewing_count = req.body['advanced-sewing'];
+    const sew_machine_count = req.body['sewing-machines'];
+    const sergers_machine_count = req.body['sergers'];
+    const event_contact_first_name = req.body['first_name'].toUpperCase();
+    const event_contact_last_name = req.body['last_name'].toUpperCase();
+    const event_type = req.body['event-type'];
+    const event_date = req.body['event-date'];
+    const event_backup_date = req.body['backup-date'];
+    const event_street = req.body['street-address'];
+    const event_city = req.body['city'];
+    const event_state = req.body['state'];
+    const room_type = req.body['room'];
+    const event_association = req.body['group'];
+    const event_start_time = req.body['start-time'];
+    const event_length = req.body['event-length'];
+    const event_contact_phone_number = req.body['phone-number'];
+    const event_contact_email_address = req.body['email'];
+    const share_story = req.body['jen-share'];
+
+    // Insert contact info first into event_contact_info table
+    knex('event_contact_info')
+        .insert({
+            event_contact_first_name: event_contact_first_name,
+            event_contact_last_name: event_contact_last_name,
+            event_contact_phone_number: event_contact_phone_number,
+            event_contact_email_address: event_contact_email_address
+        })
+        .returning('event_contact_id') // Get the event_contact_id
+        .then(([contactInfo]) => {
+            // Now that we have the event_contact_id, insert the event details
+            return knex('event_details')
+                .insert({
+                    event_attendees: event_attendees,
+                    event_type: event_type,
+                    event_date: event_date,
+                    event_backup_date: event_backup_date,
+                    event_street: event_street,
+                    event_city: event_city,
+                    event_state: event_state,
+                    event_zip: event_zip,
+                    room_type: room_type,
+                    event_association: event_association,
+                    event_start_time: event_start_time,
+                    event_length: event_length,
+                    event_contact_id: contactInfo.event_contact_id, // Link to contact info
+                    share_story: share_story,
+                    basic_sewing_count: basic_sewing_count,
+                    advanced_sewing_count: advanced_sewing_count,
+                    sew_machine_count: sew_machine_count,
+                    sergers_machine_count: sergers_machine_count
+                });
+        })
+        .then(() => {
+            res.redirect('/event-manage'); // Redirect after successful insert
+        })
+        .catch(error => {
+            console.error('Error submitting event form:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+
+
 
 // Route to display event details page
 app.get('/event-details/:id', async (req, res) => {
