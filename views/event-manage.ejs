@@ -63,13 +63,23 @@
                 <!-- Occurred Event Forms -->
                 <div class="forms-container">
                     <h2>Recently Occurred Events</h2>
-                    <div class="form-card new" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                    <% if (recent.length > 0) { %>
+                        <% recent.forEach(row => { %>
+                            <a href="/event-occurred/<%= row.event_id %>">
+                                <div class="form-card new">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
                         <div class="details">
-                            <p><b>Name:</b> Mary Lamb</p>
-                            <p><b>Group:</b> BYU Noteworthy</p>
-                            <p><b>Date:</b> 12/3/2025</p>
+                            <p style="text-align: center;">No recent events that need attention</p>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
                 <div style="text-align: center;">
                     <a href="/admin-add-event" class="btn">Add an Event</a>
