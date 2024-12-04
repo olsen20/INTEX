@@ -44,7 +44,7 @@
         <!-- Team Members Section -->
         <div class="user-list-container">
             <div class="user-list-header">
-                <h2>Team Members</h2>
+                <h2>Other Team Members</h2>
                 <a href="/add-user" class="add-user-btn">Add New User</a>
             </div>
         
@@ -54,10 +54,8 @@
                 <% users.forEach(row => { %>
                     <a href="/user-details/<%= row.username %>">
                         <div class="user-card">
-                            <div class="details">
                                 <p class="name"> <%= row.user_first_name + ' ' + row.user_last_name %></p>
                                 <p class="username"> <%= row.username %></p>
-                            </div>
                         </div>
                     </a>
                 <% }) %>
