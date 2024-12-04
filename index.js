@@ -17,9 +17,7 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-        maxAge: 1000 * 60 * 60,
-        secure: false } // Set secure to true in production when using HTTPS
+    cookie: { secure: false } // Set secure to true in production when using HTTPS
 }));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
@@ -28,10 +26,9 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || 'admin',
-		database: process.env.RDS_DB_NAME || 'intext',
-		port: process.env.RDS_PORT || 5433, 
-
+		password: process.env.RDS_PASSWORD || '0121',
+		database: process.env.RDS_DB_NAME || 'intex',
+		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
 	}
 });
@@ -378,21 +375,37 @@ app.post('/delete-volunteer/:id', async (req, res) => {
 // Route to display event management page
 app.get('/event-manage', async (req, res) => {
     try {
+        // Retrieve the new event forms
         const newForms = await knex('event_details')
             .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
             .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
             .where('event_status', 'N');  // Retrieve new forms
 
         // Format the date
-        const formattedDate = newForms.map(event => {
+        const formattedDate1 = newForms.map(event => {
             return {
                 ...event,
                 event_date: new Date(event.event_date).toLocaleDateString('en-US'), // Format as MM/DD/YYYY
             };
         });
+
+        // Retrieve the recently occurred events
+        const recentForms = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
+            .where('event_status', 'F') // Retrieve finalized forms
+            .whereRaw('NOW() > event_date + event_start_time::interval'); // Where the event date and start time have passed
         
+        // Format the date
+        const formattedDate2 = recentForms.map(event => {
+            return {
+                ...event,
+                event_date: new Date(event.event_date).toLocaleDateString('en-US'), // Format as MM/DD/YYYY
+            };
+        });
+
         // Render the event management page with the event data
-        res.render('event-manage', { new_forms: formattedDate });
+        res.render('event-manage', { new_forms: formattedDate1, recent: formattedDate2 });
     } catch (error) {
         console.error('Error fetching event data:', error);
         res.status(500).send('Internal Server Error');
@@ -438,8 +451,7 @@ app.get('/event-details/:id', async (req, res) => {
         } catch (error) {
         console.error('Error fetching event', error);
         res.status(500).send('Internal Server Error');
-
-    };
+    }
 });
 
 // Update an event form
@@ -500,7 +512,7 @@ app.post('/update-event/:id/:contact_id', async (req, res) => {
                 event_state: event_state.toUpperCase(),
                 event_city,
                 event_zip,
-                event_length,
+                event_length: parseInt(event_length, 10) || 0,
                 share_story: share_story === 'true',
                 event_attendees,
                 basic_sewing_count: parseInt(basic_sewing_count, 10) || 0,
@@ -557,8 +569,150 @@ app.post('/delete-event/:id/:contact_id', async (req, res) => {
 });
 
 // Route to display an occurred event page
-app.get('/event-occurred', (req, res) => {
-    res.render('event-occurred');
+app.get('/event-occurred/:id', async (req, res) => {
+    let id = req.params.id;
+
+    try {
+        // Retrieve event information with selected ID
+        let event = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .where('event_id', id)
+            .first();
+
+        // Convert dates to 'YYYY-MM-DD' format
+        event.event_date = new Date(event.event_date).toISOString().split('T')[0];
+        event.event_backup_date = new Date(event.event_backup_date).toISOString().split('T')[0];
+
+        // Retrieve active volunteers
+        let volunteers = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name')
+            .where('volunteer_status', 'A') // Where volunteer status is active
+            .orderBy('volunteer_first_name', 'asc');
+
+        // Retrieve IDs of volunteers associated with the event
+        let associatedVolunteerIds = await knex('event_volunteers')
+            .where('event_id', id)
+            .pluck('volunteer_id'); // Returns an array of volunteer IDs
+
+        // Render the event form with retrieved data
+        res.render('event-occurred', { event, volunteers, associatedVolunteerIds });
+    } catch (error) {
+        console.error('Error fetching event', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Route to update an occurred event
+app.post('/finish-event/:id/:contact_id', async (req, res) => {
+    const event_id = req.params.id;
+    const event_contact_id = req.params.contact_id;
+
+    // Set event_status to Past so that it doesn't show up on the recently occurred list
+    const event_status = 'P';
+
+    try {
+        const {
+            event_date,
+            start_time: event_start_time,
+            backup_date: event_backup_date,
+            group: event_association,
+            event_type,
+            street_address: event_street,
+            state: event_state,
+            city: event_city,
+            zip: event_zip,
+            event_length,
+            jen_share: share_story,
+            number_of_people: attendees,
+            basic_sewing: basic_sewing_count,
+            advanced_sewing: advanced_sewing_count,
+            sewing_machines: sew_machine_count,
+            sergers: sergers_machine_count,
+            room: room_type,
+            first_name: event_contact_first_name,
+            last_name: event_contact_last_name,
+            phone_number: event_contact_phone_number,
+            email: event_contact_email_address,
+            volunteers,
+            past_participants,
+            past_duration: past_duration,
+            pockets_produced: pockets_produced,
+            collars_produced: collars_produced,
+            envelopes_produced: envelopes_produced,
+            vests_produced: vests_produced,
+            products_completed,
+        } = req.body;
+
+        const event_attendees = parseInt(attendees, 10) || 0;
+        const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];  // Make volunteers an array
+
+        // Update contact information
+        await knex('event_contact_info')
+            .where('event_contact_id', event_contact_id)
+            .update({
+                event_contact_first_name,
+                event_contact_last_name,
+                event_contact_phone_number,
+                event_contact_email_address,
+            });
+
+        // Update event details
+        await knex('event_details')
+            .where('event_id', event_id)
+            .update({
+                event_date,
+                event_start_time,
+                event_backup_date,
+                event_association,
+                event_type,
+                event_street,
+                event_state: event_state.toUpperCase(),
+                event_city,
+                event_zip,
+                event_length: parseInt(event_length, 10) || 0,
+                share_story: share_story === 'true',
+                event_attendees,
+                basic_sewing_count: parseInt(basic_sewing_count, 10) || 0,
+                advanced_sewing_count: parseInt(advanced_sewing_count, 10) || 0,
+                sew_machine_count: parseInt(sew_machine_count, 10) || 0,
+                sergers_machine_count: parseInt(sergers_machine_count, 10) || 0,
+                event_status,
+                room_type,
+            });
+
+        // Remove all existing volunteer associations for this event
+        await knex('event_volunteers')
+            .where('event_id', event_id)
+            .del();
+
+        // Re-insert only the submitted volunteer associations
+        if (volunteer_ids.length > 0) {
+            const volunteerRows = volunteer_ids.map(volunteer_id => ({
+                event_id,
+                volunteer_id,
+            }));
+            await knex('event_volunteers').insert(volunteerRows);
+        }
+
+        // Save updates to the past_events table
+        await knex('past_events')
+            .insert({
+                event_id,
+                past_participants: parseInt(past_participants, 10) || 0,
+                past_duration: parseInt(past_duration, 10) || 0,
+                pockets_produced: parseInt(pockets_produced, 10) || 0,
+                collars_produced: parseInt(collars_produced, 10) || 0,
+                envelopes_produced: parseInt(envelopes_produced, 10) || 0,
+                vests_produced: parseInt(vests_produced, 10) || 0,
+                products_completed: parseInt(products_completed, 10) || 0,
+            })
+
+        // Redirect to events management page
+        res.redirect('/event-manage');
+    } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).send({ error: 'Failed to update event.' });
+    }
 });
 
 // Route to display user management page
