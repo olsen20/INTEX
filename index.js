@@ -434,9 +434,9 @@ app.post('/update-event/:id', async (req, res) => {
 
         const event_attendees = parseInt(attendees, 10) || 0;
         const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];
-        
+
         // Insert contact information
-        const [event_contact_id] = await knex('event_contact_info')
+        const contactIds = await knex('event_contact_info')
             .insert({
                 event_contact_first_name,
                 event_contact_last_name,
@@ -444,6 +444,10 @@ app.post('/update-event/:id', async (req, res) => {
                 event_contact_email_address,
             })
             .returning('event_contact_id');
+
+        const event_contact_id = Array.isArray(contactIds) && typeof contactIds[0] === 'object'
+            ? contactIds[0].event_contact_id
+            : contactIds[0];
 
         // Update event details
         await knex('event_details')
