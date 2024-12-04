@@ -17,7 +17,9 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set secure to true in production when using HTTPS
+    cookie: { 
+        maxAge: 1000 * 60 * 60,
+        secure: false } // Set secure to true in production when using HTTPS
 }));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
@@ -387,27 +389,41 @@ app.post()
 app.get('/event-details/:id', (req, res) => {
     let id = req.params.id;
 
-    // Retrieve volunteer information with selected ID
-    knex('event_details')
-        .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
-        .where('event_id', id)
-        .first()
-        .then(event => {
-            if (!event) {
-                return res.status(404).send('Event not found');
-            }
-            res.render('event-details', { event });
-    })
-    .catch(error => {
-        console.error('Error fetching event:', error);
+    try {
+        // Retrieve event information with selected ID
+        let event = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .where('event_id', id)
+            .first();
+
+        // Convert dates to 'YYYY-MM-DD' format
+        event.event_date = new Date(event.event_date).toISOString().split('T')[0];
+        event.event_backup_date = new Date(event.event_backup_date).toISOString().split('T')[0];
+
+        // Retrieve active volunteers
+        let volunteers = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name')
+            .where('volunteer_status', 'A') // Where volunteer status is active
+            .orderBy('volunteer_first_name', 'asc');
+
+        // Retrieve IDs of volunteers associated with the event
+        let associatedVolunteerIds = await knex('event_volunteers')
+            .where('event_id', id)
+            .pluck('volunteer_id'); // Returns an array of volunteer IDs
+
+        // Render the event form with retrieved data
+        res.render('event-details', { event, volunteers, associatedVolunteerIds });
+    } catch (error) {
+        console.error('Error fetching event', error);
         res.status(500).send('Internal Server Error');
 
     }); 
 }); 
 
 // Update an event form
-app.post('/update-event/:id', async (req, res) => {
+app.post('/update-event/:id/:contact_id', async (req, res) => {
     const event_id = req.params.id;
+    const event_contact_id = req.params.contact_id;
 
     try {
         const {
@@ -439,25 +455,20 @@ app.post('/update-event/:id', async (req, res) => {
         const event_attendees = parseInt(attendees, 10) || 0;
         const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];
 
-        // Insert contact information
-        const contactIds = await knex('event_contact_info')
-            .insert({
+        // Step 1: Update contact information
+        await knex('event_contact_info')
+            .where('event_contact_id', event_contact_id)
+            .update({
                 event_contact_first_name,
                 event_contact_last_name,
                 event_contact_phone_number,
                 event_contact_email_address,
-            })
-            .returning('event_contact_id');
+            });
 
-        const event_contact_id = Array.isArray(contactIds) && typeof contactIds[0] === 'object'
-            ? contactIds[0].event_contact_id
-            : contactIds[0];
-
-        // Update event details
+        // Step 2: Update event details
         await knex('event_details')
             .where('event_id', event_id)
             .update({
-                event_contact_id,
                 event_date,
                 event_start_time,
                 event_backup_date,
@@ -478,7 +489,12 @@ app.post('/update-event/:id', async (req, res) => {
                 room_type,
             });
 
-        // Insert volunteer assignments in bulk
+        // Step 3: Remove all existing volunteer associations for this event
+        await knex('event_volunteers')
+            .where('event_id', event_id)
+            .del();
+
+        // Step 4: Re-insert only the submitted volunteer associations
         if (volunteer_ids.length > 0) {
             const volunteerRows = volunteer_ids.map(volunteer_id => ({
                 event_id,
@@ -495,6 +511,29 @@ app.post('/update-event/:id', async (req, res) => {
     }
 });
 
+// Delete an event
+app.post('/delete-event/:id/:contact_id', async (req, res) => {
+    const id = req.params.id;
+    const contact_id = req.params.contact_id;
+
+    try {
+        // Delete related records in the event_volunteers table (must do this before deleting related events)
+        await knex('event_volunteers').where('event_id', id).del();
+
+        // Delete the event record
+        await knex('event_details').where('event_id', id).del();
+
+        // Delete related records in the event_contact_info table
+        await knex('event_contact_info').where('event_contact_id', contact_id).del();
+
+        // Redirect to the volunteer management page after deletion
+        res.redirect('/event-manage'); 
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).send('Unable to delete event due to associated records.');
+    }
+});
+
 // Route to display an occurred event page
 app.get('/event-occurred', (req, res) => {
     res.render('event-occurred');
@@ -503,7 +542,7 @@ app.get('/event-occurred', (req, res) => {
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
     Promise.all([
-        knex('employees').select('username', 'user_first_name', 'user_last_name'),
+        knex('employees').select('username', 'user_first_name', 'user_last_name').whereNot('username', req.session.username),
         knex('employees')
             .select('username', 'user_first_name', 'user_last_name')
             .where('username', req.session.username)
@@ -639,8 +678,78 @@ app.get('/user-manage', (req, res) => {
 
 
 // Route to user details page
-app.get('/user-details', (req, res) => {
-    res.render('user-details');
+app.get('/user-details/:id', (req, res) => {
+const users = req.params.id
+
+
+    knex('employees')
+    .where('username', users)
+    .first()
+    .then(user => {
+        res.render('user-details', { user })
+    })
+    .catch(error => {
+        console.error('Error viewing user:', error);
+        res.status(500).send('Internal Server Error');
+    });
+
+});
+
+app.post('/update-user/:user', (req, res) => {
+    const users = req.params.user
+
+    const username = req.body.username
+    const password = req.body.password;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const street_address = req.body.street_address;
+    const city = req.body.city;
+    const state = req.body.state;
+    const zip = req.body.zip;
+    const gender = req.body.gender;
+    const role = req.body.role;
+
+    knex('employees')
+    .where('username', users)
+    .update({
+        username : username,
+        password : password,
+        user_first_name : first_name,
+        user_last_name : last_name,
+        user_email_address : email,
+        user_phone_number : phone,
+        user_street : street_address,
+        user_city : city,
+        user_state : state,
+        user_zip : zip,
+        user_gender : gender,
+        user_position : role
+    })
+    .then(() => {
+        res.redirect('/user-manage')
+    })
+    .catch(error => {
+        console.error('Error updating user:', error);
+        res.status(500).send('Internal Server Error');
+    });
+});
+
+app.post('/delete-user/:username', (req, res) => {
+    const username = req.params.username
+    console.log("Deleting user with username:", username);
+
+    knex('employees')
+    .where('username', username)
+    .del()
+    .then(() => {
+        res.redirect('/user-manage');
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
 
 // --------------------------------------------------------------------------------------------------------------------------------------------
