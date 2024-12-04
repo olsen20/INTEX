@@ -26,8 +26,8 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || '',
-		database: process.env.RDS_DB_NAME || '',
+		password: process.env.RDS_PASSWORD || 'project403',
+		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
 	}
@@ -135,7 +135,7 @@ app.get('/login', (req, res) => {
 // Internal website ----------------------------------------------------------------------------------------------------------------------------
 // Login user
 app.post('/login', async (req, res) => {
-    const username = req.body.username.toUpperCase();
+    const username = req.body.username;
     const password = req.body.password;
 
     try {
@@ -352,7 +352,96 @@ app.get('/event-details/:id', (req, res) => {
     .catch(error => {
         console.error('Error fetching event:', error);
         res.status(500).send('Internal Server Error');
+
     });
+// Update an event form
+app.post('/update-event/:id', async (req, res) => {
+    const event_id = req.params.id;
+
+    try {
+        const {
+            event_date,
+            start_time: event_start_time,
+            backup_date: event_backup_date,
+            group: event_association,
+            event_type,
+            street_address: event_street,
+            state: event_state,
+            city: event_city,
+            zip: event_zip,
+            event_length,
+            jen_share: share_story,
+            number_of_people: attendees,
+            basic_sewing: basic_sewing_count,
+            advanced_sewing: advanced_sewing_count,
+            sewing_machines: sew_machine_count,
+            sergers: sergers_machine_count,
+            form_status: event_status,
+            room: room_type,
+            first_name: event_contact_first_name,
+            last_name: event_contact_last_name,
+            phone_number: event_contact_phone_number,
+            email: event_contact_email_address,
+            volunteers,
+        } = req.body;
+
+        const event_attendees = parseInt(attendees, 10) || 0;
+        const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];
+
+        // Insert contact information
+        const contactIds = await knex('event_contact_info')
+            .insert({
+                event_contact_first_name,
+                event_contact_last_name,
+                event_contact_phone_number,
+                event_contact_email_address,
+            })
+            .returning('event_contact_id');
+
+        const event_contact_id = Array.isArray(contactIds) && typeof contactIds[0] === 'object'
+            ? contactIds[0].event_contact_id
+            : contactIds[0];
+
+        // Update event details
+        await knex('event_details')
+            .where('event_id', event_id)
+            .update({
+                event_contact_id,
+                event_date,
+                event_start_time,
+                event_backup_date,
+                event_association,
+                event_type,
+                event_street,
+                event_state: event_state.toUpperCase(),
+                event_city,
+                event_zip,
+                event_length,
+                share_story: share_story === 'true',
+                event_attendees,
+                basic_sewing_count: parseInt(basic_sewing_count, 10) || 0,
+                advanced_sewing_count: parseInt(advanced_sewing_count, 10) || 0,
+                sew_machine_count: parseInt(sew_machine_count, 10) || 0,
+                sergers_machine_count: parseInt(sergers_machine_count, 10) || 0,
+                event_status,
+                room_type,
+            });
+
+        // Insert volunteer assignments in bulk
+        if (volunteer_ids.length > 0) {
+            const volunteerRows = volunteer_ids.map(volunteer_id => ({
+                event_id,
+                volunteer_id,
+            }));
+            await knex('event_volunteers').insert(volunteerRows);
+        }
+
+        // Redirect to events management page
+        res.redirect('/event-manage');
+    } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).send({ error: 'Failed to update event.' });
+    }
 });
 
 // Route to display an occurred event page
@@ -362,12 +451,78 @@ app.get('/event-occurred', (req, res) => {
 
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
-    res.render('user-manage');
+    Promise.all([
+        knex('employees').select('username', 'user_first_name', 'user_last_name'),
+        knex('employees')
+            .select('username', 'user_first_name', 'user_last_name')
+            .where('username', req.session.username)
+            .first()
+    ])
+    .then(([users, curr_user]) => {
+        res.render('user-manage', { users, curr_user });
+    })
+    .catch(error => {
+        console.error('Error fetching users:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
+
 
 // Route to display profile page
 app.get('/profile', (req, res) => {
-    res.render('profile');
+    
+    knex('employees')
+    .where('username', req.session.username)
+    .first()
+    .then(user => {
+        res.render('profile', { user });
+    })
+    .catch(error => {
+        console.error('Error fetching profile:', error);
+        res.status(500).send('Internal Server Error');
+    });
+      
+});
+
+app.post('/profile/:user', (req,res) => {
+    const user = req.params.user
+
+    const username = req.body.username
+    const password = req.body.password;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const street_address = req.body.street_address;
+    const city = req.body.city;
+    const state = req.body.state;
+    const zip = req.body.zip;
+    const gender = req.body.gender;
+    const role = req.body.role;
+
+    knex('employees')
+    .where('username', user)
+    .update({
+        username : username,
+        password : password,
+        user_first_name : first_name,
+        user_last_name : last_name,
+        user_email_address : email,
+        user_phone_number : phone,
+        user_street : street_address,
+        user_city : city,
+        user_state : state,
+        user_zip : zip,
+        user_gender : gender,
+        user_position : role
+    })
+    .then(() => {
+        res.redirect('/user-manage')
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
 
 // Route to add user page
