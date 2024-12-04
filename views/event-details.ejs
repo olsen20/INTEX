@@ -35,7 +35,7 @@
     <!-- Event form results -->
     <div class="container mt-5">
         <!-- Form Status Selector -->
-        <form action="/update-event/<%= event.event_id %>" method="POST" onsubmit="return validateForm()">
+        <form action="/update-event/<%= event.event_id %>/<%= event.event_contact_id %>" method="POST" onsubmit="return validateForm()">
         <div class="form-status-container">
             <label for="form-status" class="form-label">Form Status:</label>
             <select id="form-status" name="form_status" class="form-select">
@@ -170,7 +170,7 @@
 
             <div class="mb-3">
                 <label for="room">Room Type (e.g., Living Room, Gymnasium, etc.):</label>
-                <input type="text" id="room" name="room" required>
+                <input type="text" id="room" name="room" value="<%= event.room_type %>" required>
             </div>
 
             <!-- Button to show/hide volunteer field -->
@@ -179,9 +179,15 @@
             <div id="volunteer-field" style="display: none;">
                 <label>Volunteers who will attend:</label>
                 <% volunteers.forEach(volunteer => { %>
-                    <br><label for="<%= volunteer.volunteer_id %>">
-                    <input type="checkbox" id="<%= volunteer.volunteer_id %>" name="volunteers" value="<%= volunteer.volunteer_id %>">
-                    <%= volunteer.volunteer_first_name %> <%= volunteer.volunteer_last_name %>
+                    <br>
+                    <label for="<%= volunteer.volunteer_id %>">
+                        <input 
+                            type="checkbox" 
+                            id="<%= volunteer.volunteer_id %>" 
+                            name="volunteers" 
+                            value="<%= volunteer.volunteer_id %>" 
+                            <%= associatedVolunteerIds.includes(volunteer.volunteer_id) ? 'checked' : '' %>>
+                        <%= volunteer.volunteer_first_name %> <%= volunteer.volunteer_last_name %>
                     </label>
                 <% }); %>
             </div>
@@ -189,7 +195,7 @@
             <!-- Update and delete buttons -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
                 <button type="submit" class="update-profile-btn">Update Event</button>
-                <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
+                <button type="button" class="delete-profile-btn" onclick="deleteEvent('<%= event.event_id %>', '<%= event.event_contact_id %>')">Delete Event</button>
             </div>
 
             <!-- Back to Events button -->
@@ -288,6 +294,20 @@
                 volunteerField.style.display = 'block'; // Show the original fields
             } else {
                 volunteerField.style.display = 'none'; // Hide the original fields
+            }
+        }
+
+        // Function to delete an event (must be done with JavaScript because the delete button is inside the update form)
+        function deleteEvent(eventId, contactId) {
+            if (confirm('Are you sure you want to delete this event? All data stored about this event will be lost.')) {
+                // Create a form dynamically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/delete-event/${eventId}/${contactId}`;
+
+                // Append the form to the body and submit
+                document.body.appendChild(form);
+                form.submit();
             }
         }
     </script>
