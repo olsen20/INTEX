@@ -17,7 +17,9 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set secure to true in production when using HTTPS
+    cookie: { 
+        maxAge: 1000 * 60 * 60,
+        secure: false } // Set secure to true in production when using HTTPS
 }));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
@@ -453,7 +455,7 @@ app.get('/event-occurred', (req, res) => {
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
     Promise.all([
-        knex('employees').select('username', 'user_first_name', 'user_last_name'),
+        knex('employees').select('username', 'user_first_name', 'user_last_name').whereNot('username', req.session.username),
         knex('employees')
             .select('username', 'user_first_name', 'user_last_name')
             .where('username', req.session.username)
@@ -578,8 +580,78 @@ app.post('/add-user', async (req, res) => {
 });
 
 // Route to user details page
-app.get('/user-details', (req, res) => {
-    res.render('user-details');
+app.get('/user-details/:id', (req, res) => {
+const users = req.params.id
+
+
+    knex('employees')
+    .where('username', users)
+    .first()
+    .then(user => {
+        res.render('user-details', { user })
+    })
+    .catch(error => {
+        console.error('Error viewing user:', error);
+        res.status(500).send('Internal Server Error');
+    });
+
+});
+
+app.post('/update-user/:user', (req, res) => {
+    const users = req.params.user
+
+    const username = req.body.username
+    const password = req.body.password;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const street_address = req.body.street_address;
+    const city = req.body.city;
+    const state = req.body.state;
+    const zip = req.body.zip;
+    const gender = req.body.gender;
+    const role = req.body.role;
+
+    knex('employees')
+    .where('username', users)
+    .update({
+        username : username,
+        password : password,
+        user_first_name : first_name,
+        user_last_name : last_name,
+        user_email_address : email,
+        user_phone_number : phone,
+        user_street : street_address,
+        user_city : city,
+        user_state : state,
+        user_zip : zip,
+        user_gender : gender,
+        user_position : role
+    })
+    .then(() => {
+        res.redirect('/user-manage')
+    })
+    .catch(error => {
+        console.error('Error updating user:', error);
+        res.status(500).send('Internal Server Error');
+    });
+});
+
+app.post('/delete-user/:username', (req, res) => {
+    const username = req.params.username
+    console.log("Deleting user with username:", username);
+
+    knex('employees')
+    .where('username', username)
+    .del()
+    .then(() => {
+        res.redirect('/user-manage');
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
 
 // --------------------------------------------------------------------------------------------------------------------------------------------
