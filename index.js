@@ -28,9 +28,9 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || 'project403',
-		database: process.env.RDS_DB_NAME || 'intex',
-		port: process.env.RDS_PORT || 5432, 
+		password: process.env.RDS_PASSWORD || 'admin',
+		database: process.env.RDS_DB_NAME || 'intext',
+		port: process.env.RDS_PORT || 5433, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
 	}
 });
@@ -124,9 +124,56 @@ app.post('/event', async (req, res) => {
     }
 });
 
+//Route to display thank-you form page
+app.get('/thank-you', (req, res) => {
+    res.render('thank-you');
+})
+
 // Route to display volunteer form page
 app.get('/volunteer', (req, res) => {
     res.render('volunteer');
+});
+
+//route that submits volunteer form
+app.post('/volunteer', (req, res) => {
+    const volunteer_first_name = req.body.first_name ? req.body.first_name.toUpperCase() : '';  // Convert first name to uppercase
+    const volunteer_last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';    // Convert last name to uppercase
+    const volunteer_phone_number = req.body.phone || '';
+    const volunteer_email_address = req.body.email || '';
+    const volunteer_street = req.body.street_address || '';
+    const volunteer_city = req.body.city || '';
+    const volunteer_state = req.body.state ? req.body.state.toUpperCase() : '';
+    const volunteer_zip = req.body.zip || '';
+    const volunteer_referral_source = req.body.referral_source || '';
+    const volunteer_sewing_level = req.body.sewing_level || '';
+    const volunteer_monthly_hours = parseInt(req.body.volunteer_hours, 10) || 0;
+    const volunteer_newsletter_optin = !!req.body.newsletter; // Explicit boolean conversion
+    const volunteer_status = 'N'; // Set as New
+
+    // Insert the volunteer into the database
+    knex('volunteers')
+        .insert({
+            volunteer_first_name: volunteer_first_name,
+            volunteer_last_name: volunteer_last_name,
+            volunteer_phone_number: volunteer_phone_number,
+            volunteer_email_address: volunteer_email_address,
+            volunteer_street: volunteer_street,
+            volunteer_city: volunteer_city,
+            volunteer_state: volunteer_state,
+            volunteer_zip: volunteer_zip,
+            volunteer_referral_source: volunteer_referral_source,
+            volunteer_sewing_level: volunteer_sewing_level,
+            volunteer_monthly_hours: volunteer_monthly_hours,
+            volunteer_newsletter_optin: volunteer_newsletter_optin,
+            volunteer_status: volunteer_status,
+        })
+        .then(() => {
+            res.redirect('/thank-you'); // Redirect to a thank-you page
+        })
+        .catch(error => {
+            console.error('Error submitting volunteer form:', error);
+            res.status(500).send('Internal Server Error');
+        });
 });
 
 // Route to display login page
@@ -336,6 +383,8 @@ app.get('/admin-add-event', (req, res) => {
     res.render('admin-add-event');
 })
 
+app.post()
+
 // Route to display event details page
 app.get('/event-details/:id', (req, res) => {
     let id = req.params.id;
@@ -368,8 +417,9 @@ app.get('/event-details/:id', (req, res) => {
         console.error('Error fetching event', error);
         res.status(500).send('Internal Server Error');
 
-    });
-});
+    }); 
+}); 
+
 // Update an event form
 app.post('/update-event/:id/:contact_id', async (req, res) => {
     const event_id = req.params.id;
@@ -572,49 +622,60 @@ app.get('/add-user', (req, res) => {
 
 // const bcrypt = require('bcrypt');
 // const saltRounds = 10; // Number of salt rounds for hashing
+// Route to add an user as Admin
+app.post('/add-user', (req, res) => {
+    const username = req.body.username || '';
+    const password = req.body.password || '';  // Plain text password for now
+    const first_name = req.body.first_name ? req.body.first_name.toUpperCase() : '';
+    const last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';
+    const email = req.body.email || '';
+    const phone = req.body.phone || '';
+    const street_address = req.body.street_address || '';
+    const city = req.body.city || '';
+    const state = req.body.state ? req.body.state.toUpperCase() : '';
+    const zip = req.body.zip || '';
+    const gender = req.body.gender || 'other';
+    const role = req.body.role || '';
 
-app.post('/add-user', async (req, res) => {
-    try {
-        const {
-            username,
-            password,
-            first_name,
-            last_name,
-            email,
-            phone,
-            street_address,
-            city,
-            state,
-            zip,
-            gender,
-            role
-        } = req.body;
+    // Log the input data to check if everything is correct
+    console.log('Form data:', { username, password, first_name, last_name, email, phone, street_address, city, state, zip, gender, role });
 
-        // Hash the password before storing it
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // Check if username or other required fields are missing
+    if (!username || !password) {
+        return res.status(400).send('Username and password are required');
+    }
 
-        // Insert new user into the database
-        await knex('employees').insert({
-            username,
-            password: hashedPassword,
+    // Insert the new user (employee) into the database with plain text password for now
+    knex('employees')
+        .insert({
+            username: username,
+            password: password,  // Using plain text password for now
             user_first_name: first_name,
             user_last_name: last_name,
             user_email_address: email,
             user_phone_number: phone,
             user_street: street_address,
             user_city: city,
-            user_state: state.toUpperCase(),
+            user_state: state,
             user_zip: zip,
             user_gender: gender,
-            user_position: role
+            user_position: role,
+        })
+        .then(() => {
+            res.redirect('/user-manage');  // Redirect to Users Management page after successful addition
+        })
+        .catch(error => {
+            // Log the actual error for better debugging
+            console.error('Error adding user:', error);
+            res.status(500).send('Internal Server Error');
         });
-
-        res.redirect('/user-manage'); // Redirect after successful addition
-    } catch (error) {
-        console.error('Error adding new user:', error);
-        res.status(500).send('Internal Server Error');
-    }
 });
+
+//Route to user manage page
+app.get('/user-manage', (req, res) => {
+    res.render('user-details');
+});
+
 
 // Route to user details page
 app.get('/user-details/:id', (req, res) => {
