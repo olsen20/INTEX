@@ -34,18 +34,18 @@
         </div>
     </header>
 
+    <!-- Volunteer form content -->
     <div class="container mt-5">
         <h1 class="mb-4">Volunteer Opportunity Form</h1>
-        <!-- HTML form formatted by bootstrap to add a sleek look -->
-        <form action="/volunteer" method="POST">
+        <form action="/add-volunteer" method="POST" onsubmit="return validateForm()">
             <div class="mb-3">
-                <label for="first-name" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="first-name" name="first-name" required>
+                <label for="first_name" class="form-label">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
             </div>
 
             <div class="mb-3">
-                <label for="last-name" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="last-name" name="last-name" required>
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
             </div>
 
             <div class="mb-3">
@@ -59,8 +59,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="street-address" class="form-label">Street Address:</label>
-                <input type="text" class="form-control" id="street-address" name="street-address" required>
+                <label for="street_address" class="form-label">Street Address:</label>
+                <input type="text" class="form-control" id="street_address" name="street_address" required>
             </div>
 
             <div class="mb-3">
@@ -82,37 +82,37 @@
                 <label class="form-label">How did you hear about this opportunity?</label><br>
                 <div class="form-check form-check-inline">
                     <!-- Radio Button for how they heard about it -->
-                    <input type="radio" class="form-check-input" id="how-heard-social-media" name="how-heard" value="social-media" onclick="toggleOtherInput()" required>
-                    <label for="how-heard-social-media" class="form-check-label">Social Media</label>
+                    <input type="radio" class="form-check-input" id="referral_source_social_media" name="referral_source" value="Social Media" onclick="toggleOtherInput()" required>
+                    <label for="referral_source_social_media" class="form-check-label">Social Media</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="how-heard-friend" name="how-heard" value="friend" onclick="toggleOtherInput()">
-                    <label for="how-heard-friend" class="form-check-label">Friend</label>
+                    <input type="radio" class="form-check-input" id="referral_source_friend" name="referral_source" value="Friend" onclick="toggleOtherInput()">
+                    <label for="referral_source_friend" class="form-check-label">Friend</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="how-heard-event" name="how-heard" value="event" onclick="toggleOtherInput()">
-                    <label for="how-heard-event" class="form-check-label">Event</label>
+                    <input type="radio" class="form-check-input" id="referral_source_event" name="referral_source" value="Event" onclick="toggleOtherInput()">
+                    <label for="referral_source_event" class="form-check-label">Event</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="how-heard-other" name="how-heard" value="other" onclick="toggleOtherInput()">
-                    <label for="how-heard-other" class="form-check-label">Other</label>
+                    <input type="radio" class="form-check-input" id="referral_source_other" name="referral_source" value="" onclick="toggleOtherInput()">
+                    <label for="referral_source_other" class="form-check-label">Other</label>
                 </div>
-                <input type="text" class="form-control mt-2" id="how-heard-other-input" name="how-heard-other-text" placeholder="Please specify" disabled>
+                <input type="text" class="form-control mt-2" id="referral_source_other_input" name="referral_source_other-text" placeholder="Please specify" disabled>
             </div>
 
             <div class="mb-3">
-                <label for="sewing-level" class="form-label">What is your sewing experience?</label>
-                <select id="sewing-level" name="sewing-level" class="form-select" required>
-                    <option value="no-sewing">No sewing</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="experienced">Experienced</option>
+                <label for="sewing_level" class="form-label">What is your sewing experience?</label>
+                <select id="sewing_level" name="sewing_level" class="form-select" required>
+                    <option value="N">No sewing</option>
+                    <option value="B">Beginner</option>
+                    <option value="I">Intermediate</option>
+                    <option value="E">Experienced</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="volunteer-hours" class="form-label">How many hours would you be willing to volunteer per month?</label>
-                <input type="number" class="form-control" id="volunteer-hours" name="volunteer-hours" min="1" required>
+                <label for="volunteer_hours" class="form-label">How many hours would you be willing to volunteer per month?</label>
+                <input type="number" class="form-control" id="volunteer_hours" name="volunteer_hours" min="1" required>
             </div>
 
             <div class="mb-3">
@@ -139,10 +139,56 @@
     <script>
         // script to ensure that they are able to input what their "other" is
         function toggleOtherInput() {
-            const otherOption = document.getElementById('how-heard-other');
-            const otherInput = document.getElementById('how-heard-other-input');
-            otherInput.disabled = !otherOption.checked;
-            otherInput.required = otherOption.checked;
+            const otherOption = document.getElementById('referral_source_other');
+            const otherInput = document.getElementById('referral_source_other_input');
+
+            if (otherOption.checked) {
+                otherInput.disabled = false;
+                otherInput.required = true;
+
+                // Update the value of the radio button to the text input dynamically
+                otherInput.addEventListener('input', () => {
+                    otherOption.value = otherInput.value.trim();
+                });
+            } else {
+                otherInput.disabled = true;
+                otherInput.required = false;
+                otherInput.value = ''; // Clear the input if not selected
+                otherOption.value = ''; // Reset the value of "Other" radio button
+            }
+        }
+
+        // Function to validate the form inputs to match what is stored in the database
+        function validateForm() {
+            const phone = document.getElementById('phone').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const hours = document.getElementById('volunteer_hours').value.trim();
+        
+            // Validation messages
+            let messages = [];
+        
+            // Check phone number (numeric values only)
+            if (!/^\d+$/.test(phone)) {
+                messages.push('Phone number must contain only numeric values.');
+            }
+        
+            // Check state (2 letters)
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+        
+            // Check hours (greater than 0)
+            if (isNaN(hours) || hours <= 0) {
+                messages.push('Monthly hours must be greater than 0.');
+            }
+        
+            // If there are validation errors, prevent form submission and show alerts
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+        
+            return true; // Allow form submission
         }
     </script>
 </body>
