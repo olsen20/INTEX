@@ -74,6 +74,97 @@ app.get('/volunteer', (req, res) => {
     res.render('volunteer');
 });
 
+// Add volunteer to database
+app.post('/add-volunteer', (req, res) => {
+    const volunteer_first_name = req.body.first_name;
+    const volunteer_last_name = req.body.last_name;
+    const volunteer_phone_number = req.body.phone;
+    const volunteer_email_address = req.body.email;
+    const volunteer_street = req.body.street_address;
+    const volunteer_city = req.body.city;
+    const volunteer_state = req.body.state.toUpperCase();
+    const volunteer_zip = req.body.zip;
+    const volunteer_referral_source = req.body.referral_source;
+    const volunteer_sewing_level = req.body.sewing_level;
+    const volunteer_monthly_hours = parseInt(req.body.volunteer_hours);
+    const volunteer_newsletter_optin = req.body.newsletter ? true : false;
+    const volunteer_status = 'N';  // Set as New
+
+    // Update the volunteer in the database
+    knex('volunteers')
+        .insert({
+            volunteer_first_name: volunteer_first_name,
+            volunteer_last_name: volunteer_last_name,
+            volunteer_phone_number: volunteer_phone_number,
+            volunteer_email_address: volunteer_email_address,
+            volunteer_street: volunteer_street,
+            volunteer_city: volunteer_city,
+            volunteer_state: volunteer_state,
+            volunteer_zip: volunteer_zip,
+            volunteer_referral_source: volunteer_referral_source,
+            volunteer_sewing_level: volunteer_sewing_level,
+            volunteer_monthly_hours: volunteer_monthly_hours,
+            volunteer_newsletter_optin: volunteer_newsletter_optin,
+            volunteer_status: volunteer_status,
+        })
+        // Redirect to the thank you page after submitting a form
+        .then(() => {
+            res.redirect('/thank-you')
+        })
+        .catch(error => {
+            console.error('Error submitting volunteer form:', error);
+            res.status(500).send('Internal Server Error');
+    });
+});
+
+// Admin add volunteer to database
+app.post('/admin-add-volunteer', (req, res) => {
+    const volunteer_first_name = req.body.first_name;
+    const volunteer_last_name = req.body.last_name;
+    const volunteer_phone_number = req.body.phone;
+    const volunteer_email_address = req.body.email;
+    const volunteer_street = req.body.street_address;
+    const volunteer_city = req.body.city;
+    const volunteer_state = req.body.state.toUpperCase();
+    const volunteer_zip = req.body.zip;
+    const volunteer_referral_source = req.body.referral_source;
+    const volunteer_sewing_level = req.body.sewing_level;
+    const volunteer_monthly_hours = parseInt(req.body.volunteer_hours);
+    const volunteer_newsletter_optin = req.body.newsletter ? true : false;
+    const volunteer_status = 'N';  // Set as New
+
+    // Update the volunteer in the database
+    knex('volunteers')
+        .insert({
+            volunteer_first_name: volunteer_first_name,
+            volunteer_last_name: volunteer_last_name,
+            volunteer_phone_number: volunteer_phone_number,
+            volunteer_email_address: volunteer_email_address,
+            volunteer_street: volunteer_street,
+            volunteer_city: volunteer_city,
+            volunteer_state: volunteer_state,
+            volunteer_zip: volunteer_zip,
+            volunteer_referral_source: volunteer_referral_source,
+            volunteer_sewing_level: volunteer_sewing_level,
+            volunteer_monthly_hours: volunteer_monthly_hours,
+            volunteer_newsletter_optin: volunteer_newsletter_optin,
+            volunteer_status: volunteer_status,
+        })
+        // Redirect to the volunteer management page after submitting a form
+        .then(() => {
+            res.redirect('/volunteer-manage')
+        })
+        .catch(error => {
+            console.error('Error submitting volunteer form:', error);
+            res.status(500).send('Internal Server Error');
+    });
+});
+
+// Route to display thank you page after successfully submitting a form
+app.get('/thank-you', (req, res) => {
+    res.render('thank-you');
+});
+
 // Route to display login page
 app.get('/login', (req, res) => {
     res.render('login');
@@ -192,6 +283,7 @@ app.get('/volunteer-details/:id', (req, res) => {
 // Update the volunteer route
 app.post('/update-volunteer/:id', (req, res) => {
     const id = req.params.id;
+    const volunteer_status = req.body.form_status;
     const volunteer_first_name = req.body.first_name;
     const volunteer_last_name = req.body.last_name;
     const volunteer_phone_number = req.body.phone;
@@ -221,6 +313,7 @@ app.post('/update-volunteer/:id', (req, res) => {
             volunteer_sewing_level: volunteer_sewing_level,
             volunteer_monthly_hours: volunteer_monthly_hours,
             volunteer_newsletter_optin: volunteer_newsletter_optin,
+            volunteer_status: volunteer_status,
         })
         // Redirect to volunteer management page after saving to the database
         .then(() => {
@@ -233,18 +326,22 @@ app.post('/update-volunteer/:id', (req, res) => {
 });
 
 // Delete volunteer
-app.post('/delete-volunteer/:id', (req, res) => {
+app.post('/delete-volunteer/:id', async (req, res) => {
     const id = req.params.id;
-    knex('volunteers')
-        .where('volunteer_id', id)
-        .del()
-        .then(() => {
-            res.redirect('/volunteer-manage'); // Redirect to the volunteer management page after deletion
-        })
-        .catch(error => {
-            console.error('Error deleting volunteer:', error);
-            res.status(500).send('Internal Server Error');
-    });
+
+    try {
+        // Delete related records in the event_volunteers table (must do this before deleting related volunteers)
+        await knex('event_volunteers').where('volunteer_id', id).del();
+
+        // Delete the volunteer record
+        await knex('volunteers').where('volunteer_id', id).del();
+
+        // Redirect to the volunteer management page after deletion
+        res.redirect('/volunteer-manage'); 
+    } catch (error) {
+        console.error('Error deleting volunteer:', error);
+        res.status(500).send('Unable to delete volunteer due to associated records.');
+    }
 });
 
 // Route to display event management page
