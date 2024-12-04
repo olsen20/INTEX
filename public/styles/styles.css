@@ -669,8 +669,7 @@ button.add-user-btn:hover {
     border-radius: 5px;
     text-decoration: none; /* Remove link underline */
     cursor: pointer;
-    font-weight: bold;
-    margin-right: 10px; /* Space between buttons */
+    font-weight: bold; /* Space between buttons */
     margin-top: 20px; /* Space above the button */
     flex: 1; /* Ensures consistent width with the delete button */
 }
@@ -690,9 +689,7 @@ button.add-user-btn:hover {
     border-radius: 5px;
     text-decoration: none; /* Remove link underline */
     cursor: pointer;
-    font-weight: bold;
-    margin-left: 10px; /* Space between buttons */
-    margin-top: 20px; /* Space above the button */
+    font-weight: bold; /* Space between buttons */ /* Space above the button */
     flex: 1; /* Ensures consistent width with the update button */
 }
 
