@@ -36,8 +36,8 @@
         <!-- Current User Profile -->
         <div class="profile-container">
             <h2>My Profile</h2>
-            <p><b>Name:</b> [Current User Name]</p>
-            <p><b>Username:</b> [Current User Username]</p>
+            <p><b>Name:</b> <%= curr_user.user_first_name + ' ' + curr_user.user_last_name %></p>
+            <p><b>Username:</b> <%= curr_user.username %> </p>
             <a href="/profile" class="modify-profile-btn">Modify My Profile</a>
         </div>
     
@@ -49,20 +49,24 @@
             </div>
         
             <!-- Team Members List -->
-            <a href="/user-details"><div class="user-card">
-                <p class="name">John Doe</p>
-                <p class="username">@johndoe</p>
-            </div></a>
-            <div class="user-card" onclick="viewUserDetails('janesmith')">
-                <p class="name">Jane Smith</p>
-                <p class="username">@janesmith</p>
-            </div>
-            <div class="user-card" onclick="viewUserDetails('bobwhite')">
-                <p class="name">Bob White</p>
-                <p class="username">@bobwhite</p>
-            </div>
-        </div>
-    </div>
+
+            <% if (users.length > 0) { %>
+                <% users.forEach(row => { %>
+                    <a href="/user-details/<%= row.username %>">
+                        <div class="user-card">
+                            <div class="details">
+                                <p class="name"> <%= row.user_first_name + ' ' + row.user_last_name %></p>
+                                <p class="username"> <%= row.username %></p>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <div class="details">
+                    <p style="text-align: center;">No users</p>
+                </div>
+            <% } %>
+
 
     <!-- FOOTER -->
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">

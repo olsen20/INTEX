@@ -26,7 +26,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || '0121',
+		password: process.env.RDS_PASSWORD || 'project403',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
@@ -173,7 +173,7 @@ app.get('/login', (req, res) => {
 // Internal website ----------------------------------------------------------------------------------------------------------------------------
 // Login user
 app.post('/login', async (req, res) => {
-    const username = req.body.username.toUpperCase();
+    const username = req.body.username;
     const password = req.body.password;
 
     try {
@@ -498,12 +498,78 @@ app.get('/event-occurred', (req, res) => {
 
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
-    res.render('user-manage');
+    Promise.all([
+        knex('employees').select('username', 'user_first_name', 'user_last_name'),
+        knex('employees')
+            .select('username', 'user_first_name', 'user_last_name')
+            .where('username', req.session.username)
+            .first()
+    ])
+    .then(([users, curr_user]) => {
+        res.render('user-manage', { users, curr_user });
+    })
+    .catch(error => {
+        console.error('Error fetching users:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
+
 
 // Route to display profile page
 app.get('/profile', (req, res) => {
-    res.render('profile');
+    
+    knex('employees')
+    .where('username', req.session.username)
+    .first()
+    .then(user => {
+        res.render('profile', { user });
+    })
+    .catch(error => {
+        console.error('Error fetching profile:', error);
+        res.status(500).send('Internal Server Error');
+    });
+      
+});
+
+app.post('/profile/:user', (req,res) => {
+    const user = req.params.user
+
+    const username = req.body.username
+    const password = req.body.password;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const street_address = req.body.street_address;
+    const city = req.body.city;
+    const state = req.body.state;
+    const zip = req.body.zip;
+    const gender = req.body.gender;
+    const role = req.body.role;
+
+    knex('employees')
+    .where('username', user)
+    .update({
+        username : username,
+        password : password,
+        user_first_name : first_name,
+        user_last_name : last_name,
+        user_email_address : email,
+        user_phone_number : phone,
+        user_street : street_address,
+        user_city : city,
+        user_state : state,
+        user_zip : zip,
+        user_gender : gender,
+        user_position : role
+    })
+    .then(() => {
+        res.redirect('/user-manage')
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
 
 // Route to add user page
