@@ -35,10 +35,10 @@
     <!-- Event form results -->
     <div class="container mt-5">
         <!-- Form Status Selector -->
-        <form action="/update-event" method="POST">
+        <form action="/update-event/<%= event.event_id %>" method="POST" onsubmit="return validateForm()">
         <div class="form-status-container">
             <label for="form-status" class="form-label">Form Status:</label>
-            <select id="form-status" name="form-status" class="form-select">
+            <select id="form-status" name="form_status" class="form-select">
                 <option value="N" <%= event.event_status === 'N' ? 'selected' : '' %>>New</option>
                 <option value="C" <%= event.event_status === 'C' ? 'selected' : '' %>>Currently Contacting</option>
                 <option value="F" <%= event.event_status === 'F' ? 'selected' : '' %>>Finalized</option>
@@ -49,40 +49,40 @@
         <h1>Event Request Form</h1>
             <div class="mb-3">
                 <label for="number-of-people">How many people:</label>
-                <input type="number" id="number-of-people" name="number-of-people" min="1" value="<%= event.event_attendees %>" required>
+                <input type="number" id="number-of-people" name="number_of_people" min="1" value="<%= event.event_attendees %>" required>
             </div>
                 
             <div class="mb-3">
                 <label>Event Type:</label>
                 <div class="form-check">
-                    <input type="radio" id="event-sewing" name="event-type" value="sewing" <%= event.event_type === 'sewing' ? 'checked' : '' %> required>
+                    <input type="radio" id="event-sewing" name="event_type" value="sewing" <%= event.event_type === 'sewing' ? 'checked' : '' %> required>
                     <label for="event-sewing">Sewing</label>
                 </div>
     
                 <div class="form-check">
-                    <input type="radio" id="event-non-sewing" name="event-type" value="non-sewing" <%= event.event_type === 'non-sewing' ? 'checked' : '' %>>
+                    <input type="radio" id="event-non-sewing" name="event_type" value="non-sewing" <%= event.event_type === 'non-sewing' ? 'checked' : '' %>>
                     <label for="event-non-sewing">Non-sewing</label>
                 </div>
                 
                 <div class="form-check">
-                    <input type="radio" id="event-both" name="event-type" value="both" <%= event.event_type === 'both' ? 'checked' : '' %>>
+                    <input type="radio" id="event-both" name="event_type" value="both" <%= event.event_type === 'both' ? 'checked' : '' %>>
                     <label for="event-both">Both</label>
                 </div>
             </div>
     
             <div class="mb-3">
                 <label for="event-date">Date:</label>
-                <input type="date" id="event-date" name="event-date" value="<%= event.event_date %>" required>
+                <input type="date" id="event-date" name="event_date" value="<%= event.event_date %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="backup-date">Backup Date:</label>
-                <input type="date" id="backup-date" name="backup-date" value="<%= event.event_backup_date %>" required>
+                <input type="date" id="backup-date" name="backup_date" value="<%= event.event_backup_date %>">
             </div>
     
             <div class="mb-3">
                 <label for="street-address">Event Street Address:</label>
-                <input type="text" id="street-address" name="street-address" value="<%= event.event_street %>" required>
+                <input type="text" id="street-address" name="street_address" value="<%= event.event_street %>" required>
             </div>
     
             <div class="mb-3">
@@ -107,12 +107,12 @@
     
             <div class="mb-3">
                 <label for="start-time">Desired Start Time:</label>
-                <input type="time" id="start-time" name="start-time" value="<%= event.event_start_time %>" required>
+                <input type="time" id="start-time" name="start_time" value="<%= event.event_start_time %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="event-length">Event Length (in hours):</label>
-                <input type="number" id="event-length" name="event-length" min="1" value="<%= event.event_length %>" required>
+                <input type="number" id="event-length" name="event_length" min="1" value="<%= event.event_length %>" required>
             </div>
     
             <div class="mb-3">
@@ -127,7 +127,7 @@
     
             <div class="mb-3">
                 <label for="phone-number">Phone Number:</label>
-                <input type="tel" id="phone-number" name="phone-number" value="<%= event.event_contact_phone_number %>" required>
+                <input type="tel" id="phone-number" name="phone_number" value="<%= event.event_contact_phone_number %>" required>
             </div>
     
             <div class="mb-3">
@@ -138,34 +138,52 @@
             <div class="mb-3">
                 <label>Would you like Jen to share her story?</label>
                 <div class="form-check">
-                    <input type="radio" id="jen-share-yes" name="jen-share" value="true" <%= event.share_story === true ? 'checked' : '' %> required>
+                    <input type="radio" id="jen-share-yes" name="jen_share" value="true" <%= event.share_story === true ? 'checked' : '' %> required>
                     <label for="jen-share-yes">Yes</label>
                 </div>
     
                 <div class="form-check">
-                    <input type="radio" id="jen-share-no" name="jen-share" value="false" <%= event.share_story === false ? 'checked' : '' %>>
+                    <input type="radio" id="jen-share-no" name="jen_share" value="false" <%= event.share_story === false ? 'checked' : '' %>>
                     <label for="jen-share-no">No</label>
                 </div>
             </div>
     
             <div class="mb-3">
                 <label for="advanced-sewing">How many people in your group have advanced sewing skills?</label>
-                <input type="number" id="advanced-sewing" name="advanced-sewing" min="0" value="<%= event.advanced_sewing_count %>" required>
+                <input type="number" id="advanced-sewing" name="advanced_sewing" min="0" value="<%= event.advanced_sewing_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="basic-sewing">How many people in your group have basic sewing skills?</label>
-                <input type="number" id="basic-sewing" name="basic-sewing" min="0" value="<%= event.basic_sewing_count %>" required>
+                <input type="number" id="basic-sewing" name="basic_sewing" min="0" value="<%= event.basic_sewing_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="sewing-machines">How many sewing machines can you provide?</label>
-                <input type="number" id="sewing-machines" name="sewing-machines" min="0" value="<%= event.sew_machine_count %>" required>
+                <input type="number" id="sewing-machines" name="sewing_machines" min="0" value="<%= event.sew_machine_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="sergers">How many sergers can your group bring?</label>
                 <input type="number" id="sergers" name="sergers" min="0" value="<%= event.sergers_machine_count %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="room">Room Type (e.g., Living Room, Gymnasium, etc.):</label>
+                <input type="text" id="room" name="room" required>
+            </div>
+
+            <!-- Button to show/hide volunteer field -->
+            <button type="button" onclick="toggleVolunteerField()" class="expand-form-btn">Add Volunteers Who Will Attend</button>
+
+            <div id="volunteer-field" style="display: none;">
+                <label>Volunteers who will attend:</label>
+                <% volunteers.forEach(volunteer => { %>
+                    <br><label for="<%= volunteer.volunteer_id %>">
+                    <input type="checkbox" id="<%= volunteer.volunteer_id %>" name="volunteers" value="<%= volunteer.volunteer_id %>">
+                    <%= volunteer.volunteer_first_name %> <%= volunteer.volunteer_last_name %>
+                    </label>
+                <% }); %>
             </div>
     
             <!-- Update and delete buttons -->
@@ -173,8 +191,9 @@
                 <button type="submit" class="update-profile-btn">Update Event</button>
                 <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
             </div>
-            <!-- Back to Volunteers button -->
-            <a href="/volunteer-manage"type="button" class="back-to-users-btn">Back to Volunteers Page</a>
+
+            <!-- Back to Events button -->
+            <a href="/event-manage"type="button" class="back-to-users-btn">Back to Events Page</a>
         </form>
     </div>
 
@@ -182,5 +201,95 @@
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>&copy; 2024 Turtle Shelter Project</p>
     </footer>
+
+    <script>
+        // Function to validate the form inputs to match what is stored in the database
+        function validateForm() {
+            const phone = document.getElementById('phone-number').value.trim();
+            const numberOfPeople = parseInt(document.getElementById('number-of-people').value.trim());
+            const eventDate = new Date(document.getElementById('event-date').value);
+            const backupDate = new Date(document.getElementById('backup-date').value);
+            const eventLength = parseInt(document.getElementById('event-length').value.trim());
+            const advancedSewing = parseInt(document.getElementById('advanced-sewing').value.trim());
+            const basicSewing = parseInt(document.getElementById('basic-sewing').value.trim());
+            const sewingMachines = parseInt(document.getElementById('sewing-machines').value.trim());
+            const sergers = parseInt(document.getElementById('sergers').value.trim());
+            const state = document.getElementById('state').value.trim();
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize to start of day
+            
+            // Validation messages
+            let messages = [];
+            
+            // Validate phone number (numeric values only)
+            if (!/^\d+$/.test(phone)) {
+                messages.push('Phone number must contain only numeric values.');
+            }
+            
+            // Validate "how many people" is greater than 0
+            if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+                messages.push('Number of participants must be greater than 0.');
+            }
+            
+            // Validate event date and backup date are in the future
+            if (isNaN(eventDate.getTime()) || eventDate <= today) {
+                messages.push('Event date must be in the future.');
+            }
+            
+            if (isNaN(backupDate.getTime()) || backupDate <= today) {
+                messages.push('Backup date must be in the future.');
+            }
+            
+            // Validate event length is greater than 0
+            if (isNaN(eventLength) || eventLength <= 0) {
+                messages.push('Event duration must be greater than 0.');
+            }
+            
+            // Validate advanced sewing count is greater than 0
+            if (isNaN(advancedSewing) || advancedSewing < 0) {
+                messages.push('Number of people with advanced sewing skills must be 0 or more.');
+            }
+            
+            // Validate basic sewing count is greater than 0
+            if (isNaN(basicSewing) || basicSewing < 0) {
+                messages.push('Number of people with basic sewing skills must be 0 or more.');
+            }
+            
+            // Validate sewing machines count is greater than 0
+            if (isNaN(sewingMachines) || sewingMachines < 0) {
+                messages.push('Number of sewing machines provided must be 0 or more.');
+            }
+            
+            // Validate sergers count is greater than 0
+            if (isNaN(sergers) || sergers < 0) {
+                messages.push('Number of sergers provided must be 0 or more.');
+            }
+
+            // Check state (2 letters)
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+            
+            // If there are validation errors, prevent form submission and show alerts
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+            
+            return true; // Allow form submission
+        }
+        
+        // Function to show volunteer field
+        function toggleVolunteerField()
+        {
+            const volunteerField = document.getElementById('volunteer-field');
+            if (volunteerField.style.display === 'none' || volunteerField.style.display === '') {
+                volunteerField.style.display = 'block'; // Show the original fields
+            } else {
+                volunteerField.style.display = 'none'; // Hide the original fields
+            }
+        }
+    </script>
 </body>
 </html>
