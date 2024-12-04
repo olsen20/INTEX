@@ -386,7 +386,7 @@ app.get('/admin-add-event', (req, res) => {
 app.post()
 
 // Route to display event details page
-app.get('/event-details/:id', (req, res) => {
+app.get('/event-details/:id', async (req, res) => {
     let id = req.params.id;
 
     try {
@@ -413,13 +413,12 @@ app.get('/event-details/:id', (req, res) => {
 
         // Render the event form with retrieved data
         res.render('event-details', { event, volunteers, associatedVolunteerIds });
-    } catch (error) {
+        } catch (error) {
         console.error('Error fetching event', error);
         res.status(500).send('Internal Server Error');
 
-    }); 
-}); 
-
+    };
+});
 // Update an event form
 app.post('/update-event/:id/:contact_id', async (req, res) => {
     const event_id = req.params.id;
