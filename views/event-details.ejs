@@ -35,132 +35,137 @@
     <!-- Event form results -->
     <div class="container mt-5">
         <!-- Form Status Selector -->
+        <form action="/update-event" method="POST">
         <div class="form-status-container">
             <label for="form-status" class="form-label">Form Status:</label>
             <select id="form-status" name="form-status" class="form-select">
-                <option value="new">New</option>
-                <option value="contacting">Currently Contacting</option>
-                <option value="finalized">Finalized</option>
+                <option value="N" <%= event.event_status === 'N' ? 'selected' : '' %>>New</option>
+                <option value="C" <%= event.event_status === 'C' ? 'selected' : '' %>>Currently Contacting</option>
+                <option value="F" <%= event.event_status === 'F' ? 'selected' : '' %>>Finalized</option>
             </select>
         </div>
 
         <!-- Event form details -->
         <h1>Event Request Form</h1>
-        <form action="/event" method="POST">
             <div class="mb-3">
                 <label for="number-of-people">How many people:</label>
-                <input type="number" id="number-of-people" name="number-of-people" min="1" required>
+                <input type="number" id="number-of-people" name="number-of-people" min="1" value="<%= event.event_attendees %>" required>
             </div>
                 
             <div class="mb-3">
                 <label>Event Type:</label>
                 <div class="form-check">
-                    <input type="radio" id="event-sewing" name="event-type" value="sewing" required>
+                    <input type="radio" id="event-sewing" name="event-type" value="sewing" <%= event.event_type === 'sewing' ? 'checked' : '' %> required>
                     <label for="event-sewing">Sewing</label>
                 </div>
     
                 <div class="form-check">
-                    <input type="radio" id="event-non-sewing" name="event-type" value="non-sewing">
+                    <input type="radio" id="event-non-sewing" name="event-type" value="non-sewing" <%= event.event_type === 'non-sewing' ? 'checked' : '' %>>
                     <label for="event-non-sewing">Non-sewing</label>
                 </div>
                 
                 <div class="form-check">
-                    <input type="radio" id="event-both" name="event-type" value="both">
+                    <input type="radio" id="event-both" name="event-type" value="both" <%= event.event_type === 'both' ? 'checked' : '' %>>
                     <label for="event-both">Both</label>
                 </div>
             </div>
     
             <div class="mb-3">
                 <label for="event-date">Date:</label>
-                <input type="date" id="event-date" name="event-date" required>
+                <input type="date" id="event-date" name="event-date" value="<%= event.event_date %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="backup-date">Backup Date:</label>
-                <input type="date" id="backup-date" name="backup-date" required>
+                <input type="date" id="backup-date" name="backup-date" value="<%= event.event_backup_date %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="street-address">Event Street Address:</label>
-                <input type="text" id="street-address" name="street-address" required>
+                <input type="text" id="street-address" name="street-address" value="<%= event.event_street %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="city">City:</label>
-                <input type="text" id="city" name="city" required>
+                <input type="text" id="city" name="city" value="<%= event.event_city %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="state">State:</label>
-                <input type="text" id="state" name="state" required>
+                <input type="text" id="state" name="state" value="<%= event.event_state %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="zip">Zip Code:</label>
-                <input type="text" id="zip" name="zip" required>
+                <input type="text" id="zip" name="zip" value="<%= event.event_zip %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="group">Group (e.g., youth group, school club, etc.):</label>
-                <input type="text" id="group" name="group" required>
+                <input type="text" id="group" name="group" value="<%= event.event_association %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="start-time">Desired Start Time:</label>
-                <input type="time" id="start-time" name="start-time" required>
+                <input type="time" id="start-time" name="start-time" value="<%= event.event_start_time %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="event-length">Event Length (in hours):</label>
-                <input type="number" id="event-length" name="event-length" min="1" required>
+                <input type="number" id="event-length" name="event-length" min="1" value="<%= event.event_length %>" required>
             </div>
     
             <div class="mb-3">
-                <label for="contact-name">Contact Name:</label>
-                <input type="text" id="contact-name" name="contact-name" required>
+                <label for="first_name">Contact First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="<%= event.event_contact_first_name %>" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="last_name">Contact Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="<%= event.event_contact_last_name %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="phone-number">Phone Number:</label>
-                <input type="tel" id="phone-number" name="phone-number" required>
+                <input type="tel" id="phone-number" name="phone-number" value="<%= event.event_contact_phone_number %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" value="<%= event.event_contact_email_address %>" required>
             </div>
     
             <div class="mb-3">
                 <label>Would you like Jen to share her story?</label>
                 <div class="form-check">
-                    <input type="radio" id="jen-share-yes" name="jen-share" value="yes" required>
+                    <input type="radio" id="jen-share-yes" name="jen-share" value="true" <%= event.share_story === true ? 'checked' : '' %> required>
                     <label for="jen-share-yes">Yes</label>
                 </div>
     
                 <div class="form-check">
-                    <input type="radio" id="jen-share-no" name="jen-share" value="no">
+                    <input type="radio" id="jen-share-no" name="jen-share" value="false" <%= event.share_story === false ? 'checked' : '' %>>
                     <label for="jen-share-no">No</label>
                 </div>
             </div>
     
             <div class="mb-3">
                 <label for="advanced-sewing">How many people in your group have advanced sewing skills?</label>
-                <input type="number" id="advanced-sewing" name="advanced-sewing" min="0" required>
+                <input type="number" id="advanced-sewing" name="advanced-sewing" min="0" value="<%= event.advanced_sewing_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="basic-sewing">How many people in your group have basic sewing skills?</label>
-                <input type="number" id="basic-sewing" name="basic-sewing" min="0" required>
+                <input type="number" id="basic-sewing" name="basic-sewing" min="0" value="<%= event.basic_sewing_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="sewing-machines">How many sewing machines can you provide?</label>
-                <input type="number" id="sewing-machines" name="sewing-machines" min="0" required>
+                <input type="number" id="sewing-machines" name="sewing-machines" min="0" value="<%= event.sew_machine_count %>" required>
             </div>
     
             <div class="mb-3">
                 <label for="sergers">How many sergers can your group bring?</label>
-                <input type="number" id="sergers" name="sergers" min="0" required>
+                <input type="number" id="sergers" name="sergers" min="0" value="<%= event.sergers_machine_count %>" required>
             </div>
     
             <!-- Update and delete buttons -->

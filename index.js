@@ -236,22 +236,22 @@ app.get('/admin-welcome', async (req, res) => {
 // Route to display volunteer management page
 app.get('/volunteer-manage', async (req, res) => {
     try {
-    const new_forms = await knex('volunteers')
-        .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
-        .where('volunteer_status', 'N');  // Retrieve new forms
+        const new_forms = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
+            .where('volunteer_status', 'N');  // Retrieve new forms
 
-    const current = await knex('volunteers')
-        .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
-        .where('volunteer_status', 'A')  // Retrieve active forms
+        const current = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
+            .where('volunteer_status', 'A')  // Retrieve active forms
 
-    const past = await knex('volunteers')
-        .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
-        .where('volunteer_status', 'X')  // Retrieve past volunteer forms
+        const past = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
+            .where('volunteer_status', 'X')  // Retrieve past volunteer forms
 
-    // Render the page with the volunteer form data
-    res.render('volunteer-manage', { new_forms, current, past });
+        // Render the page with the volunteer form data
+        res.render('volunteer-manage', { new_forms, current, past });
     } catch (error) {
-        console.error('Error fetching data for internal landing page:', error);
+        console.error('Error fetching volunteer data', error);
         res.status(500).send('Internal Server Error');
     }
 });
@@ -345,8 +345,27 @@ app.post('/delete-volunteer/:id', async (req, res) => {
 });
 
 // Route to display event management page
-app.get('/event-manage', (req, res) => {
-    res.render('event-manage');
+app.get('/event-manage', async (req, res) => {
+    try {
+        const newForms = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
+            .where('event_status', 'N');  // Retrieve new forms
+
+        // Format the date
+        const formattedDate = newForms.map(event => {
+            return {
+                ...event,
+                event_date: new Date(event.event_date).toLocaleDateString('en-US'), // Format as MM/DD/YYYY
+            };
+        });
+        
+        // Render the event management page with the event data
+        res.render('event-manage', { new_forms: formattedDate });
+    } catch (error) {
+        console.error('Error fetching event data:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/admin-add-event', (req, res) => {
@@ -354,8 +373,24 @@ app.get('/admin-add-event', (req, res) => {
 })
 
 // Route to display event details page
-app.get('/event-details', (req, res) => {
-    res.render('event-details');
+app.get('/event-details/:id', (req, res) => {
+    let id = req.params.id;
+
+    // Retrieve volunteer information with selected ID
+    knex('event_details')
+        .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+        .where('event_id', id)
+        .first()
+        .then(event => {
+            if (!event) {
+                return res.status(404).send('Event not found');
+            }
+            res.render('event-details', { event });
+    })
+    .catch(error => {
+        console.error('Error fetching event:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
 
 // Route to display an occurred event page
