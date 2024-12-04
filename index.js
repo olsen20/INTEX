@@ -26,7 +26,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || '0121',
+		password: process.env.RDS_PASSWORD || 'Cookiepw1!',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
@@ -73,6 +73,80 @@ app.get('/event', (req, res) => {
 app.get('/volunteer', (req, res) => {
     res.render('volunteer');
 });
+
+app.post('/event', (req, res) => {
+    // Remove parseInt and keep the values as they are
+    const event_attendees = req.body['number-of-people'];
+    const event_zip = req.body['zip'];
+    const basic_sewing_count = req.body['basic-sewing'];
+    const advanced_sewing_count = req.body['advanced-sewing'];
+    const sew_machine_count = req.body['sewing-machines'];
+    const sergers_machine_count = req.body['sergers'];
+
+
+    // Convert first and last names to uppercase
+    const event_contact_first_name = req.body['first_name'].toUpperCase();
+    const event_contact_last_name = req.body['last_name'].toUpperCase();
+
+
+    // Get other fields as they are (no need to parse)
+    const event_type = req.body['event-type'];
+    const event_date = req.body['event-date'];
+    const event_backup_date = req.body['backup-date'];
+    const event_street = req.body['street-address'];
+    const event_city = req.body['city'];
+    const event_state = req.body['state'];
+    const room_type = req.body['room'];
+    const event_association = req.body['group'];
+    const event_start_time = req.body['start-time'];
+    const event_length = req.body['event-length'];
+    const event_contact_phone_number = req.body['phone-number'];
+    const event_contact_email_address = req.body['email'];
+    const share_story = req.body['jen-share'];
+
+
+    // Insert contact info first into event_contact_info table
+    knex('event_contact_info')
+        .insert({
+            event_contact_first_name: event_contact_first_name,
+            event_contact_last_name: event_contact_last_name,
+            event_contact_phone_number: event_contact_phone_number,
+            event_contact_email_address: event_contact_email_address
+        })
+        .returning('event_contact_id') // Get the event_contact_id
+        .then(([contactInfo]) => {
+            // Now that we have the event_contact_id, insert the event details
+            return knex('event_details')
+                .insert({
+                    event_attendees: event_attendees,
+                    event_type: event_type,
+                    event_date: event_date,
+                    event_backup_date: event_backup_date,
+                    event_street: event_street,
+                    event_city: event_city,
+                    event_state: event_state,
+                    event_zip: event_zip,
+                    room_type: room_type,
+                    event_association: event_association,
+                    event_start_time: event_start_time,
+                    event_length: event_length,
+                    event_contact_id: contactInfo.event_contact_id, // Link to contact info
+                    share_story: share_story,
+                    basic_sewing_count: basic_sewing_count,
+                    advanced_sewing_count: advanced_sewing_count,
+                    sew_machine_count: sew_machine_count,
+                    sergers_machine_count: sergers_machine_count
+                });
+        })
+        .then(() => {
+            res.redirect('/thank-you'); // Redirect after successful insert
+        })
+        .catch(error => {
+            console.error('Error submitting event form:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
 
 // Add volunteer to database
 app.post('/add-volunteer', (req, res) => {
@@ -373,118 +447,24 @@ app.get('/admin-add-event', (req, res) => {
 })
 
 // Route to display event details page
-app.get('/event-details/:id', async (req, res) => {
+app.get('/event-details/:id', (req, res) => {
     let id = req.params.id;
 
-    try {
-        // Retrieve event information with selected ID
-        let event = await knex('event_details')
+    // Retrieve volunteer information with selected ID
+    knex('event_details')
         .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
         .where('event_id', id)
         .first()
-
-        // Convert dates to 'YYYY-MM-DD' format
-        event.event_date = new Date(event.event_date).toISOString().split('T')[0];
-        event.event_backup_date = new Date(event.event_backup_date).toISOString().split('T')[0];
-
-        // Retrieve active volunteers
-        let volunteers = await knex('volunteers')
-            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name')
-            .where('volunteer_status', 'A') // Where volunteer status is active
-            .orderBy('volunteer_first_name', 'asc')
-
-        // Render the event form with retrieved data
-        res.render('event-details', { event, volunteers });
-    } catch (error) {
-        console.error('Error fetching event', error);
+        .then(event => {
+            if (!event) {
+                return res.status(404).send('Event not found');
+            }
+            res.render('event-details', { event });
+    })
+    .catch(error => {
+        console.error('Error fetching event:', error);
         res.status(500).send('Internal Server Error');
-    }
-});
-
-// Update an event form
-app.post('/update-event/:id', async (req, res) => {
-    const event_id = req.params.id;
-
-    try {
-        const {
-            event_date,
-            start_time: event_start_time,
-            backup_date: event_backup_date,
-            group: event_association,
-            event_type,
-            street_address: event_street,
-            state: event_state,
-            city: event_city,
-            zip: event_zip,
-            event_length,
-            jen_share: share_story,
-            number_of_people: attendees,
-            basic_sewing: basic_sewing_count,
-            advanced_sewing: advanced_sewing_count,
-            sewing_machines: sew_machine_count,
-            sergers: sergers_machine_count,
-            form_status: event_status,
-            room: room_type,
-            first_name: event_contact_first_name,
-            last_name: event_contact_last_name,
-            phone_number: event_contact_phone_number,
-            email: event_contact_email_address,
-            volunteers,
-        } = req.body;
-
-        const event_attendees = parseInt(attendees, 10) || 0;
-        const volunteer_ids = Array.isArray(volunteers) ? volunteers.map(Number) : [];
-        
-        // Insert contact information
-        const [event_contact_id] = await knex('event_contact_info')
-            .insert({
-                event_contact_first_name,
-                event_contact_last_name,
-                event_contact_phone_number,
-                event_contact_email_address,
-            })
-            .returning('event_contact_id');
-
-        // Update event details
-        await knex('event_details')
-            .where('event_id', event_id)
-            .update({
-                event_contact_id,
-                event_date,
-                event_start_time,
-                event_backup_date,
-                event_association,
-                event_type,
-                event_street,
-                event_state: event_state.toUpperCase(),
-                event_city,
-                event_zip,
-                event_length,
-                share_story: share_story === 'true',
-                event_attendees,
-                basic_sewing_count: parseInt(basic_sewing_count, 10) || 0,
-                advanced_sewing_count: parseInt(advanced_sewing_count, 10) || 0,
-                sew_machine_count: parseInt(sew_machine_count, 10) || 0,
-                sergers_machine_count: parseInt(sergers_machine_count, 10) || 0,
-                event_status,
-                room_type,
-            });
-
-        // Insert volunteer assignments in bulk
-        if (volunteer_ids.length > 0) {
-            const volunteerRows = volunteer_ids.map(volunteer_id => ({
-                event_id,
-                volunteer_id,
-            }));
-            await knex('event_volunteers').insert(volunteerRows);
-        }
-
-        // Redirect to events management page
-        res.redirect('/event-manage');
-    } catch (error) {
-        console.error('Error updating event:', error);
-        res.status(500).send({ error: 'Failed to update event.' });
-    }
+    });
 });
 
 // Route to display an occurred event page
