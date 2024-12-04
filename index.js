@@ -421,7 +421,7 @@ app.get('/event-manage', async (req, res) => {
         const newForms = await knex('event_details')
             .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
             .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
-            .where('event_status', 'N');  // Retrieve new forms
+            .whereIn('event_status', ['N', 'C'])  // Return events that are new or currently being contacted
 
         // Format the date
         const formattedDate1 = newForms.map(event => {
@@ -446,8 +446,37 @@ app.get('/event-manage', async (req, res) => {
             };
         });
 
+        // Retrieve the recently occurred events
+        const upcomingForms = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
+            .where('event_status', 'F') // Retrieve finalized forms
+            .whereRaw('NOW() <= event_date + event_start_time::interval'); // Where the event date and start time are in the future
+        
+        // Format the date
+        const formattedDate3 = upcomingForms.map(event => {
+            return {
+                ...event,
+                event_date: new Date(event.event_date).toLocaleDateString('en-US'), // Format as MM/DD/YYYY
+            };
+        });
+
+        // Retrieve the recently occurred events
+        const pastForms = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .select('event_id', 'event_contact_first_name', 'event_contact_last_name', 'event_association', 'event_date')
+            .where('event_status', 'P') // Retrieve past forms
+
+        // Format the date
+        const formattedDate4 = pastForms.map(event => {
+            return {
+                ...event,
+                event_date: new Date(event.event_date).toLocaleDateString('en-US'), // Format as MM/DD/YYYY
+            };
+        });
+
         // Render the event management page with the event data
-        res.render('event-manage', { new_forms: formattedDate1, recent: formattedDate2 });
+        res.render('event-manage', { new_forms: formattedDate1, recent: formattedDate2, upcoming: formattedDate3, past: formattedDate4 });
     } catch (error) {
         console.error('Error fetching event data:', error);
         res.status(500).send('Internal Server Error');
@@ -456,7 +485,7 @@ app.get('/event-manage', async (req, res) => {
 
 app.get('/admin-add-event', (req, res) => {
     res.render('admin-add-event');
-})
+});
 
 app.post('/admin-add-event', (req, res) => {
  
@@ -523,9 +552,6 @@ app.post('/admin-add-event', (req, res) => {
             res.status(500).send('Internal Server Error');
         });
 });
-
-
-
 
 // Route to display event details page
 app.get('/event-details/:id', async (req, res) => {
@@ -662,6 +688,9 @@ app.post('/delete-event/:id/:contact_id', async (req, res) => {
     try {
         // Delete related records in the event_volunteers table (must do this before deleting related events)
         await knex('event_volunteers').where('event_id', id).del();
+
+        // Delete the past event record
+        await knex('past_events').where('event_id', id).del();
 
         // Delete the event record
         await knex('event_details').where('event_id', id).del();
@@ -824,6 +853,42 @@ app.post('/finish-event/:id/:contact_id', async (req, res) => {
     }
 });
 
+// Route to display past event page
+app.get('/event-past/:id', async (req, res) => {
+    let id = req.params.id;
+
+    try {
+        // Retrieve event information with selected ID
+        let event = await knex('event_details')
+            .join('event_contact_info', 'event_details.event_contact_id', '=', 'event_contact_info.event_contact_id')
+            .join('past_events', 'event_details.event_id', '=', 'past_events.event_id')
+            .where('event_details.event_id', id)
+            .first();
+
+        if (event) {
+            // Convert dates to 'YYYY-MM-DD' format
+            event.event_date = new Date(event.event_date).toISOString().split('T')[0];
+            event.event_backup_date = new Date(event.event_backup_date).toISOString().split('T')[0];
+        }
+
+        // Retrieve active volunteers
+        let volunteers = await knex('volunteers')
+            .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name')
+            .orderBy('volunteer_first_name', 'asc'); // Retrieve all volunteers for context
+
+        // Retrieve IDs of volunteers associated with the event
+        let associatedVolunteerIds = await knex('event_volunteers')
+            .where('event_id', id)
+            .pluck('volunteer_id'); // Returns an array of volunteer IDs
+
+        // Render the event form with retrieved data
+        res.render('event-past', { event, volunteers, associatedVolunteerIds });
+    } catch (error) {
+        console.error('Error fetching event', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
     Promise.all([
@@ -841,7 +906,6 @@ app.get('/user-manage', (req, res) => {
         res.status(500).send('Internal Server Error');
     });
 });
-
 
 // Route to display profile page
 app.get('/profile', (req, res) => {
