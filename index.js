@@ -418,6 +418,8 @@ app.get('/event-details/:id', (req, res) => {
         res.status(500).send('Internal Server Error');
 
     });
+});
+
 // Update an event form
 app.post('/update-event/:id/:contact_id', async (req, res) => {
     const event_id = req.params.id;
