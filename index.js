@@ -17,7 +17,7 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set secure to true in production when using HTTPS
+    cookie: { secure: false } // Set secure to true in production when using HTTPS
 }));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
