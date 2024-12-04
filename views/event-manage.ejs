@@ -91,39 +91,45 @@
                 <!-- Upcoming Event Forms -->
                 <div class="forms-container">
                     <h2>Upcoming Events</h2>
-                    <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                    <% if (upcoming.length > 0) { %>
+                        <% upcoming.forEach(row => { %>
+                            <a href="/event-details/<%= row.event_id %>">
+                                <div class="form-card">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
                         <div class="details">
-                            <p><b>Name:</b> Mary Lamb</p>
-                            <p><b>Group:</b> BYU Noteworthy</p>
-                            <p><b>Date:</b> 12/3/2025</p>
+                            <p style="text-align: center;">No upcoming events</p>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
 
                 <!-- Past Event Forms -->
                 <div class="forms-container">
                     <h2>Past Events</h2>
-                    <div class="form-card" onclick="showFormDetails('Alice Brown', 'alice.brown@example.com', '(555) 123-4567', 'Tuesdays, Thursdays')">
+                    <% if (past.length > 0) { %>
+                        <% past.forEach(row => { %>
+                            <a href="/event-past/<%= row.event_id %>">
+                                <div class="form-card">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
                         <div class="details">
-                            <p><b>Name:</b> Alice Brown</p>
-                            <p><b>Group:</b> 1st Ward Youth Night</p>
-                            <p><b>Date:</b> 12/30/2024</p>
+                            <p style="text-align: center;">No past events</p>
                         </div>
-                    </div>
-                    <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
-                        <div class="details">
-                            <p><b>Name:</b> Bob White</p>
-                            <p><b>Group:</b> The White Family</p>
-                            <p><b>Date:</b> 1/29/2025</p>
-                        </div>
-                    </div>
-                    <div class="form-card" onclick="showFormDetails('Bob White', 'bob.white@example.com', '(444) 567-1234', 'Saturdays')">
-                        <div class="details">
-                            <p><b>Name:</b> Bob White</p>
-                            <p><b>Group:</b> The White Family</p>
-                            <p><b>Date:</b> 1/29/2025</p>
-                        </div>
-                    </div>
+                    <% } %>
                 </div>
             </div>
         </div>
