@@ -41,20 +41,23 @@
                 <!-- New Event Forms -->
                 <div class="forms-container">
                     <h2>New Event Forms</h2>
-                    <div class="form-card new" onclick="showFormDetails('John Doe', 'john.doe@example.com', '(123) 456-7890', 'Mondays, Wednesdays')">
+                    <% if (new_forms.length > 0) { %>
+                        <% new_forms.forEach(row => { %>
+                            <a href="/event-details/<%= row.event_id %>">
+                                <div class="form-card new">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Potential Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
                         <div class="details">
-                            <p><b>Name:</b> John Doe</p>
-                            <p><b>Group:</b> BYU Service Club</p>
-                            <p><b>Date:</b> 1/20/2025</p>
+                            <p style="text-align: center;">No new event forms</p>
                         </div>
-                    </div>
-                    <div class="form-card new" onclick="showFormDetails('Jane Smith', 'jane.smith@example.com', '(987) 654-3210', 'Fridays')">
-                        <div class="details">
-                            <p><b>Name:</b> Jane Smith</p>
-                            <p><b>Group:</b> 5th Ward Young Womens</p>
-                            <p><b>Date:</b> 12/17/2024</p>
-                        </div>
-                    </div>
+                    <% } %>
                 </div>
 
                 <!-- Occurred Event Forms -->
