@@ -26,7 +26,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || 'Cookiepw1!',
+		password: process.env.RDS_PASSWORD || 'project403',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
@@ -1085,8 +1085,8 @@ app.post('/update-user/:user', (req, res) => {
     });
 });
 
-app.post('/delete-user/:username', (req, res) => {
-    const username = req.params.username
+app.post('/deleteUser/:username', (req, res) => {
+    const username = req.params.username;
     console.log("Deleting user with username:", username);
 
     knex('employees')
@@ -1094,6 +1094,22 @@ app.post('/delete-user/:username', (req, res) => {
     .del()
     .then(() => {
         res.redirect('/user-manage');
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+        res.status(500).send('Internal Server Error');
+    });
+});
+
+app.post('/deleteProfile/:username', (req, res) => {
+    const username = req.params.username;
+    console.log("Deleting user with username:", username);
+
+    knex('employees')
+    .where('username', username)
+    .del()
+    .then(() => {
+        res.redirect('/');
     })
     .catch(error => {
         console.error('Error deleting user:', error);
