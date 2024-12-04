@@ -20,7 +20,7 @@
             <!-- Logo and Website Name -->
             <a href="/admin-welcome">
                 <div style="display: flex; align-items: center;">
-                    <img src="/images/logo.png" alt="Website Logo">
+                    <img src="/images/logo.png" alt="Website Logo" class="logo">
                     <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
                 </div>
             </a>
@@ -45,63 +45,181 @@
         <button onclick="toggleOriginalFields()" class="expand-form-btn">See Additional Form Details</button>
         
         <!-- Form container -->
-        <form action="/event" method="POST">
+        <form action="/finish-event/<%= event.event_id %>/<%= event.event_contact_id %>" method="POST" onsubmit="return validateForm()">
             <!-- Fields that are always visible -->
             <div class="mb-3">
                 <label for="number-of-people">Number of Participants:</label>
-                <input type="number" id="number-of-people" name="number-of-people" min="1" required>
+                <input type="number" id="number-of-people" name="past_participants" min="1" required>
             </div>
 
             <div class="mb-3">
                 <label for="event-length">Event Duration (in hours):</label>
-                <input type="number" id="event-length" name="event-length" min="1" required>
+                <input type="number" id="event-length" name="past_duration" min="1" required>
             </div>
 
             <div class="mb-3">
                 <label for="pockets-produced">Pockets Produced:</label>
-                <input type="number" id="pockets-produced" name="pockets-produced" min="0" required>
+                <input type="number" id="pockets-produced" name="pockets_produced" min="0" required>
             </div>
 
             <div class="mb-3">
                 <label for="collars-produced">Collars Produced:</label>
-                <input type="number" id="collars-produced" name="collars-produced" min="0" required>
+                <input type="number" id="collars-produced" name="collars_produced" min="0" required>
             </div>
 
             <div class="mb-3">
                 <label for="envelopes-produced">Envelopes Produced:</label>
-                <input type="number" id="envelopes-produced" name="envelopes-produced" min="0" required>
+                <input type="number" id="envelopes-produced" name="envelopes_produced" min="0" required>
             </div>
 
             <div class="mb-3">
                 <label for="vests-produced">Vests Produced:</label>
-                <input type="number" id="vests-produced" name="vests-produced" min="0" required>
+                <input type="number" id="vests-produced" name="vests_produced" min="0" required>
             </div>
 
             <div class="mb-3">
                 <label for="completed-products">Number of Completed Products:</label>
-                <input type="number" id="completed-products" name="completed-products" min="0" required>
+                <input type="number" id="completed-products" name="products_completed" min="0" required>
+            </div>
+
+            <div id="volunteer-field">
+                <label>Volunteers who will attend:</label>
+                <% volunteers.forEach(volunteer => { %>
+                    <br>
+                    <label for="<%= volunteer.volunteer_id %>">
+                        <input 
+                            type="checkbox" 
+                            id="<%= volunteer.volunteer_id %>" 
+                            name="volunteers" 
+                            value="<%= volunteer.volunteer_id %>" 
+                            <%= associatedVolunteerIds.includes(volunteer.volunteer_id) ? 'checked' : '' %>>
+                        <%= volunteer.volunteer_first_name %> <%= volunteer.volunteer_last_name %>
+                    </label>
+                <% }); %>
             </div>
 
             <!-- Original fields hidden by default -->
             <div id="original-fields">
+
+                <div class="mb-3">
+                    <label for="event-date">Date:</label>
+                    <input type="date" id="event-date" name="event_date" value="<%= event.event_date %>" required>
+                </div>
+
                 <div class="mb-3">
                     <label for="backup-date">Backup Date:</label>
-                    <input type="date" id="backup-date" name="backup-date">
+                    <input type="date" id="backup-date" name="backup_date" value="<%= event.event_backup_date %>">
                 </div>
-
+        
+                <div class="mb-3">
+                    <label for="street-address">Event Street Address:</label>
+                    <input type="text" id="street-address" name="street_address" value="<%= event.event_street %>" required>
+                </div>
+        
                 <div class="mb-3">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city">
+                    <input type="text" id="city" name="city" value="<%= event.event_city %>" required>
                 </div>
-
+        
                 <div class="mb-3">
                     <label for="state">State:</label>
-                    <input type="text" id="state" name="state">
+                    <input type="text" id="state" name="state" value="<%= event.event_state %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="zip">Zip Code:</label>
+                    <input type="text" id="zip" name="zip" value="<%= event.event_zip %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="group">Group (e.g., youth group, school club, etc.):</label>
+                    <input type="text" id="group" name="group" value="<%= event.event_association %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="start-time">Desired Start Time:</label>
+                    <input type="time" id="start-time" name="start_time" value="<%= event.event_start_time %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="event-length">Event Length (in hours):</label>
+                    <input type="number" id="event-length" name="event_length" min="1" value="<%= event.event_length %>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="zip">Zip Code:</label>
-                    <input type="text" id="zip" name="zip">
+                    <label>Event Type:</label>
+                    <div class="form-check">
+                        <input type="radio" id="event-sewing" name="event_type" value="sewing" <%= event.event_type === 'sewing' ? 'checked' : '' %> required>
+                        <label for="event-sewing">Sewing</label>
+                    </div>
+        
+                    <div class="form-check">
+                        <input type="radio" id="event-non-sewing" name="event_type" value="non-sewing" <%= event.event_type === 'non-sewing' ? 'checked' : '' %>>
+                        <label for="event-non-sewing">Non-sewing</label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="radio" id="event-both" name="event_type" value="both" <%= event.event_type === 'both' ? 'checked' : '' %>>
+                        <label for="event-both">Both</label>
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="first_name">Contact First Name:</label>
+                    <input type="text" id="first_name" name="first_name" value="<%= event.event_contact_first_name %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="last_name">Contact Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" value="<%= event.event_contact_last_name %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="phone-number">Phone Number:</label>
+                    <input type="tel" id="phone-number" name="phone_number" value="<%= event.event_contact_phone_number %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" value="<%= event.event_contact_email_address %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label>Would you like Jen to share her story?</label>
+                    <div class="form-check">
+                        <input type="radio" id="jen-share-yes" name="jen_share" value="true" <%= event.share_story === true ? 'checked' : '' %> required>
+                        <label for="jen-share-yes">Yes</label>
+                    </div>
+        
+                    <div class="form-check">
+                        <input type="radio" id="jen-share-no" name="jen_share" value="false" <%= event.share_story === false ? 'checked' : '' %>>
+                        <label for="jen-share-no">No</label>
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="advanced-sewing">How many people in your group have advanced sewing skills?</label>
+                    <input type="number" id="advanced-sewing" name="advanced_sewing" min="0" value="<%= event.advanced_sewing_count %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="basic-sewing">How many people in your group have basic sewing skills?</label>
+                    <input type="number" id="basic-sewing" name="basic_sewing" min="0" value="<%= event.basic_sewing_count %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="sewing-machines">How many sewing machines can you provide?</label>
+                    <input type="number" id="sewing-machines" name="sewing_machines" min="0" value="<%= event.sew_machine_count %>" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="sergers">How many sergers can your group bring?</label>
+                    <input type="number" id="sergers" name="sergers" min="0" value="<%= event.sergers_machine_count %>" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="room">Room Type (e.g., Living Room, Gymnasium, etc.):</label>
+                    <input type="text" id="room" name="room" value="<%= event.room_type %>" required>
                 </div>
             </div>
 
@@ -111,7 +229,7 @@
                 <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
             </div>
             <!-- Back to Volunteers button -->
-            <a href="/volunteer-manage" class="back-to-users-btn">Back to Volunteers Page</a>
+            <a href="/event-manage" class="back-to-users-btn">Back to Events Page</a>
         </form>
     </div>
 

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Form Details - Turtle Shelter Project</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" class="logo">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Event form results -->
+    <div class="container mt-5">
+        <form>
+        <!-- Event form details -->
+        <h1>Event Request Form</h1>
+            <div class="mb-3">
+                <label for="past_participants">Number of Participants:</label>
+                <input type="number" id="past_participants" name="past_participants" min="1" value="<%= event.past_participants %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="event-length">Event Duration (in hours):</label>
+                <input type="number" id="event-length" name="past_duration" min="1" value="<%= event.past_duration %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="pockets-produced">Pockets Produced:</label>
+                <input type="number" id="pockets-produced" name="pockets_produced" min="0" value="<%= event.pockets_produced %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="collars-produced">Collars Produced:</label>
+                <input type="number" id="collars-produced" name="collars_produced" min="0" value="<%= event.collars_produced %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="envelopes-produced">Envelopes Produced:</label>
+                <input type="number" id="envelopes-produced" name="envelopes_produced" min="0" value="<%= event.envelopes_produced %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="vests-produced">Vests Produced:</label>
+                <input type="number" id="vests-produced" name="vests_produced" min="0" value="<%= event.vests_produced %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="completed-products">Number of Completed Products:</label>
+                <input type="number" id="completed-products" name="products_completed" min="0" value="<%= event.products_completed %>" readonly>
+            </div>
+        
+            <div class="mb-3">
+                <label for="number-of-people">How many people:</label>
+                <input type="number" id="number-of-people" name="number_of_people" min="1" value="<%= event.event_attendees %>" readonly>
+            </div>
+                
+            <div class="mb-3">
+                <label>Event Type:</label>
+                <div class="form-check">
+                    <input type="radio" id="event-sewing" name="event_type" value="sewing" <%= event.event_type === 'sewing' ? 'checked' : '' %> readonly>
+                    <label for="event-sewing">Sewing</label>
+                </div>
+    
+                <div class="form-check">
+                    <input type="radio" id="event-non-sewing" name="event_type" value="non-sewing" <%= event.event_type === 'non-sewing' ? 'checked' : '' %> readonly>
+                    <label for="event-non-sewing">Non-sewing</label>
+                </div>
+                
+                <div class="form-check">
+                    <input type="radio" id="event-both" name="event_type" value="both" <%= event.event_type === 'both' ? 'checked' : '' %> readonly>
+                    <label for="event-both">Both</label>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label for="event-date">Date:</label>
+                <input type="date" id="event-date" name="event_date" value="<%= event.event_date %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="backup-date">Backup Date:</label>
+                <input type="date" id="backup-date" name="backup_date" value="<%= event.event_backup_date %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="street-address">Event Street Address:</label>
+                <input type="text" id="street-address" name="street_address" value="<%= event.event_street %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" value="<%= event.event_city %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="<%= event.event_state %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="zip">Zip Code:</label>
+                <input type="text" id="zip" name="zip" value="<%= event.event_zip %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="group">Group (e.g., youth group, school club, etc.):</label>
+                <input type="text" id="group" name="group" value="<%= event.event_association %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="start-time">Desired Start Time:</label>
+                <input type="time" id="start-time" name="start_time" value="<%= event.event_start_time %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="event-length">Event Length (in hours):</label>
+                <input type="number" id="event-length" name="event_length" min="1" value="<%= event.event_length %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="first_name">Contact First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="<%= event.event_contact_first_name %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="last_name">Contact Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="<%= event.event_contact_last_name %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="phone-number">Phone Number:</label>
+                <input type="tel" id="phone-number" name="phone_number" value="<%= event.event_contact_phone_number %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" value="<%= event.event_contact_email_address %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label>Would you like Jen to share her story?</label>
+                <div class="form-check">
+                    <input type="radio" id="jen-share-yes" name="jen_share" value="true" <%= event.share_story === true ? 'checked' : '' %> readonly>
+                    <label for="jen-share-yes">Yes</label>
+                </div>
+    
+                <div class="form-check">
+                    <input type="radio" id="jen-share-no" name="jen_share" value="false" <%= event.share_story === false ? 'checked' : '' %> readonly>
+                    <label for="jen-share-no">No</label>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label for="advanced-sewing">How many people in your group have advanced sewing skills?</label>
+                <input type="number" id="advanced-sewing" name="advanced_sewing" min="0" value="<%= event.advanced_sewing_count %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="basic-sewing">How many people in your group have basic sewing skills?</label>
+                <input type="number" id="basic-sewing" name="basic_sewing" min="0" value="<%= event.basic_sewing_count %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="sewing-machines">How many sewing machines can you provide?</label>
+                <input type="number" id="sewing-machines" name="sewing_machines" min="0" value="<%= event.sew_machine_count %>" readonly>
+            </div>
+    
+            <div class="mb-3">
+                <label for="sergers">How many sergers can your group bring?</label>
+                <input type="number" id="sergers" name="sergers" min="0" value="<%= event.sergers_machine_count %>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="room">Room Type (e.g., Living Room, Gymnasium, etc.):</label>
+                <input type="text" id="room" name="room" value="<%= event.room_type %>" readonly>
+            </div>
+
+            <div id="volunteer-field">
+                <label>Volunteers who attended:</label>
+                <ul>
+                    <% volunteers.forEach(volunteer => { %>
+                        <% if (associatedVolunteerIds.includes(volunteer.volunteer_id)) { %>
+                            <li><%= volunteer.volunteer_first_name %> <%= volunteer.volunteer_last_name %></li>
+                        <% } %>
+                    <% }); %>
+                </ul>
+            </div>
+    
+            <!-- Update and delete buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="button" class="delete-profile-btn" onclick="deleteEvent('<%= event.event_id %>', '<%= event.event_contact_id %>')">Delete Event</button>
+            </div>
+
+            <!-- Back to Events button -->
+            <a href="/event-manage"type="button" class="back-to-users-btn">Back to Events Page</a>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+
+    <script>
+        // Function to delete an event (must be done with JavaScript because the delete button is inside the update form)
+        function deleteEvent(eventId, contactId) {
+            if (confirm('Are you sure you want to delete this event? All data stored about this event will be lost.')) {
+                // Create a form dynamically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/delete-event/${eventId}/${contactId}`;
+
+                // Append the form to the body and submit
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>
