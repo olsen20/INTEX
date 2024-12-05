@@ -11,6 +11,14 @@ app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules', 'boots
 app.use(express.urlencoded({extended : true}));
 app.use(express.static('public'));
 
+// // Configure session middleware
+// app.use(session({
+//     secret: 'secret_key', // Replace with a secure key
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false } // Set secure to true in production when using HTTPS
+// }));
+
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
 const knex = require('knex')({
 	client: 'pg',
