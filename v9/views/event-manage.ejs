@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Management - Turtle Shelter Project</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" class="logo">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Event Forms Page Content -->
+    <div class="container mt-5">
+        <div class="event-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- New Event Forms -->
+                <div class="forms-container">
+                    <h2>New Event Forms</h2>
+                    <% if (new_forms.length > 0) { %>
+                        <% new_forms.forEach(row => { %>
+                            <a href="/event-details/<%= row.event_id %>">
+                                <div class="form-card new">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Potential Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="details">
+                            <p style="text-align: center;">No new event forms</p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Occurred Event Forms -->
+                <div class="forms-container">
+                    <h2>Recently Occurred Events</h2>
+                    <% if (recent.length > 0) { %>
+                        <% recent.forEach(row => { %>
+                            <a href="/event-occurred/<%= row.event_id %>">
+                                <div class="form-card new">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="details">
+                            <p style="text-align: center;">No recent events that need attention</p>
+                        </div>
+                    <% } %>
+                </div>
+                
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Upcoming Event Forms -->
+                <div class="forms-container">
+                    <h2>Upcoming Events</h2>
+                    <% if (upcoming.length > 0) { %>
+                        <% upcoming.forEach(row => { %>
+                            <a href="/event-details/<%= row.event_id %>">
+                                <div class="form-card">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="details">
+                            <p style="text-align: center;">No upcoming events</p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Past Event Forms -->
+                <div class="forms-container">
+                    <h2>Past Events</h2>
+                    <% if (past.length > 0) { %>
+                        <% past.forEach(row => { %>
+                            <a href="/event-past/<%= row.event_id %>">
+                                <div class="form-card">
+                                    <div class="details">
+                                        <p><b>Name:</b> <%= row.event_contact_first_name %> <%= row.event_contact_last_name %></p>
+                                        <p><b>Group:</b> <%= row.event_association %></p>
+                                        <p><b>Date:</b> <%= row.event_date %></p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="details">
+                            <p style="text-align: center;">No past events</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <a href="/admin-add-event" class="btn">Add an Event</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+</body>
+</html>
