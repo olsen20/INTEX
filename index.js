@@ -17,11 +17,7 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-        httpOnly: true, // Prevent JavaScript access to cookies
-        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax' // Adjust for local development
-    }
+    cookie: { secure: false } // Set secure to true in production when using HTTPS
 }));
 
 
@@ -31,7 +27,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || 'Cookiepw1!',
+		password: process.env.RDS_PASSWORD || '0121',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
