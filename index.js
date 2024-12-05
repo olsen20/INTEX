@@ -17,7 +17,7 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set secure to true in production when using HTTPS
+    cookie: { secure: false } // Set secure to true in production when using HTTPS
 }));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
@@ -26,7 +26,7 @@ const knex = require('knex')({
 	connection: {
 		host: process.env.RDS_HOSTNAME || 'localhost',
 		user: process.env.RDS_USERNAME || 'postgres',
-		password: process.env.RDS_PASSWORD || 'Cookiepw1!',
+		password: process.env.RDS_PASSWORD || '0121',
 		database: process.env.RDS_DB_NAME || 'intex',
 		port: process.env.RDS_PORT || 5432, 
         ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false

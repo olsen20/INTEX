@@ -36,7 +36,7 @@
     <div class="container mt-5">
     <!-- Form for an event request -->
     <h1>Event Request Form</h1>
-    <form action="/event" method="POST">
+    <form action="/event" method="POST" onsubmit="return validateForm()">
         <div class="mb-3">
             <label for="number-of-people">How many people:</label>
             <input type="number" id="number-of-people" name="number-of-people" min="1" required>
@@ -180,5 +180,139 @@
     </footer>
 
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function validateForm() {
+            // Get values from form
+            const numberOfPeople = parseInt(document.getElementById('number-of-people').value.trim());
+            const eventDate = new Date(document.getElementById('event-date').value);
+            const backupDate = new Date(document.getElementById('backup-date').value);
+            const streetAddress = document.getElementById('street-address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const zip = document.getElementById('zip').value.trim();
+            const room = document.getElementById('room').value.trim();
+            const group = document.getElementById('group').value.trim();
+            const startTime = document.getElementById('start-time').value.trim();
+            const eventLength = parseInt(document.getElementById('event-length').value.trim());
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const phoneNumber = document.getElementById('phone-number').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const advancedSewing = parseInt(document.getElementById('advanced-sewing').value.trim());
+            const basicSewing = parseInt(document.getElementById('basic-sewing').value.trim());
+            const sewingMachines = parseInt(document.getElementById('sewing-machines').value.trim());
+            const sergers = parseInt(document.getElementById('sergers').value.trim());
+    
+            // Current date for comparison
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize to start of day
+    
+            // Validation messages
+            let messages = [];
+    
+            // Event date must be in the future
+            if (isNaN(eventDate.getTime()) || eventDate <= today) {
+                messages.push('Event date must be in the future.');
+            }
+    
+            // Backup date must be in the future
+            if (isNaN(backupDate.getTime()) || backupDate <= today) {
+                messages.push('Backup date must be in the future.');
+            }
+    
+            // Start time must be a valid time
+            if (!startTime) {
+                messages.push('Event start time must be a valid time.');
+            }
+    
+            // Event attendees must be greater than 0
+            if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+                messages.push('Number of participants must be greater than 0.');
+            }
+    
+            // Street address must be 50 characters or less
+            if (streetAddress.length > 50) {
+                messages.push('Event street address must be 50 characters or less.');
+            }
+    
+            // City must be 25 characters or less
+            if (city.length > 25) {
+                messages.push('Event city must be 25 characters or less.');
+            }
+
+            // Check state (2 letters)
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                    messages.push('State must be exactly two letters.');
+            }
+    
+            // Zip code must be 10 characters or less
+            if (zip.length > 10) {
+                messages.push('Event zip code must be 10 characters or less.');
+            }
+    
+            // Room type must be 50 characters or less
+            if (room.length > 50) {
+                messages.push('Room type must be 50 characters or less.');
+            }
+    
+            // Event association must be 25 characters or less
+            if (group.length > 25) {
+                messages.push('Event association must be 25 characters or less.');
+            }
+    
+            // Event length must be greater than 0
+            if (isNaN(eventLength) || eventLength <= 0) {
+                messages.push('Event length must be greater than 0.');
+            }
+    
+            // First name must be 25 characters or less
+            if (firstName.length > 25) {
+                messages.push('Contact first name must be 25 characters or less.');
+            }
+    
+            // Last name must be 25 characters or less
+            if (lastName.length > 25) {
+                messages.push('Contact last name must be 25 characters or less.');
+            }
+    
+            // Phone number must contain only numeric values and be 15 characters or less
+            if (!/^\d+$/.test(phoneNumber) || phoneNumber.length > 15) {
+                messages.push('Phone number must contain only numeric values and be 15 characters or less.');
+            }
+    
+            // Email address must contain @ and be 25 characters or less
+            if (!email.includes('@') || email.length > 25) {
+                messages.push('Email address must contain the @ symbol and be 25 characters or less.');
+            }
+    
+            // Advanced sewing count must be 0 or more
+            if (isNaN(advancedSewing) || advancedSewing < 0) {
+                messages.push('Advanced sewing count must be 0 or more.');
+            }
+    
+            // Basic sewing count must be 0 or more
+            if (isNaN(basicSewing) || basicSewing < 0) {
+                messages.push('Basic sewing count must be 0 or more.');
+            }
+    
+            // Sewing machine count must be 0 or more
+            if (isNaN(sewingMachines) || sewingMachines < 0) {
+                messages.push('Sewing machine count must be 0 or more.');
+            }
+    
+            // Sergers count must be 0 or more
+            if (isNaN(sergers) || sergers < 0) {
+                messages.push('Sergers count must be 0 or more.');
+            }
+    
+            // If there are validation errors, show alerts and prevent form submission
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false;
+            }
+    
+            return true; // Allow form submission
+        }
+    </script>    
 </body>
 </html>
