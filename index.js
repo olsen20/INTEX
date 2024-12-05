@@ -20,6 +20,7 @@ app.use(session({
     cookie: { secure: false } // Set secure to true in production when using HTTPS
 }));
 
+
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
 const knex = require('knex')({
 	client: 'pg',
