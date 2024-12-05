@@ -82,7 +82,7 @@ app.post('/event', (req, res) => {
     const event_backup_date = req.body['backup-date'];
     const event_street = req.body['street-address'];
     const event_city = req.body['city'];
-    const event_state = req.body['state'];
+    const event_state = req.body['state'].toUpperCase();
     const room_type = req.body['room'];
     const event_association = req.body['group'];
     const event_start_time = req.body['start-time'];
@@ -516,7 +516,7 @@ app.post('/admin-add-event', (req, res) => {
     const event_backup_date = req.body['backup-date'];
     const event_street = req.body['street-address'];
     const event_city = req.body['city'];
-    const event_state = req.body['state'];
+    const event_state = req.body['state'].toUpperCase();
     const room_type = req.body['room'];
     const event_association = req.body['group'];
     const event_start_time = req.body['start-time'];
@@ -964,7 +964,7 @@ app.post('/profile/:user', (req,res) => {
     const phone = req.body.phone;
     const street_address = req.body.street_address;
     const city = req.body.city;
-    const state = req.body.state;
+    const state = req.body.state.toUpperCase();
     const zip = req.body.zip;
     const gender = req.body.gender;
     const role = req.body.role;
@@ -1006,7 +1006,7 @@ app.get('/add-user', (req, res) => {
 // const saltRounds = 10; // Number of salt rounds for hashing
 // Route to add an user as Admin
 app.post('/add-user', (req, res) => {
-    const username = req.body.username || '';
+    const username = req.body.username.toUpperCase() || '';
     const password = req.body.password || '';  // Plain text password for now
     const first_name = req.body.first_name ? req.body.first_name.toUpperCase() : '';
     const last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';
@@ -1030,7 +1030,7 @@ app.post('/add-user', (req, res) => {
     // Insert the new user (employee) into the database with plain text password for now
     knex('employees')
         .insert({
-            username: username.toUpperCase(),
+            username: username,
             password: password,  // Using plain text password for now
             user_first_name: first_name,
             user_last_name: last_name,
@@ -1094,7 +1094,7 @@ app.post('/update-user/:user', (req, res) => {
     const phone = req.body.phone;
     const street_address = req.body.street_address;
     const city = req.body.city;
-    const state = req.body.state;
+    const state = req.body.state.toUpperCase();
     const zip = req.body.zip;
     const gender = req.body.gender;
     const role = req.body.role;
