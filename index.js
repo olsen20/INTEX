@@ -1,7 +1,6 @@
 // Declare variables / import classes
 const express = require('express');
 let app = express();
-const session = require('express-session'); // Used to store user-specific data
 let path = require('path');
 const port = process.env.PORT || 3000;
 
@@ -11,14 +10,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
 app.use(express.urlencoded({extended : true}));
 app.use(express.static('public'));
-
-// Configure session middleware
-app.use(session({
-    secret: 'secret_key', // Replace with a secure key
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set secure to true in production when using HTTPS
-}));
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
 const knex = require('knex')({
@@ -216,7 +207,6 @@ app.post('/login', async (req, res) => {
         // Compare the provided password with the stored password
         if (password === user.password) {
             // If the password matches, store username in the session
-            req.session.username = user.username;
 
             // Redirect to the internal landing page
             return res.redirect('/admin-welcome');
@@ -233,9 +223,9 @@ app.post('/login', async (req, res) => {
 
 // Route to display internal landing page
 app.get('/admin-welcome', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     try {
         // Retrieve user's first name
         const name = await knex('employees')
@@ -266,9 +256,9 @@ app.get('/admin-welcome', async (req, res) => {
 
 // Route to display volunteer management page
 app.get('/volunteer-manage', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     try {
         const new_forms = await knex('volunteers')
             .select('volunteer_id', 'volunteer_first_name', 'volunteer_last_name', 'volunteer_email_address', 'volunteer_city', 'volunteer_state')
@@ -291,9 +281,9 @@ app.get('/volunteer-manage', async (req, res) => {
 });
 
 app.get('/admin-add-volunteer', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     res.render('admin-add-volunteer');
 })
 
@@ -341,9 +331,9 @@ app.post('/admin-add-volunteer', (req, res) => {
 
 // Route to display volunteer details page
 app.get('/volunteer-details/:id', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     let id = req.params.id;
 
     // Retrieve volunteer information with selected ID
@@ -430,9 +420,9 @@ app.post('/delete-volunteer/:id', async (req, res) => {
 
 // Route to display event management page
 app.get('/event-manage', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     try {
         // Retrieve the new event forms
         const newForms = await knex('event_details')
@@ -501,9 +491,9 @@ app.get('/event-manage', async (req, res) => {
 });
 
 app.get('/admin-add-event', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     res.render('admin-add-event');
 });
 
@@ -575,9 +565,9 @@ app.post('/admin-add-event', (req, res) => {
 
 // Route to display event details page
 app.get('/event-details/:id', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     let id = req.params.id;
 
     try {
@@ -731,9 +721,9 @@ app.post('/delete-event/:id/:contact_id', async (req, res) => {
 
 // Route to display an occurred event page
 app.get('/event-occurred/:id', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     let id = req.params.id;
 
     try {
@@ -881,9 +871,9 @@ app.post('/finish-event/:id/:contact_id', async (req, res) => {
 
 // Route to display past event page
 app.get('/event-past/:id', async (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     let id = req.params.id;
 
     try {
@@ -920,9 +910,9 @@ app.get('/event-past/:id', async (req, res) => {
 
 // Route to display user management page
 app.get('/user-manage', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     Promise.all([
         knex('employees').select('username', 'user_first_name', 'user_last_name').whereNot('username', req.session.username),
         knex('employees')
@@ -941,9 +931,9 @@ app.get('/user-manage', (req, res) => {
 
 // Route to display profile page
 app.get('/profile', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     knex('employees')
     .where('username', req.session.username)
     .first()
@@ -1000,9 +990,9 @@ app.post('/profile/:user', (req,res) => {
 
 // Route to add user page
 app.get('/add-user', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     res.render('add-user');
 });
 
@@ -1059,18 +1049,18 @@ app.post('/add-user', (req, res) => {
 
 //Route to user manage page
 app.get('/user-manage', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     res.render('user-details');
 });
 
 
 // Route to user details page
 app.get('/user-details/:id', (req, res) => {
-    if (!req.session.username) {
-        return res.redirect('/login'); // Redirect to login if not authenticated
-    }
+    // if (!req.session.username) {
+    //     return res.redirect('/login'); // Redirect to login if not authenticated
+    // }
     const users = req.params.id
 
 
