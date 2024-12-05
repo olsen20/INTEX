@@ -80,9 +80,9 @@ app.post('/event', (req, res) => {
     const event_type = req.body['event-type'];
     const event_date = req.body['event-date'];
     const event_backup_date = req.body['backup-date'];
-    const event_street = req.body['street-address'];
-    const event_city = req.body['city'];
-    const event_state = req.body['state'];
+    const event_street = req.body['street-address'].toUpperCase();
+    const event_city = req.body['city'].toUpperCase();
+    const event_state = req.body['state'].toUpperCase();
     const room_type = req.body['room'];
     const event_association = req.body['group'];
     const event_start_time = req.body['start-time'];
@@ -151,8 +151,8 @@ app.post('/volunteer', (req, res) => {
     const volunteer_last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';    // Convert last name to uppercase
     const volunteer_phone_number = req.body.phone || '';
     const volunteer_email_address = req.body.email || '';
-    const volunteer_street = req.body.street_address || '';
-    const volunteer_city = req.body.city || '';
+    const volunteer_street = req.body.street_address.toUpperCase() || '';
+    const volunteer_city = req.body.city.toUpperCase() || '';
     const volunteer_state = req.body.state ? req.body.state.toUpperCase() : '';
     const volunteer_zip = req.body.zip || '';
     const volunteer_referral_source = req.body.referral_source || '';
@@ -297,8 +297,8 @@ app.post('/admin-add-volunteer', (req, res) => {
     const volunteer_last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';    // Convert last name to uppercase
     const volunteer_phone_number = req.body.phone || '';
     const volunteer_email_address = req.body.email || '';
-    const volunteer_street = req.body.street_address || '';
-    const volunteer_city = req.body.city || '';
+    const volunteer_street = req.body.street_address.toUpperCase() || '';
+    const volunteer_city = req.body.city.toUpperCase() || '';
     const volunteer_state = req.body.state ? req.body.state.toUpperCase() : '';
     const volunteer_zip = req.body.zip || '';
     const volunteer_referral_source = req.body.referral_source || '';
@@ -365,8 +365,8 @@ app.post('/update-volunteer/:id', (req, res) => {
     const volunteer_last_name = req.body.last_name;
     const volunteer_phone_number = req.body.phone;
     const volunteer_email_address = req.body.email;
-    const volunteer_street = req.body.street_address;
-    const volunteer_city = req.body.city;
+    const volunteer_street = req.body.street_address.toUpperCase();
+    const volunteer_city = req.body.city.toUpperCase();
     const volunteer_state = req.body.state.toUpperCase();
     const volunteer_zip = req.body.zip;
     const volunteer_referral_source = req.body.referral_source;
@@ -514,9 +514,9 @@ app.post('/admin-add-event', (req, res) => {
     const event_type = req.body['event-type'];
     const event_date = req.body['event-date'];
     const event_backup_date = req.body['backup-date'];
-    const event_street = req.body['street-address'];
-    const event_city = req.body['city'];
-    const event_state = req.body['state'];
+    const event_street = req.body['street-address'].toUpperCase();
+    const event_city = req.body['city'].toUpperCase();
+    const event_state = req.body['state'].toUpperCase();
     const room_type = req.body['room'];
     const event_association = req.body['group'];
     const event_start_time = req.body['start-time'];
@@ -524,6 +524,7 @@ app.post('/admin-add-event', (req, res) => {
     const event_contact_phone_number = req.body['phone-number'];
     const event_contact_email_address = req.body['email'];
     const share_story = req.body['jen-share'];
+    const event_status = 'N';
 
     // Insert contact info first into event_contact_info table
     knex('event_contact_info')
@@ -555,7 +556,8 @@ app.post('/admin-add-event', (req, res) => {
                     basic_sewing_count: basic_sewing_count,
                     advanced_sewing_count: advanced_sewing_count,
                     sew_machine_count: sew_machine_count,
-                    sergers_machine_count: sergers_machine_count
+                    sergers_machine_count: sergers_machine_count,
+                    event_status: event_status
                 });
         })
         .then(() => {
@@ -954,15 +956,14 @@ app.get('/profile', (req, res) => {
 app.post('/profile/:user', (req,res) => {
     const user = req.params.user
 
-    const username = req.body.username
     const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const email = req.body.email;
     const phone = req.body.phone;
-    const street_address = req.body.street_address;
-    const city = req.body.city;
-    const state = req.body.state;
+    const street_address = req.body.street_address.toUpperCase();
+    const city = req.body.city.toUpperCase();
+    const state = req.body.state.toUpperCase();
     const zip = req.body.zip;
     const gender = req.body.gender;
     const role = req.body.role;
@@ -970,7 +971,6 @@ app.post('/profile/:user', (req,res) => {
     knex('employees')
     .where('username', user)
     .update({
-        username : username,
         password : password,
         user_first_name : first_name,
         user_last_name : last_name,
@@ -1004,14 +1004,14 @@ app.get('/add-user', (req, res) => {
 // const saltRounds = 10; // Number of salt rounds for hashing
 // Route to add an user as Admin
 app.post('/add-user', (req, res) => {
-    const username = req.body.username || '';
+    const username = req.body.username.toUpperCase() || '';
     const password = req.body.password || '';  // Plain text password for now
     const first_name = req.body.first_name ? req.body.first_name.toUpperCase() : '';
     const last_name = req.body.last_name ? req.body.last_name.toUpperCase() : '';
     const email = req.body.email || '';
     const phone = req.body.phone || '';
-    const street_address = req.body.street_address || '';
-    const city = req.body.city || '';
+    const street_address = req.body.street_address.toUpperCase() || '';
+    const city = req.body.city.toUpperCase() || '';
     const state = req.body.state ? req.body.state.toUpperCase() : '';
     const zip = req.body.zip || '';
     const gender = req.body.gender || 'other';
@@ -1028,7 +1028,7 @@ app.post('/add-user', (req, res) => {
     // Insert the new user (employee) into the database with plain text password for now
     knex('employees')
         .insert({
-            username: username.toUpperCase(),
+            username: username,
             password: password,  // Using plain text password for now
             user_first_name: first_name,
             user_last_name: last_name,
@@ -1082,17 +1082,16 @@ app.get('/user-details/:id', (req, res) => {
 });
 
 app.post('/update-user/:user', (req, res) => {
+    console.log('Request body:', req.body); // Debugging statement
     const users = req.params.user
 
-    const username = req.body.username.toUpperCase();
-    const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const email = req.body.email;
     const phone = req.body.phone;
-    const street_address = req.body.street_address;
-    const city = req.body.city;
-    const state = req.body.state;
+    const street_address = req.body.street_address.toUpperCase();
+    const city = req.body.city.toUpperCase();
+    const state = req.body.state.toUpperCase();
     const zip = req.body.zip;
     const gender = req.body.gender;
     const role = req.body.role;
@@ -1100,8 +1099,6 @@ app.post('/update-user/:user', (req, res) => {
     knex('employees')
     .where('username', users)
     .update({
-        username : username,
-        password : password,
         user_first_name : first_name,
         user_last_name : last_name,
         user_email_address : email,

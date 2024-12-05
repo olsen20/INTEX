@@ -283,9 +283,9 @@
             messages.push('Room type must be 50 characters or less.');
         }
 
-        // Event association must be 25 characters or less
-        if (group.length > 25) {
-            messages.push('Event association must be 25 characters or less.');
+        // Event association must 50 characters or less
+        if (group.length > 50) {
+            messages.push('Event group must be 50 characters or less.');
         }
 
         // Event length must be greater than 0
@@ -342,19 +342,29 @@
         return true; // Allow form submission
     }
 
-        // Function to delete an event (must be done with JavaScript because the delete button is inside the update form)
-        function deleteEvent(eventId, contactId) {
-            if (confirm('Are you sure you want to delete this event? All data stored about this event will be lost.')) {
-                // Create a form dynamically
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `/delete-event/${eventId}/${contactId}`;
+    // Function to delete an event (must be done with JavaScript because the delete button is inside the update form)
+    function deleteEvent(eventId, contactId) {
+        if (confirm('Are you sure you want to delete this event? All data stored about this event will be lost.')) {
+            // Create a form dynamically
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/delete-event/${eventId}/${contactId}`;
 
-                // Append the form to the body and submit
-                document.body.appendChild(form);
-                form.submit();
-            }
+            // Append the form to the body and submit
+            document.body.appendChild(form);
+            form.submit();
         }
+    }
+
+    // Button to view volunteers
+    function toggleVolunteerField() {
+        const volunteerField = document.getElementById('volunteer-field');
+        if (volunteerField.style.display === 'none' || volunteerField.style.display === '') {
+            volunteerField.style.display = 'block'; // Show the volunteer field
+        } else {
+            volunteerField.style.display = 'none'; // Hide the volunteer field
+        }
+    }
     </script>
 </body>
 </html>

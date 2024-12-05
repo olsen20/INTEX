@@ -48,7 +48,7 @@
 
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number:</label>
-                <input type="tel" class="form-control" id="phone" name="phone" required>
+                <input type="number" class="form-control" id="phone" name="phone" required>
             </div>
 
             <div class="mb-3">
@@ -154,34 +154,77 @@
 
         // Function to validate the form inputs to match what is stored in the database
         function validateForm() {
+            // Get values from form
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
+            const streetAddress = document.getElementById('street_address').value.trim();
+            const city = document.getElementById('city').value.trim();
             const state = document.getElementById('state').value.trim();
-            const hours = document.getElementById('volunteer_hours').value.trim();
-        
+            const zip = document.getElementById('zip').value.trim();
+            const monthlyHours = parseInt(document.getElementById('volunteer_hours').value.trim());
+            const otherReferralSource = document.getElementById('referral_source_other_input').value.trim();
+
             // Validation messages
             let messages = [];
-        
-            // Check phone number (numeric values only)
-            if (!/^\d+$/.test(phone)) {
-                messages.push('Phone number must contain only numeric values.');
+
+            // First name must be 25 characters or less
+            if (firstName.length > 25) {
+                messages.push('First name must be 25 characters or less.');
             }
-        
-            // Check state (2 letters)
+
+            // Last name must be 25 characters or less
+            if (lastName.length > 25) {
+                messages.push('Last name must be 25 characters or less.');
+            }
+
+            // Email must be 50 characters or less
+            if (email.length > 50) {
+                messages.push('Email must be 50 characters or less.');
+            }
+
+            // Phone number must contain only numeric values and be 15 characters or less
+            if (!/^\d+$/.test(phone) || phone.length > 15) {
+                messages.push('Phone number must contain only numeric values and be 15 characters or less.');
+            }
+
+            // Street address must be 50 characters or less
+            if (streetAddress.length > 50) {
+                messages.push('Street address must be 50 characters or less.');
+            }
+
+            // City must be 50 characters or less
+            if (city.length > 50) {
+                messages.push('City must be 50 characters or less.');
+            }
+
+            // State must be exactly 2 characters
             if (!/^[A-Za-z]{2}$/.test(state)) {
                 messages.push('State must be exactly two letters.');
             }
-        
-            // Check hours (greater than 0)
-            if (isNaN(hours) || hours <= 0) {
-                messages.push('Monthly hours must be greater than 0.');
+
+            // Zip code must be 10 characters or less
+            if (zip.length > 10) {
+                messages.push('Zip code must be 10 characters or less.');
             }
-        
-            // If there are validation errors, prevent form submission and show alerts
+
+            // Monthly hours must be 1 or more
+            if (isNaN(monthlyHours) || monthlyHours < 1) {
+                messages.push('Monthly hours must be 1 or more.');
+            }
+
+            // Check "Other" referral source if selected
+            if (document.getElementById('referral_source_other').checked && otherReferralSource.length > 50) {
+                messages.push('Referral source ("Other") must be 50 characters or less.');
+            }
+
+            // If there are validation errors, show alerts and prevent form submission
             if (messages.length > 0) {
                 alert(messages.join('\n'));
                 return false; // Prevent form submission
             }
-        
+
             return true; // Allow form submission
         }
     </script>

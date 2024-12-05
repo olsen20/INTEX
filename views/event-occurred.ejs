@@ -228,7 +228,7 @@
                 <button type="submit" class="update-profile-btn">Update Event</button>
                 <button type="button" class="delete-profile-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete Event</button>
             </div>
-            <!-- Back to Volunteers button -->
+            <!-- Back to events button -->
             <a href="/event-manage" class="back-to-users-btn">Back to Events Page</a>
         </form>
     </div>
@@ -244,8 +244,6 @@
             // Fetch all relevant input values
             const phone = document.getElementById('phone-number').value.trim();
             const numberOfPeople = parseInt(document.getElementById('number-of-people').value.trim());
-            const eventDate = new Date(document.getElementById('event-date').value);
-            const backupDate = new Date(document.getElementById('backup-date').value);
             const eventLength = parseInt(document.getElementById('event-length').value.trim());
             const advancedSewing = parseInt(document.getElementById('advanced-sewing').value.trim());
             const basicSewing = parseInt(document.getElementById('basic-sewing').value.trim());
@@ -280,14 +278,6 @@
             // Participants count validation
             if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
                 messages.push('Number of participants must be greater than 0.');
-            }
-
-            // Event date and backup date validation
-            if (isNaN(eventDate.getTime()) || eventDate <= today) {
-                messages.push('Event date must be in the future.');
-            }
-            if (isNaN(backupDate.getTime()) || backupDate <= today) {
-                messages.push('Backup date must be in the future.');
             }
 
             // Event length validation
@@ -329,8 +319,8 @@
             }
 
             // Group validation
-            if (group.length > 25) {
-                messages.push('Group must be 25 characters or less.');
+            if (group.length > 50) {
+                messages.push('Group must be 50 characters or less.');
             }
 
             // City validation
