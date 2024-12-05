@@ -524,6 +524,7 @@ app.post('/admin-add-event', (req, res) => {
     const event_contact_phone_number = req.body['phone-number'];
     const event_contact_email_address = req.body['email'];
     const share_story = req.body['jen-share'];
+    const event_status = 'N';
 
     // Insert contact info first into event_contact_info table
     knex('event_contact_info')
@@ -555,7 +556,8 @@ app.post('/admin-add-event', (req, res) => {
                     basic_sewing_count: basic_sewing_count,
                     advanced_sewing_count: advanced_sewing_count,
                     sew_machine_count: sew_machine_count,
-                    sergers_machine_count: sergers_machine_count
+                    sergers_machine_count: sergers_machine_count,
+                    event_status: event_status
                 });
         })
         .then(() => {
