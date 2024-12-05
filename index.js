@@ -956,7 +956,6 @@ app.get('/profile', (req, res) => {
 app.post('/profile/:user', (req,res) => {
     const user = req.params.user
 
-    const username = req.body.username
     const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
@@ -972,7 +971,6 @@ app.post('/profile/:user', (req,res) => {
     knex('employees')
     .where('username', user)
     .update({
-        username : username,
         password : password,
         user_first_name : first_name,
         user_last_name : last_name,
@@ -1084,10 +1082,9 @@ app.get('/user-details/:id', (req, res) => {
 });
 
 app.post('/update-user/:user', (req, res) => {
+    console.log('Request body:', req.body); // Debugging statement
     const users = req.params.user
 
-    const username = req.body.username.toUpperCase();
-    const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const email = req.body.email;
@@ -1102,8 +1099,6 @@ app.post('/update-user/:user', (req, res) => {
     knex('employees')
     .where('username', users)
     .update({
-        username : username,
-        password : password,
         user_first_name : first_name,
         user_last_name : last_name,
         user_email_address : email,

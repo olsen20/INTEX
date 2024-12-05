@@ -36,14 +36,14 @@
     <div class="profile-form-container">
         <h2>My Profile</h2>
 
-        <form class="profile-form" action="/profile/<%=user.username%>" method="POST">
+        <form class="profile-form" action="/profile/<%=user.username%>" method="POST" onsubmit="return validateForm()">
                      <!-- Username -->
                      <label for="username">Username</label>
                      <input type="text" id="username" name="username" value= "<%= user.username%>" disabled>
          
                      <!-- Password -->
                      <label for="password">Password</label>
-                     <input type="password" id="password" name="password" value= "<%= user.password%>" disabled>
+                     <input type="password" id="password" name="password" value= "<%= user.password%>">
          
                      <!-- First Name -->
                      <label for="first_name">First Name</label>
@@ -59,7 +59,7 @@
          
                      <!-- Phone Number -->
                      <label for="phone">Phone Number</label>
-                     <input type="tel" id="phone" name="phone" value= "<%= user.user_phone_number %>">
+                     <input type="number" id="phone" name="phone" value= "<%= user.user_phone_number %>">
          
                      <!-- Street Address -->
                      <label for="street_address">Street Address</label>
@@ -115,5 +115,84 @@
     <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <p>&copy; 2024 Turtle Shelter Project</p>
     </footer>
+
+    <script>
+        // Script to validate form to ensure inputs meet database criteria
+        function validateForm() {
+            // Get values from the form
+            const password = document.getElementById('password').value.trim();
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const streetAddress = document.getElementById('street_address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const zip = document.getElementById('zip').value.trim();
+            const role = document.getElementById('role').value.trim();
+    
+            // Validation messages
+            let messages = [];
+    
+            // Password must be 25 characters or less
+            if (password.length > 25) {
+                messages.push('Password must be 25 characters or less.');
+            }
+    
+            // First name must be 25 characters or less
+            if (firstName.length > 25) {
+                messages.push('First name must be 25 characters or less.');
+            }
+    
+            // Last name must be 25 characters or less
+            if (lastName.length > 25) {
+                messages.push('Last name must be 25 characters or less.');
+            }
+    
+            // Email address must be 50 characters or less
+            if (email.length > 50) {
+                messages.push('Email address must be 50 characters or less.');
+            }
+    
+            // Phone number must contain only numeric values and be 15 characters or less
+            if (!/^\d+$/.test(phone) || phone.length > 15) {
+                messages.push('Phone number must contain only numeric values and be 15 characters or less.');
+            }
+    
+            // Street address must be 50 characters or less
+            if (streetAddress.length > 50) {
+                messages.push('Street address must be 50 characters or less.');
+            }
+    
+            // City must be 25 characters or less
+            if (city.length > 25) {
+                messages.push('City must be 25 characters or less.');
+            }
+    
+            // State must be exactly 2 characters
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+    
+            // Zip code must be 10 characters or less
+            if (zip.length > 10) {
+                messages.push('Zip code must be 10 characters or less.');
+            }
+    
+            // Role/Position must be 25 characters or less
+            if (role.length > 25) {
+                messages.push('Position/Role must be 25 characters or less.');
+            }
+    
+            // If there are validation errors, show alerts and prevent form submission
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+    
+            return true; // Allow form submission
+        }
+    </script>
+    
 </body>
 </html>
