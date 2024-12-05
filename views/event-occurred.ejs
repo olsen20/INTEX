@@ -239,6 +239,135 @@
     </footer>
 
     <script>
+        // Function to check form inputs
+        function validateForm() {
+            // Fetch all relevant input values
+            const phone = document.getElementById('phone-number').value.trim();
+            const numberOfPeople = parseInt(document.getElementById('number-of-people').value.trim());
+            const eventDate = new Date(document.getElementById('event-date').value);
+            const backupDate = new Date(document.getElementById('backup-date').value);
+            const eventLength = parseInt(document.getElementById('event-length').value.trim());
+            const advancedSewing = parseInt(document.getElementById('advanced-sewing').value.trim());
+            const basicSewing = parseInt(document.getElementById('basic-sewing').value.trim());
+            const sewingMachines = parseInt(document.getElementById('sewing-machines').value.trim());
+            const sergers = parseInt(document.getElementById('sergers').value.trim());
+            const pocketsProduced = parseInt(document.getElementById('pockets-produced').value.trim());
+            const collarsProduced = parseInt(document.getElementById('collars-produced').value.trim());
+            const envelopesProduced = parseInt(document.getElementById('envelopes-produced').value.trim());
+            const vestsProduced = parseInt(document.getElementById('vests-produced').value.trim());
+            const productsCompleted = parseInt(document.getElementById('completed-products').value.trim());
+            const state = document.getElementById('state').value.trim();
+            const zip = document.getElementById('zip').value.trim();
+            const room = document.getElementById('room').value.trim();
+            const group = document.getElementById('group').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const streetAddress = document.getElementById('street-address').value.trim();
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize to start of the day
+
+            // Validation messages
+            let messages = [];
+
+            // Phone number validation
+            if (!/^\d{1,15}$/.test(phone)) {
+                messages.push('Phone number must contain only numeric values and be 15 characters or less.');
+            }
+
+            // Participants count validation
+            if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+                messages.push('Number of participants must be greater than 0.');
+            }
+
+            // Event date and backup date validation
+            if (isNaN(eventDate.getTime()) || eventDate <= today) {
+                messages.push('Event date must be in the future.');
+            }
+            if (isNaN(backupDate.getTime()) || backupDate <= today) {
+                messages.push('Backup date must be in the future.');
+            }
+
+            // Event length validation
+            if (isNaN(eventLength) || eventLength <= 0) {
+                messages.push('Event duration must be greater than 0.');
+            }
+
+            // Sewing and product-related counts validation
+            const zeroOrMoreFields = [
+                { value: advancedSewing, label: 'Advanced sewing skills' },
+                { value: basicSewing, label: 'Basic sewing skills' },
+                { value: sewingMachines, label: 'Sewing machines provided' },
+                { value: sergers, label: 'Sergers provided' },
+                { value: pocketsProduced, label: 'Pockets produced' },
+                { value: collarsProduced, label: 'Collars produced' },
+                { value: envelopesProduced, label: 'Envelopes produced' },
+                { value: vestsProduced, label: 'Vests produced' },
+                { value: productsCompleted, label: 'Completed products' }
+            ];
+            zeroOrMoreFields.forEach(field => {
+                if (isNaN(field.value) || field.value < 0) {
+                    messages.push(`${field.label} must be 0 or more.`);
+                }
+            });
+
+            // State validation
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+
+            // Zip code validation
+            if (zip.length > 10) {
+                messages.push('Zip code must be 10 characters or less.');
+            }
+
+            // Room type validation
+            if (room.length > 50) {
+                messages.push('Room type must be 50 characters or less.');
+            }
+
+            // Group validation
+            if (group.length > 25) {
+                messages.push('Group must be 25 characters or less.');
+            }
+
+            // City validation
+            if (city.length > 25) {
+                messages.push('City must be 25 characters or less.');
+            }
+
+            // Street address validation
+            if (streetAddress.length > 50) {
+                messages.push('Street address must be 50 characters or less.');
+            }
+
+            // First name validation
+            if (firstName.length > 25) {
+                messages.push('First name must be 25 characters or less.');
+            }
+
+            // Last name validation
+            if (lastName.length > 25) {
+                messages.push('Last name must be 25 characters or less.');
+            }
+
+            // Email validation
+            if (!email.includes('@') || email.length > 25) {
+                messages.push('Email must contain the "@" symbol and be 25 characters or less.');
+            }
+
+            // If there are validation errors, prevent form submission and show alerts
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission
+        }
+
+        // Connected to button to expand form
         function toggleOriginalFields() {
             const originalFields = document.getElementById('original-fields');
             if (originalFields.style.display === 'none' || originalFields.style.display === '') {
