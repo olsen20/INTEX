@@ -17,8 +17,13 @@ app.use(session({
     secret: 'secret_key', // Replace with a secure key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true } // Set secure to true in production when using HTTPS
+    cookie: { 
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        httpOnly: true, // Prevent JavaScript access to cookies
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax' // Adjust for local development
+    }
 }));
+
 
 // Connect to database Note(when connecting to RDS database, make sure you use the names on your computer)
 const knex = require('knex')({
