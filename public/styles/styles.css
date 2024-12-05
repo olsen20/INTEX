@@ -674,6 +674,21 @@ button.add-user-btn:hover {
     flex: 1; /* Ensures consistent width with the delete button */
 }
 
+.update-profile-user-btn {
+    background: none; /* Reset background */
+    background-color: #3b7a57; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
+    cursor: pointer;
+    font-weight: bold; 
+    margin-right: 15px;/* Space between buttons */
+    margin-top: 20px; /* Space above the button */
+    flex: 1; /* Ensures consistent width with the delete button */
+}
+
 .update-profile-btn:hover {
     background-color: #2c5e45; /* Darker green on hover */
     color: white;
@@ -681,6 +696,21 @@ button.add-user-btn:hover {
 
 /* Delete Profile Button */
 .delete-profile-btn {
+    background: none; /* Reset background */
+    background-color: #d9534f; /* Bright red background */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove link underline */
+    cursor: pointer;
+    font-weight: bold; 
+    margin-left: 15px;/* Space between buttons */ 
+    margin-top: 20px;/* Space above the button */
+    flex: 1; /* Ensures consistent width with the update button */
+}
+
+delete-profile-user-btn {
     background: none; /* Reset background */
     background-color: #d9534f; /* Bright red background */
     color: white;
