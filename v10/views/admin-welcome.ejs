@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Landing Page - Turtle Shelter Project</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" class="logo">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="text-center mt-5">
+            <h1 class="display-4">Welcome, <%= first_name %>!</h1>
+        </div>
+    
+        <!-- Notifications Section -->
+        <div class="notifications-container">
+            <h2>Notifications</h2>
+            <p class="lead" style="text-align: center;">Here are the forms that need attention:</p>
+            
+            <!-- Don't display notifications if there are no new forms -->
+            <% if (volunteer_count != 0 || event_count != 0) { %>
+                <% if (volunteer_count != 0) { %>
+                    <!-- Volunteer form notifications -->
+                    <a href="/volunteer-manage">
+                        <div class="notification">
+                            <span>New Volunteer Forms</span>
+                            <span class="count"><%= volunteer_count %></span>
+                        </div>
+                    </a>
+                <% } %>
+                <% if (event_count != 0) { %>
+            <!-- Event form notifications -->
+                    <a href="/event-manage">
+                        <div class="notification">
+                            <span>New Event Forms</span>
+                            <span class="count"><%= event_count %></span>
+                        </div>
+                    </a>
+                <% } %>
+            <% } else { %>
+                <div class="notification" style="display: flex; justify-content: center; align-items: center;">
+                    <span>No New Forms</span>
+                </div>
+            <% } %>
+        </div>
+    
+        <!-- Tableau Dashboard Section -->
+        <div class="dashboard-container">
+            <h2>Your Dashboard</h2>
+            <p class="lead" style="text-align: center;">Here is a summary of past event data:</p>
+            <iframe src="https://public.tableau.com/views/SampleDashboard/Sheet1" 
+                title="Tableau Dashboard"></iframe>
+        </div>
+    </div>
+    
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+</body>
+</html>

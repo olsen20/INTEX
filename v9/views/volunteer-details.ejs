@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Details - Turtle Shelter Project</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <!-- Logo and Website Name -->
+            <a href="/admin-welcome">
+                <div style="display: flex; align-items: center;">
+                    <img src="/images/logo.png" alt="Website Logo" class="logo">
+                    <h1 style="margin: 0; font-size: 24px; color: white;">TURTLE SHELTER PROJECT - ADMINISTRATOR</h1>
+                </div>
+            </a>
+            <!-- Navigation Links -->
+            <nav>
+                <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
+                    <li style="margin: 0 10px;"><a href="/admin-welcome" style="color: white; text-decoration: none; font-weight: bold;">Admin Home</a></li>
+                    <li style="margin: 0 10px;"><a href="/volunteer-manage" style="color: white; text-decoration: none; font-weight: bold;">Volunteers</a></li>
+                    <li style="margin: 0 10px;"><a href="/event-manage" style="color: white; text-decoration: none; font-weight: bold;">Events</a></li>
+                    <li style="margin: 0 10px;"><a href="/user-manage" style="color: white; text-decoration: none; font-weight: bold;">Users</a></li>
+                    <li style="margin: 0 10px;"><a href="/" style="color: white; text-decoration: none; font-weight: bold;">Back to Public Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Volunteer Form -->
+    <div class="container mt-5">
+        <!-- Form Status Selector -->
+        <form action="/update-volunteer/<%= volunteer.volunteer_id %>" method="POST" onsubmit="return validateForm()">
+        <div class="form-status-container">
+            <label for="form_status" class="form-label">Form Status:</label>
+            <select id="form_status" name="form_status" class="form-select">
+                <option value="N" <%= volunteer.volunteer_status === 'N' ? 'selected' : '' %>>New</option>
+                <option value="A" <%= volunteer.volunteer_status === 'A' ? 'selected' : '' %>>Active</option>
+                <option value="X" <%= volunteer.volunteer_status === 'X' ? 'selected' : '' %>>No longer a volunteer</option>
+            </select>
+        </div>
+
+        <h1 class="mb-4">Volunteer Opportunity Form</h1>
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="<%= volunteer.volunteer_first_name %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="<%= volunteer.volunteer_last_name %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number (no dashes):</label>
+                <input type="tel" class="form-control" id="phone" name="phone" value="<%= volunteer.volunteer_phone_number %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address:</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= volunteer.volunteer_email_address %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="street_address" class="form-label">Street Address:</label>
+                <input type="text" class="form-control" id="street_address" name="street_address" value="<%= volunteer.volunteer_street %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="city" class="form-label">City:</label>
+                <input type="text" class="form-control" id="city" name="city" value="<%= volunteer.volunteer_city %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="state" class="form-label">State:</label>
+                <input type="text" class="form-control" id="state" name="state" value="<%= volunteer.volunteer_state %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="zip" class="form-label">Zip Code:</label>
+                <input type="text" class="form-control" id="zip" name="zip" value="<%= volunteer.volunteer_zip %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="referral_source" class="form-label">Referral Source:</label>
+                <input type="text" class="form-control" id="referral_source" name="referral_source" value="<%= volunteer.volunteer_referral_source %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="sewing_level" class="form-label">Sewing Experience:</label>
+                <select id="sewing_level" name="sewing_level" class="form-select" required>
+                    <option value="N" <%= volunteer.volunteer_sewing_level === 'N' ? 'selected' : '' %>>No sewing</option>
+                    <option value="B" <%= volunteer.volunteer_sewing_level === 'B' ? 'selected' : '' %>>Beginner</option>
+                    <option value="I" <%= volunteer.volunteer_sewing_level === 'I' ? 'selected' : '' %>>Intermediate</option>
+                    <option value="E" <%= volunteer.volunteer_sewing_level === 'E' ? 'selected' : '' %>>Experienced</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="volunteer_hours" class="form-label">Hours Willing to Volunteer Each Month:</label>
+                <input type="number" class="form-control" id="volunteer_hours" name="volunteer_hours" value="<%= volunteer.volunteer_monthly_hours %>" min="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="newsletter" class="form-label">Subscribed to Newsletter:</label><br>
+                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" value="true" <%= volunteer.volunteer_newsletter_optin ? 'checked' : '' %>>
+            </div>
+
+            <!-- Update and delete buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="submit" class="update-profile-btn">Update Volunteer</button>
+                <button type="button" class="delete-profile-btn" onclick="deleteVolunteer('<%= volunteer.volunteer_id %>')">Delete Volunteer</button>
+            </div>
+            <!-- Back to Volunteers button -->
+            <a href="/volunteer-manage" type="button" class="back-to-users-btn">Back to Volunteers Page</a>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: #3b7a57; padding: 15px 20px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <p>&copy; 2024 Turtle Shelter Project</p>
+    </footer>
+
+    <script>
+        // Function to validate the form inputs to match what is stored in the database
+        function validateForm() {
+            const phone = document.getElementById('phone').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const hours = document.getElementById('volunteer_hours').value.trim();
+        
+            // Validation messages
+            let messages = [];
+        
+            // Check phone number (numeric values only)
+            if (!/^\d+$/.test(phone)) {
+                messages.push('Phone number must contain only numeric values.');
+            }
+        
+            // Check state (2 letters)
+            if (!/^[A-Za-z]{2}$/.test(state)) {
+                messages.push('State must be exactly two letters.');
+            }
+        
+            // Check hours (greater than 0)
+            if (isNaN(hours) || hours <= 0) {
+                messages.push('Monthly hours must be greater than 0.');
+            }
+        
+            // If there are validation errors, prevent form submission and show alerts
+            if (messages.length > 0) {
+                alert(messages.join('\n'));
+                return false; // Prevent form submission
+            }
+        
+            return true; // Allow form submission
+        }
+
+        // Function to delete a volunteer (must be done with JavaScript because the delete button is inside the update form)
+        function deleteVolunteer(volunteerId) {
+            if (confirm('Are you sure you want to delete this volunteer? All data stored about this volunteer and their event attendance will be lost. If you want to save this data, change the Form Status to "No longer a volunteer" instead of deleting.')) {
+                // Create a form dynamically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/delete-volunteer/${volunteerId}`;
+
+                // Append the form to the body and submit
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>
