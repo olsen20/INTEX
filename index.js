@@ -201,7 +201,7 @@ app.get('/login', (req, res) => {
 // Internal website ----------------------------------------------------------------------------------------------------------------------------
 // Login user
 app.post('/login', async (req, res) => {
-    const username = req.body.username;
+    const username = req.body.username.toUpperCase();
     const password = req.body.password;
 
     try {
@@ -352,6 +352,7 @@ app.get('/volunteer-details/:id', (req, res) => {
 
 // Update the volunteer route
 app.post('/update-volunteer/:id', (req, res) => {
+    console.log(req.body); // Add this line
     const id = req.params.id;
     const volunteer_status = req.body.form_status;
     const volunteer_first_name = req.body.first_name;
@@ -366,6 +367,7 @@ app.post('/update-volunteer/:id', (req, res) => {
     const volunteer_sewing_level = req.body.sewing_level;
     const volunteer_monthly_hours = parseInt(req.body.volunteer_hours);
     const volunteer_newsletter_optin = req.body.newsletter === 'true';
+    console.log('Newsletter Opt-In:', volunteer_newsletter_optin); // Add this line
 
     // Update the volunteer in the database
     knex('volunteers')
@@ -997,7 +999,7 @@ app.post('/add-user', (req, res) => {
     // Insert the new user (employee) into the database with plain text password for now
     knex('employees')
         .insert({
-            username: username,
+            username: username.toUpperCase(),
             password: password,  // Using plain text password for now
             user_first_name: first_name,
             user_last_name: last_name,
@@ -1047,7 +1049,7 @@ const users = req.params.id
 app.post('/update-user/:user', (req, res) => {
     const users = req.params.user
 
-    const username = req.body.username
+    const username = req.body.username.toUpperCase();
     const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
